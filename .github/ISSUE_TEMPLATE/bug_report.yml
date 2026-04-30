@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         ## Hi there 👋
-        Thanks for helping us improve Fossify Phone by reporting a bug!
+        Thanks for helping us improve CallTags by reporting a bug!
         Please fill in as much information as possible about your bug to avoid unnecessary and time-consuming back-and-forth communication.
 
   - type: checkboxes
@@ -123,4 +123,3 @@ body:
         * you have disabled all animations on your device
         * your rabbit chewed your network cable
         * ...
-

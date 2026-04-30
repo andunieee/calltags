@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         ## Hi there 👋
-        Thanks for helping us improve Fossify Phone by suggesting a feature!
+        Thanks for helping us improve CallTags by suggesting a feature!
         Please fill in as much information as possible about your feature request to avoid unnecessary and time-consuming back-and-forth communication.
 
   - type: checkboxes
