@@ -10,7 +10,7 @@ L'app Telefono Fossify offre un'interfaccia mobile fluida e reattiva, migliorand
 Con l'app Telefono Fossify, la trasparenza è a portata di mano. Costruita su una base open-source, la nostra app ti consente di esaminare il nostro codice su GitHub, favorendo la fiducia e una comunità impegnata nella tutela della privacy.
 
 🖼️ PERSONALIZZAZIONE SU MISURA:
-Personalizza la tua esperienza mobile con l'app Fossify Phone. Regola le impostazioni dell'app per ottenere un'interfaccia personalizzata, dal design tematico alle preferenze funzionali. Goditi un'interfaccia utente intuitiva e unica.
+Personalizza la tua esperienza mobile con l'app CallTags. Regola le impostazioni dell'app per ottenere un'interfaccia personalizzata, dal design tematico alle preferenze funzionali. Goditi un'interfaccia utente intuitiva e unica.
 
 🔋 GESTIONE EFFICIENTE DELLE RISORSE:
 L'app Telefono Fossify è progettata per un utilizzo ottimale delle risorse, contribuendo a prolungare la durata della batteria. Non consuma le risorse del telefono, assicurando un funzionamento efficiente del dispositivo e riducendo al minimo il consumo della batteria.
