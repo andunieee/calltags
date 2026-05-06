@@ -164,8 +164,8 @@ class CallActivity : SimpleActivity() {
         }
 
         callAdd.setOnClickListener {
-            Intent(applicationContext, DialpadActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+            Intent(applicationContext, MainActivity::class.java).apply {
+                action = Intent.ACTION_DIAL
                 startActivity(this)
             }
         }
@@ -571,6 +571,21 @@ class CallActivity : SimpleActivity() {
         binding.holdStatusLabel.beInvisibleIf(!isOnHold)
     }
 
+    // remind the user what earlier calls with this number were about
+    private fun showPreviousLabels(number: String) {
+        binding.callerPreviousLabels.beGone()
+        if (number.isEmpty()) return
+        ensureBackgroundThread {
+            val labels = CallHistoryDb.getInstance(this).getLabelsForNumber(number)
+            runOnUiThread {
+                if (labels.isNotEmpty() && callContact?.number == number) {
+                    binding.callerPreviousLabels.text = getString(R.string.previously_labeled, labels.joinToString(", "))
+                    binding.callerPreviousLabels.beVisible()
+                }
+            }
+        }
+    }
+
     private fun updateOtherPersonsInfo(avatarUri: String?) {
         if (callContact == null) {
             return
@@ -588,6 +603,7 @@ class CallActivity : SimpleActivity() {
             } else {
                 callerNumber.beGone()
             }
+            showPreviousLabels(number)
 
             callerAvatar.apply {
                 if (avatarUri.isNullOrEmpty()) {

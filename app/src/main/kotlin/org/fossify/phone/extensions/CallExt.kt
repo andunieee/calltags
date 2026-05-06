@@ -2,6 +2,7 @@ package org.fossify.phone.extensions
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
@@ -10,14 +11,13 @@ import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.commons.dialogs.CallConfirmationDialog
 import org.fossify.commons.dialogs.PermissionRequiredDialog
 import org.fossify.commons.extensions.canUseFullScreenIntent
-import org.fossify.commons.extensions.initiateCall
 import org.fossify.commons.extensions.isDefaultDialer
-import org.fossify.commons.extensions.launchCallIntent
+import org.fossify.commons.extensions.launchActivityIntent
 import org.fossify.commons.extensions.openFullScreenIntentSettings
 import org.fossify.commons.extensions.openNotificationSettings
 import org.fossify.commons.extensions.telecomManager
+import org.fossify.commons.helpers.PERMISSION_CALL_PHONE
 import org.fossify.commons.helpers.PERMISSION_READ_PHONE_STATE
-import org.fossify.commons.models.contacts.Contact
 import org.fossify.phone.BuildConfig
 import org.fossify.phone.activities.DialerActivity
 import org.fossify.phone.activities.SimpleActivity
@@ -33,10 +33,10 @@ fun SimpleActivity.startCallIntent(
             phoneNumber = recipient,
             forceSimSelector = forceSimSelector
         ) { handle ->
-            launchCallIntent(recipient, handle)
+            launchAppCallIntent(recipient, handle)
         }
     } else {
-        launchCallIntent(recipient, null)
+        launchAppCallIntent(recipient, null)
     }
 }
 
@@ -54,44 +54,32 @@ fun SimpleActivity.startCallWithConfirmationCheck(
     }
 }
 
-fun SimpleActivity.startCallWithConfirmationCheck(contact: Contact) {
-    if (config.showCallConfirmation) {
-        CallConfirmationDialog(
-            activity = this,
-            callee = contact.getNameToDisplay()
-        ) {
-            initiateCall(contact) { launchCallIntent(it) }
-        }
-    } else {
-        initiateCall(contact) { launchCallIntent(it) }
-    }
-}
+private fun BaseSimpleActivity.launchAppCallIntent(recipient: String, handle: PhoneAccountHandle? = null) {
+    if (isDefaultDialer()) {
+        handlePermission(PERMISSION_CALL_PHONE) { hasPermission ->
+            val action = if (hasPermission) Intent.ACTION_CALL else Intent.ACTION_DIAL
+            val intent = Intent(action).apply {
+                data = Uri.fromParts("tel", recipient, null)
 
-fun BaseSimpleActivity.callContactWithSim(
-    recipient: String,
-    useMainSIM: Boolean
-) {
-    handlePermission(PERMISSION_READ_PHONE_STATE) {
-        val wantedSimIndex = if (useMainSIM) 0 else 1
-        val handle = getAvailableSIMCardLabels()
-            .sortedBy { it.id }
-            .getOrNull(wantedSimIndex)?.handle
-        launchCallIntent(recipient, handle)
-    }
-}
+                if (handle != null) {
+                    putExtra(TelecomManager.EXTRA_PHONE_ACCOUNT_HANDLE, handle)
+                }
 
-fun BaseSimpleActivity.callContactWithSimWithConfirmationCheck(
-    recipient: String,
-    name: String,
-    useMainSIM: Boolean
-) {
-    if (config.showCallConfirmation) {
-        CallConfirmationDialog(this, name) {
-            callContactWithSim(recipient, useMainSIM)
+                if (hasPermission) {
+                    setClass(this@launchAppCallIntent, DialerActivity::class.java)
+                }
+            }
+
+            launchActivityIntent(intent)
         }
-    } else {
-        callContactWithSim(recipient, useMainSIM)
+        return
     }
+
+    val intent = Intent(Intent.ACTION_DIAL).apply {
+        data = Uri.fromParts("tel", recipient, null)
+    }
+
+    launchActivityIntent(intent)
 }
 
 // used at devices with multiple SIM cards

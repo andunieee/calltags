@@ -1,18 +1,13 @@
 package org.fossify.phone.extensions
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.Context.KEYGUARD_SERVICE
-import android.content.Intent
 import android.media.AudioManager
 import android.net.Uri
 import android.os.PowerManager
-import android.telecom.TelecomManager
-import org.fossify.commons.extensions.launchActivityIntent
 import org.fossify.commons.extensions.telecomManager
-import org.fossify.commons.helpers.KEY_PHONE
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.phone.helpers.Config
 import org.fossify.phone.models.SIMAccount
@@ -78,20 +73,3 @@ fun Context.clearMissedCalls() {
     }
 }
 
-fun Context.canLaunchAccountsConfiguration(): Boolean {
-    return Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS)
-        .resolveActivity(packageManager) != null
-}
-
-fun Context.launchAccountsConfiguration() {
-    startActivity(Intent(TelecomManager.ACTION_CHANGE_PHONE_ACCOUNTS))
-}
-
-fun Activity.startAddContactIntent(phoneNumber: String) {
-    Intent().apply {
-        action = Intent.ACTION_INSERT_OR_EDIT
-        type = "vnd.android.cursor.item/contact"
-        putExtra(KEY_PHONE, phoneNumber)
-        launchActivityIntent(this)
-    }
-}
