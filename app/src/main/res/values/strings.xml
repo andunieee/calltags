@@ -16,7 +16,6 @@
     <string name="new_label">New label</string>
     <string name="add_label">Add label</string>
     <string name="no_labels_yet">No labels yet</string>
-    <string name="show_all_calls_from_number">All calls from this number</string>
     <string name="delete_call_confirmation">Remove this call and its labels from the history?</string>
     <string name="previously_labeled">Before: %s</string>
 
