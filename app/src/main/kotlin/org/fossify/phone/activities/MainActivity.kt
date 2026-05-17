@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import org.fossify.commons.extensions.adjustAlpha
 import org.fossify.commons.extensions.applyColorFilter
-import org.fossify.commons.extensions.appLaunched
+import org.fossify.commons.extensions.baseConfig
 import org.fossify.commons.extensions.darkenColor
 import org.fossify.commons.extensions.getColoredDrawableWithColor
 import org.fossify.commons.extensions.getContrastColor
@@ -84,7 +84,7 @@ class MainActivity : SimpleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        appLaunched(BuildConfig.APPLICATION_ID)
+        baseConfig.appId = BuildConfig.APPLICATION_ID
         setupEdgeToEdge(
             padTopSystem = listOf(binding.mainContent),
             padBottomImeAndSystem = listOf(binding.mainTabs)
@@ -505,6 +505,16 @@ class MainActivity : SimpleActivity() {
         binding.mainHolder.setBackgroundColor(backgroundColor)
 
         binding.dialpadClearChar.applyColorFilter(textColor)
+        binding.dialpadWrapper.apply {
+            arrayOf(
+                dialpad0Holder, dialpad1Holder, dialpad2Holder, dialpad3Holder, dialpad4Holder,
+                dialpad5Holder, dialpad6Holder, dialpad7Holder, dialpad8Holder, dialpad9Holder,
+                dialpadPlusHolder, dialpadAsteriskHolder, dialpadHashtagHolder
+            ).forEach {
+                it.background?.applyColorFilter(textColor)
+                it.background?.alpha = DIALPAD_KEY_ALPHA
+            }
+        }
         binding.dialpadCallButton.setImageDrawable(
             resources.getColoredDrawableWithColor(R.drawable.ic_phone_vector, primaryColor.getContrastColor())
         )
@@ -530,5 +540,6 @@ class MainActivity : SimpleActivity() {
         private const val CALL_LOG_WRITE_DELAY_MS = 2000L
         private const val CLEAR_INPUT_DELAY_MS = 1000L
         private const val MIN_DIGITS_FOR_LABEL_LOOKUP = 3
+        private const val DIALPAD_KEY_ALPHA = 20
     }
 }

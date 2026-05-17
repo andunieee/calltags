@@ -1,3 +1,33 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="108dp" android:height="108dp" android:viewportWidth="512" android:viewportHeight="512">
-    <path android:fillColor="#ffffff" android:pathData="M333.19 290.93l-27.15-3.1c-6.52-0.75-12.93 1.5-17.53 6.09l-19.67 19.67c-30.24-15.39-55.04-40.08-70.43-70.44l19.77-19.77c4.6-4.6 6.84-11.01 6.09-17.53l-3.09-26.93c-1.29-10.8-10.37-18.92-21.27-18.92h-18.49c-12.08 0-22.12 10.05-21.38 22.12 5.66 91.28 78.67 164.17 169.84 169.84 12.08 0.75 22.12-9.3 22.12-21.38v-18.49c0.11-10.8-8.02-19.88-18.81-21.16z" android:strokeWidth="10.69"/>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CallTags mark: a luggage tag with a handset punched out of it -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:rotation="45">
+        <path
+            android:fillColor="@color/brand_ink"
+            android:fillType="evenOdd"
+            android:pathData="M35,41 L71,41 Q75,41 75,45 L75,63 Q75,67 71,67 L35,67 L24,54 Z M39,48.5 A5.5,5.5 0 1,0 39,59.5 A5.5,5.5 0 1,0 39,48.5 Z"
+            android:strokeWidth="4"
+            android:strokeColor="@color/brand_ink"
+            android:strokeLineJoin="round" />
+    </group>
+
+    <group
+        android:pivotX="261"
+        android:pivotY="256"
+        android:scaleX="0.095"
+        android:scaleY="0.095"
+        android:translateX="-202"
+        android:translateY="-197">
+        <path
+            android:fillColor="@color/brand_amber"
+            android:pathData="M333.19,290.93l-27.15,-3.1c-6.52,-0.75 -12.93,1.5 -17.53,6.09l-19.67,19.67c-30.24,-15.39 -55.04,-40.08 -70.43,-70.44l19.77,-19.77c4.6,-4.6 6.84,-11.01 6.09,-17.53l-3.09,-26.93c-1.29,-10.8 -10.37,-18.92 -21.27,-18.92h-18.49c-12.08,0 -22.12,10.05 -21.38,22.12 5.66,91.28 78.67,164.17 169.84,169.84 12.08,0.75 22.12,-9.3 22.12,-21.38v-18.49c0.11,-10.8 -8.02,-19.88 -18.81,-21.16z" />
+    </group>
 </vector>

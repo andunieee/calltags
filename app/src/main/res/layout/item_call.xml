@@ -14,11 +14,11 @@
 
     <ImageView
         android:id="@+id/item_call_type"
-        android:layout_width="@dimen/normal_icon_size"
-        android:layout_height="@dimen/normal_icon_size"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="top"
+        android:layout_marginTop="@dimen/tiny_margin"
         android:contentDescription="@null"
-        android:padding="@dimen/small_margin"
         android:src="@drawable/ic_call_received_vector" />
 
     <LinearLayout

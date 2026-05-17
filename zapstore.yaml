@@ -1,0 +1,35 @@
+# Zapstore listing for CallTags, published with zsp (https://github.com/zapstore/zsp).
+# The release workflow runs zsp after each GitHub release; see PUBLISHING.md.
+repository: https://github.com/andunieee/calltags
+
+# Your Nostr public key. The Zapstore relay checks that this matches the key signing the
+# events before it whitelists the app, so it must be committed to the repository.
+pubkey: npub1ewsn5m4p2qfvpx2qjfvnghe5ca4phx6d3ccpqad9sr4ccg9utewsfmk8su
+
+name: CallTags
+summary: A phone app that lets you label calls and search them later.
+description: |
+  CallTags is a simple phone app with one extra trick: you can label your calls with anything you like, and find them again later.
+
+  Got a call about the car insurance? Tag it "insurance". A week later, search "insurance" and the number is right there. Search the number instead, and you see every call with it along with what each one was about.
+
+  - Dialpad and call history, nothing else
+  - Add any number of free-text labels to each call
+  - Search history by number or by label
+  - See what earlier calls with a number were about while it's ringing
+  - History and labels are kept even if the system call log is cleared
+  - Everything stays on your phone: no account, no internet, no ads
+
+  CallTags works as your default phone app, so it handles incoming and outgoing calls itself.
+tags:
+  - phone
+  - dialer
+  - productivity
+  - privacy
+license: GPL-3.0-only
+website: https://github.com/andunieee/calltags
+
+icon: ./graphics/icon.png
+
+# picks the "## [x.y.z]" section matching the release
+release_notes: ./CHANGELOG.md

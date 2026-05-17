@@ -122,7 +122,7 @@ class CallLabelsDialog(
             binding.callLabelsChips.addView(Chip(activity).apply {
                 text = label
                 setTextColor(textColor)
-                chipBackgroundColor = ColorStateList.valueOf(activity.getProperPrimaryColor().adjustAlpha(0.35f))
+                chipBackgroundColor = ColorStateList.valueOf(activity.getProperPrimaryColor().adjustAlpha(0.22f))
                 chipStrokeWidth = 0f
                 isCloseIconVisible = true
                 closeIconTint = ColorStateList.valueOf(textColor)

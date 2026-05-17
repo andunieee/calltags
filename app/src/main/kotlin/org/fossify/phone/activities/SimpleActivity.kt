@@ -1,32 +1,25 @@
 package org.fossify.phone.activities
 
+import android.os.Bundle
 import org.fossify.commons.activities.BaseSimpleActivity
 import org.fossify.phone.R
+import org.fossify.phone.extensions.applyBrandTheme
 
 open class SimpleActivity : BaseSimpleActivity() {
-    override fun getAppIconIDs() = arrayListOf(
-        R.mipmap.ic_launcher_red,
-        R.mipmap.ic_launcher_pink,
-        R.mipmap.ic_launcher_purple,
-        R.mipmap.ic_launcher_deep_purple,
-        R.mipmap.ic_launcher_indigo,
-        R.mipmap.ic_launcher_blue,
-        R.mipmap.ic_launcher_light_blue,
-        R.mipmap.ic_launcher_cyan,
-        R.mipmap.ic_launcher_teal,
-        R.mipmap.ic_launcher,
-        R.mipmap.ic_launcher_light_green,
-        R.mipmap.ic_launcher_lime,
-        R.mipmap.ic_launcher_yellow,
-        R.mipmap.ic_launcher_amber,
-        R.mipmap.ic_launcher_orange,
-        R.mipmap.ic_launcher_deep_orange,
-        R.mipmap.ic_launcher_brown,
-        R.mipmap.ic_launcher_blue_grey,
-        R.mipmap.ic_launcher_grey_black
-    )
+    override fun onCreate(savedInstanceState: Bundle?) {
+        // must run before commons reads the colors in super.onCreate
+        applyBrandTheme()
+        super.onCreate(savedInstanceState)
+    }
+
+    // commons indexes this list by the chosen icon color; there is only one icon
+    override fun getAppIconIDs() = ArrayList(List(APP_ICON_COLOR_COUNT) { R.mipmap.ic_launcher })
 
     override fun getAppLauncherName() = getString(R.string.app_launcher_name)
 
-    override fun getRepositoryName() = "Phone"
+    override fun getRepositoryName() = "calltags"
+
+    companion object {
+        private const val APP_ICON_COLOR_COUNT = 19
+    }
 }
