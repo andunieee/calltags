@@ -4,13 +4,22 @@
 
 A minimal Android phone app that lets you label calls with free text and search them later.
 
-- **Dialpad** and **History**, nothing else.
-- Tap a call in History to add labels like `insurance` or `topic 2`.
+Because maintaining an updated list of contacts was always an awful idea.
+
+- Dialpad and History, nothing else, yet it replaces your contacts list.
+- Tap a call in History to add labels like `insurance` or `bob's second phone`.
 - Search History by number (all calls with it and their labels) or by label (every call that got it).
 - While a labelled number is calling, the in-call screen shows what earlier calls were about.
-- History and labels live in the app's own database, so they survive clearing the system call log. Nothing leaves the device.
+- Nothing leaves the device.
 
 CallTags works as the default phone app (Settings → Apps → Default apps → Phone).
+
+I made it because I've been using my history of calls as my contact list, by memorizing numbers or parts of numbers, helped by the history. This method would
+benefit greatly by some labelling of past calls, even if the labels are just someone's name. It is also great for when you want to keep track of some phone
+number but you don't want that person to be forever in your canonical contact list, as your interaction with them will last for only a few days or weeks.
+
+Other people may find it useful for labeling other things, like the topic of each call. It's a very simple functionality, but the possibilities are many, I
+assume.
 
 ## Install
 
@@ -21,11 +30,9 @@ CallTags works as the default phone app (Settings → Apps → Default apps → 
 ## Building
 
 ```sh
-./gradlew assembleDebug        # app/build/outputs/apk/debug/
+./gradlew assembleDebug
 ```
-
-Release builds are made by GitHub Actions when you push a `v*` tag; see [PUBLISHING.md](PUBLISHING.md).
 
 ## License
 
-GPL-3.0. CallTags is built on [Fossify Phone](https://github.com/FossifyOrg/Phone) and [Fossify Commons](https://github.com/FossifyOrg/Commons).
+GPL-3.0. CallTags is a fork of [Fossify Phone](https://github.com/FossifyOrg/Phone).
