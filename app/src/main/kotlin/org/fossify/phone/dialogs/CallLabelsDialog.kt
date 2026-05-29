@@ -8,13 +8,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
 import org.fossify.commons.dialogs.ConfirmationDialog
+import org.fossify.commons.extensions.addBlockedNumber
 import org.fossify.commons.extensions.adjustAlpha
 import org.fossify.commons.extensions.applyColorFilter
+import org.fossify.commons.extensions.beGone
+import org.fossify.commons.extensions.deleteBlockedNumber
 import org.fossify.commons.extensions.getAlertDialogBuilder
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
+import org.fossify.commons.extensions.isNumberBlocked
 import org.fossify.commons.extensions.setupDialogStuff
 import org.fossify.commons.extensions.showKeyboard
+import org.fossify.commons.extensions.toast
 import org.fossify.commons.helpers.ensureBackgroundThread
 import org.fossify.phone.R
 import org.fossify.phone.activities.SimpleActivity
@@ -77,6 +82,7 @@ class CallLabelsDialog(
         val builder = activity.getAlertDialogBuilder()
             .setPositiveButton(R.string.ok, null)
             .setNegativeButton(R.string.delete, null)
+            .setNeutralButton(R.string.block_number, null)
             .setOnDismissListener {
                 if (changed) onChanged()
             }
@@ -93,6 +99,7 @@ class CallLabelsDialog(
                     dialog.dismiss()
                 }
             }
+            setupBlockButton(dialog)
             activity.showKeyboard(binding.callLabelsInput)
         }
     }
@@ -113,6 +120,54 @@ class CallLabelsDialog(
         changed = true
         renderChips()
         db.removeLabel(call.id, label)
+    }
+
+    private fun setupBlockButton(dialog: AlertDialog) {
+        val blockButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
+        if (call.number.isEmpty()) {
+            blockButton.beGone()
+            return
+        }
+
+        var blocked = false
+        ensureBackgroundThread {
+            blocked = try {
+                activity.isNumberBlocked(call.number)
+            } catch (_: Exception) {
+                false
+            }
+            activity.runOnUiThread {
+                blockButton.text = activity.getString(if (blocked) R.string.unblock_number else R.string.block_number)
+            }
+        }
+        blockButton.setOnClickListener {
+            if (blocked) {
+                ensureBackgroundThread {
+                    activity.deleteBlockedNumber(call.number)
+                    activity.runOnUiThread {
+                        blocked = false
+                        blockButton.text = activity.getString(R.string.block_number)
+                        activity.toast(R.string.number_unblocked)
+                    }
+                }
+            } else {
+                ConfirmationDialog(activity, activity.getString(R.string.block_number_confirmation, call.number)) {
+                    ensureBackgroundThread {
+                        if (activity.addBlockedNumber(call.number)) {
+                            activity.runOnUiThread {
+                                blocked = true
+                                blockButton.text = activity.getString(R.string.unblock_number)
+                                activity.toast(R.string.number_blocked)
+                            }
+                        } else {
+                            activity.runOnUiThread {
+                                activity.toast(R.string.unknown_error_occurred)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun renderChips() {

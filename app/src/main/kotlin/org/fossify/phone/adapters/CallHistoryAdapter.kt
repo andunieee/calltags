@@ -61,6 +61,7 @@ class CallHistoryAdapter(
                         DateUtils.FORMAT_SHOW_DATE or DateUtils.FORMAT_SHOW_YEAR or DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_ABBREV_MONTH
                     )
                 )
+                if (call.type == Calls.BLOCKED_TYPE) details += context.getString(R.string.blocked)
                 if (call.duration > 0) details += formatDuration(call.duration)
                 if (call.name.isNotEmpty()) details += number
                 itemCallDetails.text = details.joinToString(" • ")
