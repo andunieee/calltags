@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Εντάξει</string>
+    <string name="delete">Διαγραφή</string>
+    <string name="call">Κλήση</string>
+    <string name="cancel">Ακύρωση</string>
+    <string name="yes">Ναί</string>
+    <string name="no">Όχι</string>
+    <string name="back">Πίσω</string>
+    <string name="zero">Μηδέν</string>
+    <string name="one">Ένα</string>
+    <string name="two">Δύο</string>
+    <string name="three">Τρία</string>
+    <string name="four">Τέσσερα</string>
+    <string name="five">Πέντε</string>
+    <string name="six">Έξι</string>
+    <string name="seven">Επτά</string>
+    <string name="eight">Οκτώ</string>
+    <string name="nine">Εννέα</string>
+    <string name="unknown_error_occurred">Παρουσιάστηκε άγνωστο σφάλμα</string>
+    <string name="notifications_disabled">Οι ειδοποιήσεις αυτής της εφαρμογής είναι απενεργοποιημένες. Μεταβείτε στις ρυθμίσεις της συσκευής για να τις ενεργοποιήσετε.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Πρέπει να επιτρέψετε στην εφαρμογή να εμφανίζει ειδοποιήσεις σε πλήρη οθόνη, διαφορετικά μπορεί να χάσετε κάποιες εισερχόμενες κλήσεις.</string>
+    <string name="allow_notifications_incoming_calls">Πρέπει να επιτρέψετε στην εφαρμογή να εμφανίζει ειδοποιήσεις, διαφορετικά δεν μπορεί να εμφανίσει τις εισερχόμενες κλήσεις.</string>
+    <string name="grant_permission">Χορήγηση άδειας</string>
+    <string name="permission_required">Απαιτείται άδεια</string>
+    <string name="no_app_found">Δεν βρέθηκε έγκυρη εφαρμογή</string>
+</resources>

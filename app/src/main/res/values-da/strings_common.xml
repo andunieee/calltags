@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Slet</string>
+    <string name="call">Opkald</string>
+    <string name="cancel">Annullér</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nej</string>
+    <string name="back">Tilbage </string>
+    <string name="zero">Nul</string>
+    <string name="one">En</string>
+    <string name="two">To</string>
+    <string name="three">Tre</string>
+    <string name="four">Fire</string>
+    <string name="five">Fem</string>
+    <string name="six">Seks</string>
+    <string name="seven">Syv</string>
+    <string name="eight">Otte</string>
+    <string name="nine">Ni</string>
+    <string name="unknown_error_occurred">Der opstod en ukendt fejl</string>
+    <string name="notifications_disabled">Notifikationer for denne app er deaktiveret. Gå til enhedens indstillinger for at aktivere dem.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Appen skal have tilladelse til at vise fuldskærmsnotifikationer, ellers risikerer du at misse indgående opkald.</string>
+    <string name="allow_notifications_incoming_calls">Appen skal have tilladelse til at vise notifikationer, ellers kan den ikke vise indgående opkald.</string>
+    <string name="grant_permission">Giv tilladelse</string>
+    <string name="permission_required">Tilladelse påkrævet</string>
+    <string name="no_app_found">Ingen gyldig app fundet</string>
+</resources>

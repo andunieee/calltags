@@ -6,7 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
+import android.graphics.Outline
 import android.media.AudioManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -16,6 +19,7 @@ import android.telecom.CallAudioState
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewOutlineProvider
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -23,21 +27,18 @@ import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.postDelayed
 import androidx.core.view.children
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import org.fossify.commons.extensions.*
-import org.fossify.commons.helpers.*
-import org.fossify.commons.dialogs.ConfirmationDialog
-import org.fossify.commons.models.SimpleListItem
 import org.fossify.phone.R
 import org.fossify.phone.databinding.ActivityCallBinding
-import org.fossify.phone.dialogs.DynamicBottomSheetChooserDialog
+import org.fossify.phone.dialogs.AudioRouteChooserDialog
 import org.fossify.phone.extensions.*
 import org.fossify.phone.helpers.*
 import org.fossify.phone.models.AudioRoute
 import org.fossify.phone.models.CallContact
+import org.fossify.phone.models.SimpleListItem
 import kotlin.math.max
 import kotlin.math.min
 
@@ -65,7 +66,7 @@ class CallActivity : SimpleActivity() {
     private var viewsUnderDialpad = arrayListOf<Pair<View, Float>>()
     private var dialpadHeight = 0f
 
-    private var audioRouteChooserDialog: DynamicBottomSheetChooserDialog? = null
+    private var audioRouteChooserDialog: AudioRouteChooserDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +82,6 @@ class CallActivity : SimpleActivity() {
             padBottomSystem = listOf(binding.callHolder),
         )
 
-        updateTextColors(binding.callHolder)
         initButtons()
         audioManager.mode = AudioManager.MODE_IN_CALL
         addLockScreenFlags()
@@ -110,7 +110,7 @@ class CallActivity : SimpleActivity() {
     }
 
     override fun onBackPressedCompat(): Boolean {
-        if (binding.dialpadWrapper.isVisible()) {
+        if (binding.dialpadWrapper.isVisible) {
             hideDialpad()
             return true
         }
@@ -128,10 +128,10 @@ class CallActivity : SimpleActivity() {
 
     private fun initButtons() = binding.apply {
         if (config.disableSwipeToAnswer) {
-            callDraggable.beGone()
-            callDraggableBackground.beGone()
-            callLeftArrow.beGone()
-            callRightArrow.beGone()
+            callDraggable.isVisible = false
+            callDraggableBackground.isVisible = false
+            callLeftArrow.isVisible = false
+            callRightArrow.isVisible = false
 
             callDecline.setOnClickListener {
                 endCall()
@@ -455,13 +455,12 @@ class CallActivity : SimpleActivity() {
             .map {
                 SimpleListItem(id = it.route, textRes = it.stringRes, imageRes = it.iconRes, selected = it == callAudioRoute)
             }
-            .toTypedArray()
 
-        if (audioRouteChooserDialog?.isVisible == true) {
-            audioRouteChooserDialog?.updateChooserItems(items)
+        if (audioRouteChooserDialog?.isShowing == true) {
+            audioRouteChooserDialog?.updateItems(items)
         } else if (create) {
-            audioRouteChooserDialog = DynamicBottomSheetChooserDialog.createChooser(
-                fragmentManager = supportFragmentManager,
+            audioRouteChooserDialog = AudioRouteChooserDialog(
+                activity = this,
                 title = R.string.choose_audio_route,
                 items = items
             ) {
@@ -516,12 +515,12 @@ class CallActivity : SimpleActivity() {
     }
 
     private fun toggleDialpadVisibility() {
-        if (binding.dialpadWrapper.isVisible()) hideDialpad() else showDialpad()
+        if (binding.dialpadWrapper.isVisible) hideDialpad() else showDialpad()
     }
 
     private fun findVisibleViewsUnderDialpad(): Sequence<Pair<View, Float>> {
         return binding.ongoingCallHolder.children
-            .filter { it is ImageView && it.isVisible() }
+            .filter { it is ImageView && it.isVisible }
             .map { view -> Pair(view, view.alpha) }
     }
 
@@ -534,7 +533,7 @@ class CallActivity : SimpleActivity() {
             translationY = dialpadHeight
             alpha = 0f
             animate()
-                .withStartAction { beVisible() }
+                .withStartAction { isVisible = true }
                 .setInterpolator(AccelerateDecelerateInterpolator())
                 .setDuration(200L)
                 .alpha(1f)
@@ -546,15 +545,15 @@ class CallActivity : SimpleActivity() {
         viewsUnderDialpad.addAll(findVisibleViewsUnderDialpad())
         viewsUnderDialpad.forEach { (view, _) ->
             view.run {
-                animate().scaleX(0f).alpha(0f).withEndAction { beGone() }.duration = 250L
-                animate().scaleY(0f).alpha(0f).withEndAction { beGone() }.duration = 250L
+                animate().scaleX(0f).alpha(0f).withEndAction { isVisible = false }.duration = 250L
+                animate().scaleY(0f).alpha(0f).withEndAction { isVisible = false }.duration = 250L
             }
         }
     }
 
     private fun hideDialpad() {
         binding.dialpadWrapper.animate()
-            .withEndAction { binding.dialpadWrapper.beGone() }
+            .withEndAction { binding.dialpadWrapper.isVisible = false }
             .setInterpolator(AccelerateDecelerateInterpolator())
             .setDuration(200L)
             .alpha(0f)
@@ -563,8 +562,10 @@ class CallActivity : SimpleActivity() {
 
         viewsUnderDialpad.forEach { (view, alpha) ->
             view.run {
-                animate().withStartAction { beVisible() }.setInterpolator(OvershootInterpolator()).scaleX(1f).alpha(alpha).duration = 250L
-                animate().withStartAction { beVisible() }.setInterpolator(OvershootInterpolator()).scaleY(1f).alpha(alpha).duration = 250L
+                animate().withStartAction { isVisible = true }.setInterpolator(OvershootInterpolator())
+                    .scaleX(1f).alpha(alpha).duration = 250L
+                animate().withStartAction { isVisible = true }.setInterpolator(OvershootInterpolator())
+                    .scaleY(1f).alpha(alpha).duration = 250L
             }
         }
     }
@@ -572,20 +573,22 @@ class CallActivity : SimpleActivity() {
     private fun toggleHold() {
         val isOnHold = CallManager.toggleHold()
         toggleButtonColor(binding.callToggleHold, isOnHold)
-        binding.callToggleHold.contentDescription = getString(if (isOnHold) R.string.resume_call else R.string.hold_call)
-        binding.holdStatusLabel.beInvisibleIf(!isOnHold)
+        binding.callToggleHold.contentDescription =
+            getString(if (isOnHold) R.string.resume_call else R.string.hold_call)
+        binding.holdStatusLabel.isInvisible = !isOnHold
     }
 
     // remind the user what earlier calls with this number were about
     private fun showPreviousLabels(number: String) {
-        binding.callerPreviousLabels.beGone()
+        binding.callerPreviousLabels.isVisible = false
         if (number.isEmpty()) return
         ensureBackgroundThread {
             val labels = CallHistoryDb.getInstance(this).getLabelsForNumber(number)
             runOnUiThread {
                 if (labels.isNotEmpty() && callContact?.number == number) {
-                    binding.callerPreviousLabels.text = getString(R.string.previously_labeled, labels.joinToString(", "))
-                    binding.callerPreviousLabels.beVisible()
+                    binding.callerPreviousLabels.text =
+                        getString(R.string.previously_labeled, labels.joinToString(", "))
+                    binding.callerPreviousLabels.isVisible = true
                 }
             }
         }
@@ -598,7 +601,7 @@ class CallActivity : SimpleActivity() {
 
         binding.apply {
             val (name, _, number, numberLabel) = callContact!!
-            callBlock.beVisibleIf(number.isNotEmpty())
+            callBlock.isVisible = number.isNotEmpty()
             callerNameLabel.text = name.ifEmpty { getString(R.string.unknown_caller) }
             if (number.isNotEmpty() && number != name) {
                 callerNumber.text = number
@@ -607,7 +610,7 @@ class CallActivity : SimpleActivity() {
                     callerNumber.text = "$number - $numberLabel"
                 }
             } else {
-                callerNumber.beGone()
+                callerNumber.isVisible = false
             }
             showPreviousLabels(number)
 
@@ -620,12 +623,12 @@ class CallActivity : SimpleActivity() {
                     applyColorFilter(bgColor.getContrastColor())
                     background.applyColorFilter(bgColor)
                 } else {
-                    if (!isFinishing && !isDestroyed) {
-                        Glide.with(this)
-                            .load(avatarUri)
-                            .apply(RequestOptions.circleCropTransform())
-                            .into(this)
-                    }
+                    background = null
+                    setPadding(0)
+                    clearColorFilter()
+                    clipToOutline = true
+                    outlineProvider = CircleOutlineProvider
+                    setImageURI(Uri.parse(avatarUri))
                 }
             }
         }
@@ -648,8 +651,8 @@ class CallActivity : SimpleActivity() {
                     if (sim.handle == CallManager.getPrimaryCall()?.details?.accountHandle) {
                         binding.apply {
                             callSimId.text = sim.id.toString()
-                            callSimId.beVisible()
-                            callSimImage.beVisible()
+                            callSimId.isVisible = true
+                            callSimImage.isVisible = true
                             val simColor = sim.color.adjustForContrast(getProperBackgroundColor())
                             callSimId.setTextColor(simColor.getContrastColor())
                             callSimImage.applyColorFilter(simColor)
@@ -693,7 +696,7 @@ class CallActivity : SimpleActivity() {
                 callStatusLabel.text = getString(statusTextId)
             }
 
-            callManage.beVisibleIf(!isCallEnded && call.hasCapability(Call.Details.CAPABILITY_MANAGE_CONFERENCE))
+            callManage.isVisible = !isCallEnded && call.hasCapability(Call.Details.CAPABILITY_MANAGE_CONFERENCE)
             setActionButtonEnabled(callSwap, enabled = !isCallEnded && state == Call.STATE_ACTIVE)
             setActionButtonEnabled(callMerge, enabled = !isCallEnded && state == Call.STATE_ACTIVE)
         }
@@ -727,9 +730,9 @@ class CallActivity : SimpleActivity() {
             }
         }
         binding.apply {
-            onHoldStatusHolder.beVisibleIf(hasCallOnHold)
-            controlsSingleCall.beVisibleIf(!hasCallOnHold)
-            controlsTwoCalls.beVisibleIf(hasCallOnHold)
+            onHoldStatusHolder.isVisible = hasCallOnHold
+            controlsSingleCall.isVisible = !hasCallOnHold
+            controlsTwoCalls.isVisible = hasCallOnHold
         }
     }
 
@@ -754,7 +757,7 @@ class CallActivity : SimpleActivity() {
     private fun blockCurrentNumber() {
         val number = callContact?.number.orEmpty()
         if (number.isEmpty()) return
-        ConfirmationDialog(this, getString(R.string.block_number_confirmation, number)) {
+        showConfirmationDialog(getString(R.string.block_number_confirmation, number)) {
             ensureBackgroundThread {
                 val added = addBlockedNumber(number)
                 runOnUiThread {
@@ -771,20 +774,20 @@ class CallActivity : SimpleActivity() {
 
     private fun initOutgoingCallUI() {
         enableProximitySensor()
-        binding.incomingCallHolder.beGone()
-        binding.ongoingCallHolder.beVisible()
-        binding.callEnd.beVisible()
+        binding.incomingCallHolder.isVisible = false
+        binding.ongoingCallHolder.isVisible = true
+        binding.callEnd.isVisible = true
     }
 
     private fun callRinging() {
-        binding.incomingCallHolder.beVisible()
+        binding.incomingCallHolder.isVisible = true
     }
 
     private fun callStarted() {
         enableProximitySensor()
-        binding.incomingCallHolder.beGone()
-        binding.ongoingCallHolder.beVisible()
-        binding.callEnd.beVisible()
+        binding.incomingCallHolder.isVisible = false
+        binding.ongoingCallHolder.isVisible = true
+        binding.callEnd.isVisible = true
         callDurationHandler.removeCallbacks(updateCallDurationTask)
         callDurationHandler.post(updateCallDurationTask)
     }
@@ -800,7 +803,7 @@ class CallActivity : SimpleActivity() {
     private fun endCall() {
         CallManager.reject()
         disableProximitySensor()
-        audioRouteChooserDialog?.dismissAllowingStateLoss()
+        audioRouteChooserDialog?.dismiss()
 
         if (isCallEnded) {
             safeFinishAndRemoveTask()
@@ -869,7 +872,7 @@ class CallActivity : SimpleActivity() {
 
     @SuppressLint("NewApi")
     private fun addLockScreenFlags() {
-        if (isOreoMr1Plus()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         } else {
@@ -881,11 +884,7 @@ class CallActivity : SimpleActivity() {
             )
         }
 
-        if (isOreoPlus()) {
-            (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).requestDismissKeyguard(this, null)
-        } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD)
-        }
+        (getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager).requestDismissKeyguard(this, null)
 
         try {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -899,7 +898,7 @@ class CallActivity : SimpleActivity() {
         if (!config.disableProximitySensor && (proximityWakeLock == null || proximityWakeLock?.isHeld == false)) {
             val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
             proximityWakeLock = powerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "org.fossify.phone:wake_lock")
-            proximityWakeLock!!.acquire(60 * MINUTE_SECONDS * 1000L)
+            proximityWakeLock!!.acquire(60 * 60 * 1000L)
         }
     }
 
@@ -911,7 +910,7 @@ class CallActivity : SimpleActivity() {
 
     private fun disableAllActionButtons() {
         (binding.ongoingCallHolder.children + binding.callEnd)
-            .filter { it is ImageView && it.isVisible() }
+            .filter { it is ImageView && it.isVisible }
             .forEach { view ->
                 setActionButtonEnabled(button = view as ImageView, enabled = false)
             }
@@ -947,4 +946,8 @@ class CallActivity : SimpleActivity() {
         binding.dialpadInput.setText("");
         return true;
     }
+}
+
+private object CircleOutlineProvider : ViewOutlineProvider() {
+    override fun getOutline(view: View, outline: Outline) = outline.setOval(0, 0, view.width, view.height)
 }

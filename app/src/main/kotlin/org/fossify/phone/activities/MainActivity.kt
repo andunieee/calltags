@@ -1,5 +1,6 @@
 package org.fossify.phone.activities
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
@@ -8,7 +9,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.CallLog
 import android.provider.Settings
-import android.provider.Telephony.Sms.Intents.SECRET_CODE_ACTION
 import android.telephony.TelephonyManager
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -16,37 +16,31 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.inputmethod.EditorInfo
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import org.fossify.commons.extensions.adjustAlpha
-import org.fossify.commons.extensions.applyColorFilter
-import org.fossify.commons.extensions.baseConfig
-import org.fossify.commons.extensions.darkenColor
-import org.fossify.commons.extensions.getColoredDrawableWithColor
-import org.fossify.commons.extensions.getContrastColor
-import org.fossify.commons.extensions.getProperBackgroundColor
-import org.fossify.commons.extensions.getProperPrimaryColor
-import org.fossify.commons.extensions.getProperTextColor
-import org.fossify.commons.extensions.hideKeyboard
-import org.fossify.commons.extensions.isDefaultDialer
-import org.fossify.commons.extensions.onTextChangeListener
-import org.fossify.commons.extensions.performHapticFeedback
-import org.fossify.commons.extensions.toast
-import org.fossify.commons.extensions.updateTextColors
-import org.fossify.commons.extensions.value
-import org.fossify.commons.extensions.viewBinding
-import org.fossify.commons.helpers.LOWER_ALPHA_INT
-import org.fossify.commons.helpers.PERMISSION_READ_CALL_LOG
-import org.fossify.commons.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
-import org.fossify.commons.helpers.ensureBackgroundThread
-import org.fossify.commons.helpers.isOreoPlus
-import org.fossify.phone.BuildConfig
 import org.fossify.phone.R
 import org.fossify.phone.adapters.CallHistoryAdapter
 import org.fossify.phone.databinding.ActivityMainBinding
 import org.fossify.phone.dialogs.CallLabelsDialog
+import org.fossify.phone.extensions.adjustAlpha
+import org.fossify.phone.extensions.applyColorFilter
+import org.fossify.phone.extensions.darkenColor
+import org.fossify.phone.extensions.getColoredDrawableWithColor
+import org.fossify.phone.extensions.getContrastColor
+import org.fossify.phone.extensions.getProperBackgroundColor
+import org.fossify.phone.extensions.getProperPrimaryColor
+import org.fossify.phone.extensions.getProperTextColor
+import org.fossify.phone.extensions.hideKeyboard
+import org.fossify.phone.extensions.isDefaultDialer
+import org.fossify.phone.extensions.onTextChangeListener
+import org.fossify.phone.extensions.performHapticFeedback
+import org.fossify.phone.extensions.toast
+import org.fossify.phone.extensions.value
+import org.fossify.phone.extensions.viewBinding
+import org.fossify.phone.helpers.LOWER_ALPHA_INT
+import org.fossify.phone.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
+import org.fossify.phone.helpers.ensureBackgroundThread
 import org.fossify.phone.extensions.addCharacter
 import org.fossify.phone.extensions.areMultipleSIMsAvailable
 import org.fossify.phone.extensions.boundingBox
@@ -55,7 +49,7 @@ import org.fossify.phone.extensions.config
 import org.fossify.phone.extensions.disableKeyboard
 import org.fossify.phone.extensions.getKeyEvent
 import org.fossify.phone.extensions.handleFullScreenNotificationsPermission
-import org.fossify.phone.extensions.startCallWithConfirmationCheck
+import org.fossify.phone.extensions.startCallIntent
 import org.fossify.phone.helpers.CallHistoryDb
 import org.fossify.phone.helpers.DIALPAD_TONE_LENGTH_MS
 import org.fossify.phone.helpers.TAB_DIALPAD
@@ -84,7 +78,6 @@ class MainActivity : SimpleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        baseConfig.appId = BuildConfig.APPLICATION_ID
         setupEdgeToEdge(
             padTopSystem = listOf(binding.mainContent),
             padBottomImeAndSystem = listOf(binding.mainTabs)
@@ -170,7 +163,7 @@ class MainActivity : SimpleActivity() {
 
         handleFullScreenNotificationsPermission { granted ->
             if (!granted) {
-                toast(org.fossify.commons.R.string.notifications_disabled)
+                toast(R.string.notifications_disabled)
             }
         }
     }
@@ -285,14 +278,10 @@ class MainActivity : SimpleActivity() {
     private fun dialpadValueChanged(text: String) {
         if (text.length > 8 && text.startsWith("*#*#") && text.endsWith("#*#*")) {
             val secretCode = text.substring(4, text.length - 4)
-            if (isOreoPlus()) {
-                if (isDefaultDialer()) {
-                    getSystemService(TelephonyManager::class.java)?.sendDialerSpecialCode(secretCode)
-                } else {
-                    launchSetDefaultDialerIntent()
-                }
+            if (isDefaultDialer()) {
+                getSystemService(TelephonyManager::class.java)?.sendDialerSpecialCode(secretCode)
             } else {
-                sendBroadcast(Intent(SECRET_CODE_ACTION, "android_secret_code://$secretCode".toUri()))
+                launchSetDefaultDialerIntent()
             }
             return
         }
@@ -330,7 +319,7 @@ class MainActivity : SimpleActivity() {
     private fun callTypedNumber() {
         val number = binding.dialpadInput.value
         if (number.isNotEmpty()) {
-            startCallWithConfirmationCheck(number, number)
+            startCallIntent(number)
             clearInputWithDelay()
         } else {
             // like most dialers, an empty call press brings back the last number
@@ -346,7 +335,7 @@ class MainActivity : SimpleActivity() {
     private fun callTypedNumberWithSimSelector(): Boolean {
         val number = binding.dialpadInput.value
         return if (areMultipleSIMsAvailable() && number.isNotEmpty()) {
-            startCallWithConfirmationCheck(recipient = number, name = number, forceSimSelector = true)
+            startCallIntent(recipient = number, forceSimSelector = true)
             clearInputWithDelay()
             true
         } else {
@@ -433,7 +422,7 @@ class MainActivity : SimpleActivity() {
                     onChanged = { refreshHistory() }
                 )
             },
-            onDialClick = { call -> startCallWithConfirmationCheck(call.number, call.name.ifEmpty { call.number }) },
+            onDialClick = { call -> startCallIntent(call.number) },
             onLabelClick = { label -> binding.historySearch.setText(label) }
         )
         binding.historyList.adapter = historyAdapter
@@ -456,7 +445,7 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun syncAndRefreshHistory() {
-        handlePermission(PERMISSION_READ_CALL_LOG) { granted ->
+        handlePermission(Manifest.permission.READ_CALL_LOG) { granted ->
             if (!granted) {
                 refreshHistory()
                 return@handlePermission
@@ -501,7 +490,6 @@ class MainActivity : SimpleActivity() {
         val primaryColor = getProperPrimaryColor()
         val backgroundColor = getProperBackgroundColor()
 
-        updateTextColors(binding.mainHolder)
         binding.mainHolder.setBackgroundColor(backgroundColor)
 
         binding.dialpadClearChar.applyColorFilter(textColor)

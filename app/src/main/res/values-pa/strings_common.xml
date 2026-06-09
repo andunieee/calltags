@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">ਠੀਕ ਹੈ</string>
+    <string name="cancel">ਰੱਦ ਕਰੋ</string>
+    <string name="back">ਪਿੱਛੇ</string>
+    <string name="one">ਇੱਕ</string>
+    <string name="two">ਦੋ</string>
+    <string name="three">ਤਿੰਨ</string>
+    <string name="four">ਚਾਰ</string>
+    <string name="five">ਪੰਜ</string>
+    <string name="six">ਛੇ</string>
+    <string name="seven">ਸੱਤ</string>
+    <string name="eight">ਅੱਠ</string>
+    <string name="nine">ਨੌਂ</string>
+</resources>

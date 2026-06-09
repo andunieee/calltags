@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Ih</string>
+    <string name="delete">Kkes</string>
+    <string name="call">Siwel</string>
+    <string name="cancel">Semmet</string>
+    <string name="yes">Ih</string>
+    <string name="no">Uhu</string>
+    <string name="back">Uɣal</string>
+    <string name="zero">Ilem</string>
+    <string name="one">Yiwen</string>
+    <string name="two">Sin</string>
+    <string name="three">Kraḍ</string>
+    <string name="four">Ukkuẓ</string>
+    <string name="five">Semmus</string>
+    <string name="six">Seddis</string>
+    <string name="seven">Sa</string>
+    <string name="eight">Ṭam</string>
+    <string name="nine">Tẓa</string>
+    <string name="grant_permission">Mudd tasiregt</string>
+    <string name="permission_required">Tettwasra tsiregt</string>
+    <string name="no_app_found">Ulac asnas ameɣtu</string>
+</resources>

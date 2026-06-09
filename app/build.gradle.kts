@@ -130,7 +130,11 @@ detekt {
 }
 
 dependencies {
-    implementation(libs.fossify.commons)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.material)
+    implementation(libs.gson)
     implementation(libs.eventbus)
     detektPlugins(libs.compose.detekt)
 }

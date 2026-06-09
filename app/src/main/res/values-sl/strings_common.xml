@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="delete">Izbriši</string>
+    <string name="call">Klic</string>
+    <string name="cancel">Prekliči</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="back">Nazaj</string>
+    <string name="zero">Nula</string>
+    <string name="one">Ena</string>
+    <string name="two">Dva</string>
+    <string name="three">Tri</string>
+    <string name="four">Štiri</string>
+    <string name="five">Pet</string>
+    <string name="six">Šest</string>
+    <string name="seven">Sedem</string>
+    <string name="eight">Osem</string>
+    <string name="nine">Devet</string>
+    <string name="unknown_error_occurred">Prišlo je do neznane napake</string>
+    <string name="notifications_disabled">Obvestila so za to aplikacijo onemogočena. Vklopite jih lahko v nastavitvah naprave.</string>
+    <string name="no_app_found">Veljavna aplikacija ni bila najdena</string>
+</resources>

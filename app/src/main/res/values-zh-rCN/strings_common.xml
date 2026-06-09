@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">确定</string>
+    <string name="delete">删除</string>
+    <string name="call">通话</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="back">返回</string>
+    <string name="zero">零</string>
+    <string name="one">一</string>
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
+    <string name="seven">七</string>
+    <string name="eight">八</string>
+    <string name="nine">九</string>
+    <string name="unknown_error_occurred">发生不明错误</string>
+    <string name="notifications_disabled">此应用程序的通知已被禁用。请在本设备的设置页面启用它们。</string>
+    <string name="allow_full_screen_notifications_incoming_calls">你必须允许应用展示全屏通知，否则你可能错失某些来电。</string>
+    <string name="allow_notifications_incoming_calls">你必须允许应用展示通知，否则它无法显示来电。</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="permission_required">需要权限</string>
+    <string name="no_app_found">未找到有效应用</string>
+</resources>

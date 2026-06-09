@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">U redu</string>
+    <string name="delete">Izbriši</string>
+    <string name="call">Poziv</string>
+    <string name="cancel">Poništi</string>
+    <string name="yes">Da</string>
+    <string name="no">Ne</string>
+    <string name="back">Nazad</string>
+    <string name="zero">Nula</string>
+    <string name="one">Jedan</string>
+    <string name="two">Dva</string>
+    <string name="three">Tri</string>
+    <string name="four">Četiri</string>
+    <string name="five">Pet</string>
+    <string name="six">Šest</string>
+    <string name="seven">Sedam</string>
+    <string name="eight">Osam</string>
+    <string name="nine">Devet</string>
+    <string name="unknown_error_occurred">Nepoznata greška se dogodila</string>
+    <string name="notifications_disabled">Obavijesti ove aplikacije su deaktivirane. Aktiviraj ih u postavkama uređaja.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Aplikaciji moraš dozvoliti prikazivanje obavijesti preko cijelog ekrana, inače možeš propustiti pozive.</string>
+    <string name="allow_notifications_incoming_calls">Aplikaciji moraš dozvoliti prikazivanje obavijesti, inače ne može prikazivati dolazne pozive.</string>
+    <string name="grant_permission">Odobri dozvolu</string>
+    <string name="permission_required">Zahtijeva dozvolu</string>
+    <string name="no_app_found">Nema odgovarajuće aplikacije</string>
+</resources>

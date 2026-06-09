@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Löschen</string>
+    <string name="call">Anrufen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="back">Zurück</string>
+    <string name="zero">Null</string>
+    <string name="one">Eins</string>
+    <string name="two">Zwei</string>
+    <string name="three">Drei</string>
+    <string name="four">Vier</string>
+    <string name="five">Fünf</string>
+    <string name="six">Sechs</string>
+    <string name="seven">Sieben</string>
+    <string name="eight">Acht</string>
+    <string name="nine">Neun</string>
+    <string name="unknown_error_occurred">Ein unbekannter Fehler ist aufgetreten</string>
+    <string name="notifications_disabled">Benachrichtigungen für diese App sind deaktiviert. Wechsle in die Systemeinstellungen und aktiviere sie.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Der App die Anzeige von Benachrichtigungen im Vollbild erlauben, sonst könntest du einige eingehende Anrufe verpassen.</string>
+    <string name="allow_notifications_incoming_calls">Der App die Anzeige von Benachrichtigungen erlauben, sonst kann sie keine eingehenden Anrufe anzeigen.</string>
+    <string name="grant_permission">Berechtigung erteilen</string>
+    <string name="permission_required">Berechtigung erforderlich</string>
+    <string name="no_app_found">Keine passende App gefunden</string>
+</resources>

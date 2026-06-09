@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">D\'acord</string>
+    <string name="delete">Suprimeix</string>
+    <string name="call">Truca</string>
+    <string name="cancel">Cancel·la</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="back">Enrere</string>
+    <string name="zero">Zero</string>
+    <string name="one">U</string>
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">Quatre</string>
+    <string name="five">Cinc</string>
+    <string name="six">Sis</string>
+    <string name="seven">Set</string>
+    <string name="eight">Vuit</string>
+    <string name="nine">Nou</string>
+    <string name="unknown_error_occurred">S\'ha produït un error desconegut</string>
+    <string name="notifications_disabled">Les notificacions d\'aquesta aplicació estan desactivades. Aneu a la configuració del dispositiu per a activar-les.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Cal permetre que l\'aplicació mostri notificacions a pantalla completa, en cas contrari podeu perdre trucades entrants.</string>
+    <string name="allow_notifications_incoming_calls">Cal permetre que l\'aplicació mostri notificacions, en cas contrari no podrà mostrar les trucades entrants.</string>
+    <string name="grant_permission">Atorga el permís</string>
+    <string name="permission_required">Es requereix permís</string>
+    <string name="no_app_found">No s\'ha trobat cap aplicació vàlida</string>
+</resources>

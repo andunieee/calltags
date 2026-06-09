@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Bone</string>
+    <string name="delete">Forigi</string>
+    <string name="call">Alvoki</string>
+    <string name="cancel">Nuligi</string>
+    <string name="yes">Jes</string>
+    <string name="no">Ne</string>
+    <string name="back">Reveni</string>
+    <string name="zero">Nul</string>
+    <string name="one">Unu</string>
+    <string name="two">Du</string>
+    <string name="three">Tri</string>
+    <string name="four">Kvar</string>
+    <string name="five">Kvin</string>
+    <string name="six">Ses</string>
+    <string name="seven">Sep</string>
+    <string name="eight">Ok</string>
+    <string name="nine">Naŭ</string>
+    <string name="unknown_error_occurred">Okazis nekonata eraro</string>
+    <string name="notifications_disabled">Sciigoj de tiu ĉi aplikaĵo estas malŝaltataj. Bonvolu ŝalti ilin en la aparataj agordoj.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Necesas permesi al la aplikaĵo montri plenekranajn sciigojn, alie vi eble perdos kelkajn ricevatajn vokojn.</string>
+    <string name="allow_notifications_incoming_calls">Necesas permesi al la aplikaĵo montri sciigojn, alie ĝi ne povos montri ricevatajn vokojn.</string>
+    <string name="grant_permission">Koncedi permeson</string>
+    <string name="permission_required">Permeso bezonata</string>
+    <string name="no_app_found">Neniu valida aplikaĵo trovita</string>
+</resources>

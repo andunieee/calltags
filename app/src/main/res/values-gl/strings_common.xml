@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Aceptar</string>
+    <string name="delete">Eliminar</string>
+    <string name="call">Chamar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="yes">Si</string>
+    <string name="no">Non</string>
+    <string name="back">De volta</string>
+    <string name="zero">Cero</string>
+    <string name="one">Un</string>
+    <string name="two">Dous</string>
+    <string name="three">Tres</string>
+    <string name="four">Catro</string>
+    <string name="five">Cinco</string>
+    <string name="six">Seis</string>
+    <string name="seven">Sete</string>
+    <string name="eight">Oito</string>
+    <string name="nine">Nove</string>
+    <string name="unknown_error_occurred">Ocurreu un erro descoñecido</string>
+    <string name="notifications_disabled">As notificacións desta aplicación están desactivadas. Accede á configuración do teu dispositivo para activalos.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Tes que permitir que a app mostre notificacións a pantalla completa, se non poderías perder algunhas chamadas.</string>
+    <string name="allow_notifications_incoming_calls">Tes que permitir que a app mostre notificacións, pola contra non pode amosar chamadas entrantes.</string>
+    <string name="grant_permission">Conceder permiso</string>
+    <string name="permission_required">Requírese o permiso</string>
+    <string name="no_app_found">Non se atopou un aplicativo válido</string>
+</resources>

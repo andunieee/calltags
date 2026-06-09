@@ -8,10 +8,26 @@
     <color name="brand_night">#FF141312</color>
     <color name="brand_night_text">#FFEDEAE4</color>
 
-    <!-- commons theme defaults -->
-    <color name="color_primary">@color/brand_amber</color>
+    <!-- theme colors, overridden in values-night -->
+    <color name="color_background">@color/brand_paper</color>
+    <color name="color_text">@color/brand_ink</color>
+    <color name="color_primary">@color/brand_amber_deep</color>
     <color name="color_primary_dark">@color/brand_amber_deep</color>
-    <color name="color_accent">@color/brand_amber</color>
+
+    <color name="activated_item_foreground">#44888888</color>
+    <color name="divider_grey">#55808080</color>
+    <color name="dark_grey">#FF333333</color>
+    <color name="md_blue_300">#FF64B5F6</color>
+    <color name="md_blue_600">#FF1E88E5</color>
+    <color name="md_green_300">#FF9ED984</color>
+    <color name="md_green_400">#FF88D168</color>
+    <color name="md_green_600">#FF64B846</color>
+    <color name="md_green_700">#FF50A43B</color>
+    <color name="md_grey_black">#FF000000</color>
+    <color name="md_red">#FFF44336</color>
+    <color name="md_red_400">#FFEF5350</color>
+    <color name="md_red_500_dark">#FFF21F0F</color>
+    <color name="md_red_700">#FFD32F2F</color>
 
     <color name="ripple_foreground">#33FFFFFF</color>
     <color name="color_missed_call">@color/md_red_500_dark</color>

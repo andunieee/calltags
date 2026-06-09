@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Vymazať</string>
+    <string name="call">Zavolať</string>
+    <string name="cancel">Zrušiť</string>
+    <string name="yes">Áno</string>
+    <string name="no">Nie</string>
+    <string name="back">Späť</string>
+    <string name="zero">Nula</string>
+    <string name="one">Jedna</string>
+    <string name="two">Dva</string>
+    <string name="three">Tri</string>
+    <string name="four">Štyri</string>
+    <string name="five">Päť</string>
+    <string name="six">Šesť</string>
+    <string name="seven">Sedem</string>
+    <string name="eight">Osem</string>
+    <string name="nine">Deväť</string>
+    <string name="unknown_error_occurred">Došlo k neznámej chybe</string>
+    <string name="notifications_disabled">Pripomienky tejto aplikácie sú vypnuté. Pre ich zapnutie prosím choďte do nastavení zariadenia.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Musíte apke povoliť zobrazovaníe upozornení na celú obrazovku, ináč zmeškáte niektoré hovory.</string>
+    <string name="allow_notifications_incoming_calls">Musíte apke povoliť zobrazovanie upozornení, ináč nevie zobraziť prichádzajúce hovory.</string>
+    <string name="grant_permission">Udeliť povolenie</string>
+    <string name="permission_required">Chýba povolenie</string>
+    <string name="no_app_found">Nenašla sa žiadna vhodná aplikácia</string>
+</resources>

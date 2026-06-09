@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Đồng ý</string>
+    <string name="delete">Xóa</string>
+    <string name="call">Gọi</string>
+    <string name="cancel">Hủy</string>
+    <string name="yes">Có</string>
+    <string name="no">Không</string>
+    <string name="back">Quay lại</string>
+    <string name="zero">Zero</string>
+    <string name="one">Một</string>
+    <string name="two">Hai</string>
+    <string name="three">Ba</string>
+    <string name="four">Bốn</string>
+    <string name="five">Năm</string>
+    <string name="six">Sáu</string>
+    <string name="seven">Bảy</string>
+    <string name="eight">Tám</string>
+    <string name="nine">Chín</string>
+    <string name="unknown_error_occurred">Xảy ra lỗi không xác định</string>
+    <string name="notifications_disabled">Ứng dụng này đã bị vô hiệu hóa thông báo. Vui lòng vào cài đặt thiết bị của bạn để mở lại.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Bạn cần phải cấp quyền hiển thị thông báo toàn màn hình. Nếu không, bạn có thể sẽ bỏ lỡ một vài cuộc gọi đến.</string>
+    <string name="allow_notifications_incoming_calls">Bạn cần phải cấp quyền hiển thị thông báo. Nếu không, ứng dụng không thể hiển thị cuộc gọi đến.</string>
+    <string name="grant_permission">Cấp quyền</string>
+    <string name="permission_required">Yêu cầu quyền</string>
+    <string name="no_app_found">Không tìm thấy ứng dụng hợp lệ</string>
+</resources>

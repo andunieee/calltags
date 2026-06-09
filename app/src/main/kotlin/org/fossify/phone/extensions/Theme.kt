@@ -2,25 +2,34 @@ package org.fossify.phone.extensions
 
 import android.content.Context
 import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.drawable.Drawable
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
-import org.fossify.commons.extensions.baseConfig
+import androidx.core.graphics.drawable.DrawableCompat
 import org.fossify.phone.R
 
-/**
- * Pins the app to the CallTags palette, following the system light/dark setting.
- * Commons would otherwise use wallpaper-based Material You colors on Android 12+.
- */
-fun Context.applyBrandTheme() {
-    val isNight = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
-    fun color(id: Int) = ContextCompat.getColor(this, id)
+// The CallTags palette lives in values/colors.xml and values-night/colors.xml,
+// so these follow the system light/dark setting automatically.
+fun Context.getProperTextColor() = ContextCompat.getColor(this, R.color.color_text)
 
-    baseConfig.apply {
-        isSystemThemeEnabled = false
-        isGlobalThemeEnabled = false
-        backgroundColor = color(if (isNight) R.color.brand_night else R.color.brand_paper)
-        textColor = color(if (isNight) R.color.brand_night_text else R.color.brand_ink)
-        primaryColor = color(if (isNight) R.color.brand_amber else R.color.brand_amber_deep)
-        accentColor = primaryColor
-        appIconColor = color(R.color.brand_amber)
-    }
+fun Context.getProperBackgroundColor() = ContextCompat.getColor(this, R.color.color_background)
+
+fun Context.getProperPrimaryColor() = ContextCompat.getColor(this, R.color.color_primary)
+
+fun Context.isSystemInDarkMode() =
+    resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+
+fun ImageView.applyColorFilter(color: Int) = setColorFilter(color, PorterDuff.Mode.SRC_IN)
+
+fun Drawable.applyColorFilter(color: Int) {
+    mutate().colorFilter = PorterDuffColorFilter(color, PorterDuff.Mode.SRC_IN)
+}
+
+fun Resources.getColoredDrawableWithColor(drawableId: Int, color: Int): Drawable {
+    val drawable = DrawableCompat.wrap(getDrawable(drawableId, null).mutate())
+    DrawableCompat.setTint(drawable, color)
+    return drawable
 }

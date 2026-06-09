@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Oldu</string>
+    <string name="delete">Sil</string>
+    <string name="cancel">Ləğv Et</string>
+    <string name="yes">Bəli</string>
+    <string name="no">Xeyr</string>
+    <string name="back">Geri</string>
+    <string name="unknown_error_occurred">Bilinməyən xəta baş verdi</string>
+    <string name="no_app_found">Etibarlı tətbiq tapılmadı</string>
+</resources>

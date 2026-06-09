@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Добре</string>
+    <string name="delete">Премахване</string>
+    <string name="call">Обаждане</string>
+    <string name="cancel">Отказ</string>
+    <string name="yes">Да</string>
+    <string name="no">Не</string>
+    <string name="back">Назад</string>
+    <string name="zero">Нула</string>
+    <string name="one">Едно</string>
+    <string name="two">Две</string>
+    <string name="three">Три</string>
+    <string name="four">Четири</string>
+    <string name="five">Пет</string>
+    <string name="six">Шест</string>
+    <string name="seven">Седем</string>
+    <string name="eight">Осем</string>
+    <string name="nine">Девет</string>
+    <string name="unknown_error_occurred">Възникна неочаквана грешка</string>
+    <string name="notifications_disabled">Известията на приложението са изключени. Отворете настройките на устройството и ги включете.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Трябва да дадете разрешение на приложението да показва известия, в противен случай може да пропуснете обаждания.</string>
+    <string name="allow_notifications_incoming_calls">Трябва да дадете разрешение на приложението да показва известия, в противен случай няма да показва входящите повиквания.</string>
+    <string name="grant_permission">Разрешаване</string>
+    <string name="permission_required">Изисква се разрешение</string>
+    <string name="no_app_found">Не е намерено приложение</string>
+</resources>

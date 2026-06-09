@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">D’acòrdi</string>
+    <string name="cancel">Anullar</string>
+    <string name="back">Retorn</string>
+    <string name="zero">Zèro</string>
+    <string name="one">Un</string>
+    <string name="two">Dos</string>
+    <string name="three">Tres</string>
+    <string name="four">Quatre</string>
+    <string name="five">Cinc</string>
+    <string name="six">Sièis</string>
+    <string name="seven">Sèt</string>
+    <string name="eight">Uèch</string>
+    <string name="nine">Nòu</string>
+</resources>

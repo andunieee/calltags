@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Bine</string>
+    <string name="delete">Şterge</string>
+    <string name="call">Sunați</string>
+    <string name="cancel">Anulează</string>
+    <string name="yes">Da</string>
+    <string name="no">Nu</string>
+    <string name="back">Înapoi</string>
+    <string name="zero">Zero</string>
+    <string name="one">Unu</string>
+    <string name="two">Doi</string>
+    <string name="three">Trei</string>
+    <string name="four">Patru</string>
+    <string name="five">Cinci</string>
+    <string name="six">Șase</string>
+    <string name="seven">Șapte</string>
+    <string name="eight">Opt</string>
+    <string name="nine">Nouă</string>
+    <string name="unknown_error_occurred">A apărut o eroare necunoscută</string>
+    <string name="notifications_disabled">Notificările privind această aplicație sunt dezactivate. Vă rugăm să accesați setările dispozitivului pentru a le activa.</string>
+    <string name="permission_required">Permisiune necesară</string>
+    <string name="no_app_found">Nu s-a găsit nicio aplicaţie validă</string>
+</resources>

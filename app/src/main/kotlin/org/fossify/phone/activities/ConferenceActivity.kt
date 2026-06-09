@@ -1,10 +1,12 @@
 package org.fossify.phone.activities
 
 import android.os.Bundle
-import org.fossify.commons.extensions.viewBinding
-import org.fossify.commons.helpers.NavigationIcon
+import org.fossify.phone.R
 import org.fossify.phone.adapters.ConferenceCallsAdapter
 import org.fossify.phone.databinding.ActivityConferenceBinding
+import org.fossify.phone.extensions.getColoredDrawableWithColor
+import org.fossify.phone.extensions.getProperTextColor
+import org.fossify.phone.extensions.viewBinding
 import org.fossify.phone.helpers.CallManager
 
 class ConferenceActivity : SimpleActivity() {
@@ -14,14 +16,16 @@ class ConferenceActivity : SimpleActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.apply {
-            setupEdgeToEdge(padBottomSystem = listOf(conferenceList))
-            setupMaterialScrollListener(binding.conferenceList, binding.conferenceAppbar)
-            conferenceList.adapter = ConferenceCallsAdapter(this@ConferenceActivity, conferenceList, ArrayList(CallManager.getConferenceCalls())) {}
+            setupEdgeToEdge(
+                padTopSystem = listOf(conferenceAppbar),
+                padBottomSystem = listOf(conferenceList)
+            )
+            conferenceToolbar.navigationIcon =
+                resources.getColoredDrawableWithColor(R.drawable.ic_arrow_left_vector, getProperTextColor())
+            conferenceToolbar.setNavigationContentDescription(R.string.back)
+            conferenceToolbar.setNavigationOnClickListener { finish() }
+            val calls = ArrayList(CallManager.getConferenceCalls())
+            conferenceList.adapter = ConferenceCallsAdapter(this@ConferenceActivity, calls)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setupTopAppBar(binding.conferenceAppbar, NavigationIcon.Arrow)
     }
 }

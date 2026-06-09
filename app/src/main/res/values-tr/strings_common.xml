@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Tamam</string>
+    <string name="delete">Sil</string>
+    <string name="call">Ara</string>
+    <string name="cancel">İptal</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="back">Geri</string>
+    <string name="zero">Sıfır</string>
+    <string name="one">Bir</string>
+    <string name="two">İki</string>
+    <string name="three">Üç</string>
+    <string name="four">Dört</string>
+    <string name="five">Beş</string>
+    <string name="six">Altı</string>
+    <string name="seven">Yedi</string>
+    <string name="eight">Sekiz</string>
+    <string name="nine">Dokuz</string>
+    <string name="unknown_error_occurred">Bilinmeyen bir hata oluştu</string>
+    <string name="notifications_disabled">Bu uygulamanın bildirimleri devre dışı. Lütfen bunları etkinleştirmek için aygıt ayarlarınıza gidin.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Uygulamanın tam ekran bildirimleri görüntülemesine izin vermelisiniz, aksi takdirde bazı gelen aramaları kaçırabilirsiniz.</string>
+    <string name="allow_notifications_incoming_calls">Uygulamanın bildirimleri göstermesine izin vermelisiniz, aksi halde gelen aramaları gösteremez.</string>
+    <string name="grant_permission">İzin Ver</string>
+    <string name="permission_required">İzin Gerekli</string>
+    <string name="no_app_found">Geçerli bir uygulama bulunamadı</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Usuń</string>
+    <string name="call">Zadzwoń</string>
+    <string name="cancel">Anuluj</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="back">Wstecz</string>
+    <string name="zero">Zero</string>
+    <string name="one">Jeden</string>
+    <string name="two">Dwa</string>
+    <string name="three">Trzy</string>
+    <string name="four">Cztery</string>
+    <string name="five">Pięć</string>
+    <string name="six">Sześć</string>
+    <string name="seven">Siedem</string>
+    <string name="eight">Osiem</string>
+    <string name="nine">Dziewięć</string>
+    <string name="unknown_error_occurred">Wystąpił nieznany błąd</string>
+    <string name="notifications_disabled">Powiadomienia tej aplikacji są wyłączone. Przejdź do ustawień urządzenia, aby je włączyć.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Musisz zezwolić aplikacji na wyświetlanie powiadomień na pełnym ekranie, w przeciwnym razie możesz przegapić niektóre połączenia przychodzące.</string>
+    <string name="allow_notifications_incoming_calls">Musisz zezwolić aplikacji na wyświetlanie powiadomień, w przeciwnym razie nie będzie mogła wyświetlać połączeń przychodzących.</string>
+    <string name="grant_permission">Nadaj uprawnienie</string>
+    <string name="permission_required">Wymagane uprawnienie</string>
+    <string name="no_app_found">Nie znaleziono odpowiedniej aplikacji</string>
+</resources>

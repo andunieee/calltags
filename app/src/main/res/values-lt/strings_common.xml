@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Gerai</string>
+    <string name="delete">Ištrinti</string>
+    <string name="cancel">Atšaukti</string>
+    <string name="yes">Taip</string>
+    <string name="no">Ne</string>
+    <string name="back">Atgal</string>
+    <string name="zero">Nulis</string>
+    <string name="one">Vienas</string>
+    <string name="two">Du</string>
+    <string name="three">Trys</string>
+    <string name="four">Keturi</string>
+    <string name="five">Penki</string>
+    <string name="six">Šeši</string>
+    <string name="seven">Septyni</string>
+    <string name="eight">Aštuoni</string>
+    <string name="nine">Devyni</string>
+    <string name="unknown_error_occurred">Įvyko nežinoma klaida</string>
+    <string name="notifications_disabled">Šios programėlės pranešimai yra išjungti. Norėdami juos įjungti, pereikite į savo įrenginio nustatymus.</string>
+    <string name="no_app_found">Nerasta jokios tinkamos programėlės</string>
+</resources>

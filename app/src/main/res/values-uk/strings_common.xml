@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Видалити</string>
+    <string name="call">Виклик</string>
+    <string name="cancel">Скасувати</string>
+    <string name="yes">Так</string>
+    <string name="no">Ні</string>
+    <string name="back">Назад</string>
+    <string name="zero">Нуль</string>
+    <string name="one">Один</string>
+    <string name="two">Два</string>
+    <string name="three">Три</string>
+    <string name="four">Чотири</string>
+    <string name="five">П\'ять</string>
+    <string name="six">Шість</string>
+    <string name="seven">Сім</string>
+    <string name="eight">Вісім</string>
+    <string name="nine">Дев’ять</string>
+    <string name="unknown_error_occurred">Сталася невідома помилка</string>
+    <string name="notifications_disabled">Сповіщення від цього застосунку заборонені. Перейдіть до налаштувань пристрою, щоб їх увімкнути.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Ви повинні дозволити застосунку відображати повноекранні сповіщення, інакше вона не зможе показувати вхідні дзвінки.</string>
+    <string name="allow_notifications_incoming_calls">Ви повинні дозволити застосунку відображати сповіщення, інакше вона не зможе показувати вхідні дзвінки.</string>
+    <string name="grant_permission">Надати дозвіл</string>
+    <string name="permission_required">Потрібен дозвіл</string>
+    <string name="no_app_found">Не знайдено допустимих застосунків</string>
+</resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">تایید</string>
+    <string name="delete">حذف</string>
+    <string name="call">تماس</string>
+    <string name="cancel">لغو</string>
+    <string name="yes">بله</string>
+    <string name="no">خیر</string>
+    <string name="back">بازگشت</string>
+    <string name="zero">صفر</string>
+    <string name="one">یک</string>
+    <string name="two">دو</string>
+    <string name="three">سه</string>
+    <string name="four">چهار</string>
+    <string name="five">پنج</string>
+    <string name="six">شش</string>
+    <string name="seven">هفت</string>
+    <string name="eight">هشت</string>
+    <string name="nine">نه</string>
+    <string name="no_app_found">برنامهٔ معتبری پیدا نشد</string>
+</resources>

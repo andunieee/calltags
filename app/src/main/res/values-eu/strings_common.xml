@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Ados</string>
+    <string name="delete">Ezabatu</string>
+    <string name="call">Deitu</string>
+    <string name="cancel">Utzi</string>
+    <string name="yes">Bai</string>
+    <string name="no">Ez</string>
+    <string name="back">Atzera</string>
+    <string name="zero">Zero</string>
+    <string name="one">Bat</string>
+    <string name="two">Bi</string>
+    <string name="three">Hiru</string>
+    <string name="four">Lau</string>
+    <string name="five">Bost</string>
+    <string name="six">Sei</string>
+    <string name="seven">Zazpi</string>
+    <string name="eight">Zortzi</string>
+    <string name="nine">Bederatzi</string>
+    <string name="unknown_error_occurred">Errore ezezaguna gertatu da</string>
+    <string name="notifications_disabled">Aplikazio honen jakinarazpenak desgaituta daude. Gailuko ezarpenetan gaitu ditzakezu.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Aplikazioari pantaila osoko jakinarazpenak bistaratzeko baimena eman behar diozu, bestela, sarrerako dei batzuk galduko dituzu.</string>
+    <string name="allow_notifications_incoming_calls">Aplikazioari jakinarazpenak bistaratzeko baimena eman behar diozu, bestela, ezin ditu sarrerako deiak erakutsi.</string>
+    <string name="grant_permission">Baimena eman</string>
+    <string name="permission_required">Baimena beharrezkoa</string>
+    <string name="no_app_found">Ez da baliozko aplikaziorik aurkitu</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Удалить</string>
+    <string name="call">Вызов</string>
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="back">Назад</string>
+    <string name="zero">Ноль</string>
+    <string name="one">Один</string>
+    <string name="two">Два</string>
+    <string name="three">Три</string>
+    <string name="four">Четыре</string>
+    <string name="five">Пять</string>
+    <string name="six">Шесть</string>
+    <string name="seven">Семь</string>
+    <string name="eight">Восемь</string>
+    <string name="nine">Девять</string>
+    <string name="unknown_error_occurred">Произошла неизвестная ошибка</string>
+    <string name="notifications_disabled">Уведомления этого приложения отключены. Перейдите в настройки устройства и включите их.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Необходимо разрешить приложению отображать полноэкранные уведомления, иначе вы можете пропустить входящий вызов.</string>
+    <string name="allow_notifications_incoming_calls">Необходимо разрешить приложению отображать уведомления, иначе оно не сможет показывать входящие вызовы.</string>
+    <string name="grant_permission">Разрешить</string>
+    <string name="permission_required">Требуется разрешение</string>
+    <string name="no_app_found">Приложение не найдено</string>
+</resources>

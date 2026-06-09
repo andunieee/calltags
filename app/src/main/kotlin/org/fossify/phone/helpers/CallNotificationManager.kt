@@ -9,12 +9,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.telecom.Call
+import android.view.View
 import android.widget.RemoteViews
-import org.fossify.commons.extensions.notificationManager
-import org.fossify.commons.extensions.setText
-import org.fossify.commons.extensions.setVisibleIf
 import org.fossify.phone.R
 import org.fossify.phone.activities.CallActivity
+import org.fossify.phone.extensions.notificationManager
 import org.fossify.phone.receivers.CallActionReceiver
 
 class CallNotificationManager(private val context: Context) {
@@ -75,9 +74,10 @@ class CallNotificationManager(private val context: Context) {
             }
 
             val collapsedView = RemoteViews(context.packageName, R.layout.call_notification).apply {
-                setText(R.id.notification_caller_name, callerName)
-                setText(R.id.notification_call_status, context.getString(contentTextId))
-                setVisibleIf(R.id.notification_accept_call, callState == Call.STATE_RINGING)
+                setTextViewText(R.id.notification_caller_name, callerName)
+                setTextViewText(R.id.notification_call_status, context.getString(contentTextId))
+                val acceptVisibility = if (callState == Call.STATE_RINGING) View.VISIBLE else View.GONE
+                setViewVisibility(R.id.notification_accept_call, acceptVisibility)
 
                 setOnClickPendingIntent(R.id.notification_decline_call, declinePendingIntent)
                 setOnClickPendingIntent(R.id.notification_accept_call, acceptPendingIntent)

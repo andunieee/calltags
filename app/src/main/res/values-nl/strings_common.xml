@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Verwijderen</string>
+    <string name="call">Bellen</string>
+    <string name="cancel">Annuleren</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="back">Terug</string>
+    <string name="zero">Nul</string>
+    <string name="one">Eén</string>
+    <string name="two">Twee</string>
+    <string name="three">Drie</string>
+    <string name="four">Vier</string>
+    <string name="five">Vijf</string>
+    <string name="six">Zes</string>
+    <string name="seven">Zeven</string>
+    <string name="eight">Acht</string>
+    <string name="nine">Negen</string>
+    <string name="unknown_error_occurred">Een onbekende fout is opgetreden</string>
+    <string name="notifications_disabled">Meldingen van deze app zijn uitgeschakeld. Ga naar de systeeminstellingen voor deze app om ze in te schakelen.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Geef deze app het recht om meldingen over het hele scherm te tonen om geen inkomende gesprekken te missen.</string>
+    <string name="allow_notifications_incoming_calls">Deze app heeft het recht om meldingen te tonen nodig om te kunnen waarschuwen bij inkomende gesprekken.</string>
+    <string name="grant_permission">Toestemming geven</string>
+    <string name="permission_required">Toestemming vereist</string>
+    <string name="no_app_found">Geen geldige app gevonden</string>
+</resources>

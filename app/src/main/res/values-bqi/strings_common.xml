@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">خا</string>
+    <string name="cancel">رڌ</string>
+    <string name="back">وورگشتن</string>
+    <string name="zero">سفر</string>
+    <string name="six">شیش</string>
+    <string name="nine">نوه</string>
+    <string name="no_app_found">برنومه ای ک زبال بۊ، نجۊرست</string>
+</resources>
