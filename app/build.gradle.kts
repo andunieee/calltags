@@ -105,7 +105,7 @@ android {
         )
     }
 
-    namespace = "org.fossify.phone"
+    namespace = "com.calltags.app"
 
     lint {
         checkReleaseBuilds = false
