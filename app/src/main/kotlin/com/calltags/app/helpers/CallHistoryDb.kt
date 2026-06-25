@@ -215,8 +215,4 @@ class CallHistoryDb private constructor(context: Context) :
     fun removeLabel(callId: Long, label: String) {
         writableDatabase.delete("labels", "call_id = ? AND label = ?", arrayOf(callId.toString(), label))
     }
-
-    fun deleteCall(callId: Long) {
-        writableDatabase.delete("calls", "id = ?", arrayOf(callId.toString()))
-    }
 }
