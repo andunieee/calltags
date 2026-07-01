@@ -27,8 +27,8 @@ class CallHistoryAdapter(
     private val onLabelClick: (String) -> Unit,
 ) : ListAdapter<LoggedCall, CallHistoryAdapter.ViewHolder>(DIFF) {
 
-    /** Labels containing this text get highlighted. */
-    var highlight: String = ""
+    /** Labels for which this returns true get highlighted. */
+    var highlight: (String) -> Boolean = { false }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(ItemCallBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -79,9 +79,8 @@ class CallHistoryAdapter(
 
                 itemCallLabels.removeAllViews()
                 itemCallLabels.isVisible = call.labels.isNotEmpty()
-                val query = highlight.trim()
                 call.labels.forEach { label ->
-                    val matches = query.isNotEmpty() && label.contains(query, ignoreCase = true)
+                    val matches = highlight(label)
                     itemCallLabels.addView(Chip(context).apply {
                         text = label
                         setEnsureMinTouchTargetSize(false)
