@@ -129,23 +129,31 @@ class CallHistoryDb private constructor(context: Context) :
      * Calls matching [query] on the number, the cached name or any of their labels, newest first.
      * An empty query returns the latest calls.
      */
-    fun search(query: String, limit: Int = DEFAULT_LIMIT): List<LoggedCall> {
+    fun search(query: String, limit: Int = DEFAULT_LIMIT, labeledOnly: Boolean = false): List<LoggedCall> {
         val q = query.trim()
-        val where = StringBuilder()
+        val conditions = ArrayList<String>()
         val args = ArrayList<String>()
 
         if (q.isNotEmpty()) {
             val like = "%" + q.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_") + "%"
-            where.append("WHERE c.id IN (SELECT call_id FROM labels WHERE label LIKE ? ESCAPE '\\')")
-            where.append(" OR c.name LIKE ? ESCAPE '\\' OR c.number LIKE ? ESCAPE '\\'")
+            val match = StringBuilder()
+            match.append("c.id IN (SELECT call_id FROM labels WHERE label LIKE ? ESCAPE '\\')")
+            match.append(" OR c.name LIKE ? ESCAPE '\\' OR c.number LIKE ? ESCAPE '\\'")
             args += listOf(like, like, like)
 
             val digits = digitsOf(q)
             if (looksLikeNumber(q) && digits.isNotEmpty()) {
-                where.append(" OR c.digits LIKE ?")
+                match.append(" OR c.digits LIKE ?")
                 args += "%${suffixOf(digits)}%"
             }
+            conditions += "($match)"
         }
+
+        if (labeledOnly) {
+            conditions += "EXISTS (SELECT 1 FROM labels WHERE call_id = c.id)"
+        }
+
+        val where = if (conditions.isEmpty()) "" else conditions.joinToString(" AND ", prefix = "WHERE ")
 
         val sql = """
             SELECT c.id, c.number, c.name, c.date, c.duration, c.type,

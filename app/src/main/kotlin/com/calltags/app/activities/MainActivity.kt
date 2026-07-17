@@ -71,6 +71,7 @@ class MainActivity : SimpleActivity() {
 
     private lateinit var historyAdapter: CallHistoryAdapter
     private var historyQuery = ""
+    private var historyLabeledOnly = false
     private var historyQueryGeneration = 0
     private lateinit var dialpadResultsAdapter: CallHistoryAdapter
     private var dialpadSearchGeneration = 0
@@ -475,6 +476,17 @@ class MainActivity : SimpleActivity() {
             }
         }
         binding.historySearchClear.setOnClickListener { binding.historySearch.setText("") }
+
+        binding.historyLabeledOnly.setOnClickListener {
+            config.historyLabeledOnly = !config.historyLabeledOnly
+            updateLabeledOnlyButton()
+            refreshHistory()
+        }
+    }
+
+    private fun updateLabeledOnlyButton() {
+        val color = if (config.historyLabeledOnly) getProperPrimaryColor() else getProperTextColor().adjustAlpha(0.5f)
+        binding.historyLabeledOnly.applyColorFilter(color)
     }
 
     private fun syncAndRefreshHistory() {
@@ -495,21 +507,23 @@ class MainActivity : SimpleActivity() {
 
     private fun refreshHistory() {
         val query = binding.historySearch.value
+        val labeledOnly = config.historyLabeledOnly
         val generation = ++historyQueryGeneration
         ensureBackgroundThread {
             val blockedNumbers = BlockedNumberChecker(this)
-            val calls = db.search(query).map { it.copy(blocked = blockedNumbers.isBlocked(it.number)) }
+            val calls = db.search(query, labeledOnly = labeledOnly).map { it.copy(blocked = blockedNumbers.isBlocked(it.number)) }
             runOnUiThread {
                 if (generation == historyQueryGeneration && !isDestroyed) {
-                    showHistory(query, calls)
+                    showHistory(query, labeledOnly, calls)
                 }
             }
         }
     }
 
-    private fun showHistory(query: String, calls: List<LoggedCall>) {
-        val queryChanged = historyQuery != query
+    private fun showHistory(query: String, labeledOnly: Boolean, calls: List<LoggedCall>) {
+        val queryChanged = historyQuery != query || historyLabeledOnly != labeledOnly
         historyQuery = query
+        historyLabeledOnly = labeledOnly
         val needle = query.trim()
         historyAdapter.highlight = { label -> needle.isNotEmpty() && label.contains(needle, ignoreCase = true) }
         historyAdapter.submitList(calls) {
@@ -519,7 +533,13 @@ class MainActivity : SimpleActivity() {
             }
         }
         binding.historyPlaceholder.isVisible = calls.isEmpty()
-        binding.historyPlaceholder.setText(if (query.isBlank()) R.string.no_previous_calls else R.string.no_matching_calls)
+        binding.historyPlaceholder.setText(
+            when {
+                query.isNotBlank() -> R.string.no_matching_calls
+                labeledOnly -> R.string.no_labeled_calls
+                else -> R.string.no_previous_calls
+            }
+        )
     }
 
     // endregion
@@ -550,6 +570,7 @@ class MainActivity : SimpleActivity() {
         binding.historySearchHolder.background?.applyColorFilter(textColor.adjustAlpha(0.08f))
         binding.historySearchIcon.applyColorFilter(textColor)
         binding.historySearchClear.applyColorFilter(textColor)
+        updateLabeledOnlyButton()
         binding.historySearch.setHintTextColor(textColor.adjustAlpha(0.5f))
 
         binding.mainTabs.apply {

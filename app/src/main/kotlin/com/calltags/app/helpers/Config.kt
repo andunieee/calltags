@@ -88,6 +88,10 @@ class Config(context: Context) {
         get() = prefs.getInt(LAST_TAB, TAB_DIALPAD)
         set(lastTab) = prefs.edit().putInt(LAST_TAB, lastTab).apply()
 
+    var historyLabeledOnly: Boolean
+        get() = prefs.getBoolean(HISTORY_LABELED_ONLY, false)
+        set(historyLabeledOnly) = prefs.edit().putBoolean(HISTORY_LABELED_ONLY, historyLabeledOnly).apply()
+
     var disableProximitySensor: Boolean
         get() = prefs.getBoolean(DISABLE_PROXIMITY_SENSOR, false)
         set(disableProximitySensor) = prefs.edit().putBoolean(DISABLE_PROXIMITY_SENSOR, disableProximitySensor).apply()

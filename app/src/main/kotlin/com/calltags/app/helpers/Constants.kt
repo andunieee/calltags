@@ -10,6 +10,7 @@ const val DIALPAD_BEEPS = "dialpad_beeps"
 const val HIDE_DIALPAD_NUMBERS = "hide_dialpad_numbers"
 const val ALWAYS_SHOW_FULLSCREEN = "always_show_fullscreen"
 const val LAST_TAB = "last_tab"
+const val HISTORY_LABELED_ONLY = "history_labeled_only"
 
 // main screen tabs
 const val TAB_DIALPAD = 0
