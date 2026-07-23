@@ -22,11 +22,12 @@ import com.calltags.app.extensions.showKeyboard
 import com.calltags.app.extensions.toast
 import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.ensureBackgroundThread
+import com.calltags.app.models.CallLabel
 import com.calltags.app.models.LoggedCall
 
 /**
- * Shows a single call with its labels. Labels can be removed, one new label typed,
- * and the number blocked, which shows up as a special "Blocked" label.
+ * Shows a single call with its labels. Labels can be removed, one new label typed (as a number label unless
+ * unchecked, see [CallLabel]), and the number blocked, which shows up as a special "Blocked" label.
  * Nothing is saved until OK is pressed; [onChanged] fires afterwards if anything was modified.
  */
 class CallLabelsDialog(
@@ -57,6 +58,7 @@ class CallLabelsDialog(
             callLabelsDetails.text = details.joinToString(" • ")
 
             callLabelsInput.setTextColor(activity.getProperTextColor())
+            callLabelsNumberLabel.setTextColor(activity.getProperTextColor())
             callLabelsBlock.isVisible = false
             callLabelsBlock.setOnClickListener {
                 blocked = true
@@ -123,13 +125,14 @@ class CallLabelsDialog(
         binding.callLabelsList.removeAllViews()
 
         if (blocked) {
-            addRow(activity.getString(R.string.blocked), blockedColor, isBlockedLabel = true) {
+            addRow(activity.getString(R.string.blocked), null, blockedColor, isBlockedLabel = true) {
                 blocked = false
                 render()
             }
         }
         labels.forEach { label ->
-            addRow(label, textColor, isBlockedLabel = false) {
+            val scope = if (label.isNumberLabel) null else activity.getString(R.string.this_call_only)
+            addRow(label.text, scope, textColor, isBlockedLabel = false) {
                 labels.remove(label)
                 render()
             }
@@ -139,10 +142,13 @@ class CallLabelsDialog(
         binding.callLabelsBlock.isVisible = wasBlocked != null && !blocked
     }
 
-    private fun addRow(text: String, color: Int, isBlockedLabel: Boolean, onRemove: () -> Unit) {
+    private fun addRow(text: String, scope: String?, color: Int, isBlockedLabel: Boolean, onRemove: () -> Unit) {
         val row = ItemCallLabelBinding.inflate(activity.layoutInflater, binding.callLabelsList, false)
         row.callLabelText.text = text
         row.callLabelText.setTextColor(color)
+        row.callLabelScope.text = scope
+        row.callLabelScope.setTextColor(color)
+        row.callLabelScope.isVisible = scope != null
         row.callLabelIcon.isVisible = isBlockedLabel
         row.callLabelIcon.applyColorFilter(color)
         row.callLabelRemove.applyColorFilter(color)
@@ -154,14 +160,15 @@ class CallLabelsDialog(
         val newLabel = binding.callLabelsInput.text.toString().trim()
         val removed = call.labels.filter { it !in labels }
         val added = newLabel.takeIf { label ->
-            label.isNotEmpty() && labels.none { it.equals(label, ignoreCase = true) }
+            label.isNotEmpty() && labels.none { it.text.equals(label, ignoreCase = true) }
         }
+        val isNumberLabel = binding.callLabelsNumberLabel.isChecked
         val blockChange = wasBlocked?.let { if (it != blocked) blocked else null }
         if (removed.isEmpty() && added == null && blockChange == null) return
 
         ensureBackgroundThread {
-            removed.forEach { db.removeLabel(call.id, it) }
-            added?.let { db.addLabel(call.id, it) }
+            removed.forEach { db.removeLabel(call.id, it.text) }
+            added?.let { db.addLabel(call.id, it, isNumberLabel) }
             when (blockChange) {
                 true -> if (activity.addBlockedNumber(call.number)) activity.toast(R.string.number_blocked)
                 false -> if (activity.deleteBlockedNumber(call.number)) activity.toast(R.string.number_unblocked)
