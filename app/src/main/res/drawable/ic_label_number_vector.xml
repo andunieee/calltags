@@ -1,0 +1,5 @@
+<!-- a number label: the label tag spreading out, as it also shows on the number's other calls -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:pathData="M4 6h8.5c0.6 0 1.15 0.27 1.53 0.73l3.57 4.63c0.3 0.37 0.3 0.91 0 1.28l-3.57 4.63C13.65 17.73 13.1 18 12.5 18H4c-1.1 0-2-0.9-2-2V8c0-1.1 0.9-2 2-2z" android:fillColor="#FFFFFF"/>
+    <path android:pathData="M19.18 8.82A4.5 4.5 0 0 1 19.18 15.18M21.2 7.63A6.8 6.8 0 0 1 21.2 16.37" android:strokeColor="#FFFFFF" android:strokeWidth="1.6" android:strokeLineCap="round"/>
+</vector>

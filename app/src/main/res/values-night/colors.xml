@@ -3,5 +3,6 @@
     <color name="color_background">@color/brand_night</color>
     <color name="color_text">@color/brand_night_text</color>
     <color name="color_primary">@color/brand_amber</color>
+    <color name="color_call_label">@color/brand_orange</color>
     <color name="color_missed_call">@color/md_red_400</color>
 </resources>

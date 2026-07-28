@@ -19,6 +19,10 @@ fun Context.getProperBackgroundColor() = ContextCompat.getColor(this, R.color.co
 
 fun Context.getProperPrimaryColor() = ContextCompat.getColor(this, R.color.color_primary)
 
+// number labels use the primary color, call labels a shade off it
+fun Context.getLabelColor(isNumberLabel: Boolean) =
+    if (isNumberLabel) getProperPrimaryColor() else ContextCompat.getColor(this, R.color.color_call_label)
+
 fun Context.isSystemInDarkMode() =
     resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
