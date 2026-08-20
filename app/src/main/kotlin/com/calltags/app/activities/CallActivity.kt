@@ -586,8 +586,7 @@ class CallActivity : SimpleActivity() {
             val labels = CallHistoryDb.getInstance(this).getLabelsForNumber(number)
             runOnUiThread {
                 if (labels.isNotEmpty() && callContact?.number == number) {
-                    binding.callerPreviousLabels.text =
-                        getString(R.string.previously_labeled, labels.joinToString(", "))
+                    binding.callerPreviousLabels.text = labels.joinToString(", ")
                     binding.callerPreviousLabels.isVisible = true
                 }
             }
