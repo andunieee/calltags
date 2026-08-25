@@ -73,7 +73,7 @@ class CallActivity : SimpleActivity() {
         setContentView(binding.root)
 
         if (CallManager.getPhoneState() == NoCall) {
-            finish()
+            safeFinishAndRemoveTask()
             return
         }
 
@@ -826,7 +826,7 @@ class CallActivity : SimpleActivity() {
             } else {
                 disableAllActionButtons()
                 binding.callStatusLabel.text = getString(R.string.call_ended)
-                finish()
+                safeFinishAndRemoveTask()
             }
         }
     }
