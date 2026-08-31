@@ -410,27 +410,7 @@
             column="23"/>
     </issue>
 
-    <issue
-        id="UseKtx"
-        message="Use the KTX extension function `String.toUri` instead?"
-        errorLine1="            val photoUri = Uri.parse(callContact.photoUri)"
-        errorLine2="                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/calltags/app/helpers/CallContactAvatarHelper.kt"
-            line="18"
-            column="28"/>
-    </issue>
 
-    <issue
-        id="UseKtx"
-        message="Use the KTX function `createBitmap` instead?"
-        errorLine1="        val output = Bitmap.createBitmap(bitmap.width, bitmap.width, Bitmap.Config.ARGB_8888)"
-        errorLine2="                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/calltags/app/helpers/CallContactAvatarHelper.kt"
-            line="36"
-            column="22"/>
-    </issue>
 
     <issue
         id="UseKtx"

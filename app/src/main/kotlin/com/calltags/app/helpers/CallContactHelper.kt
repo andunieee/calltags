@@ -10,12 +10,12 @@ import com.calltags.app.models.CallContact
 
 fun getCallContact(context: Context, call: Call?, callback: (CallContact) -> Unit) {
     if (call.isConference()) {
-        callback(CallContact(context.getString(R.string.conference), "", "", ""))
+        callback(CallContact(context.getString(R.string.conference), "", ""))
         return
     }
 
     ensureBackgroundThread {
-        val callContact = CallContact("", "", "", "")
+        val callContact = CallContact("", "", "")
         val handle = try {
             call?.details?.handle?.toString()
         } catch (e: NullPointerException) {

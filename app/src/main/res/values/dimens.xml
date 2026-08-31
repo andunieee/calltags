@@ -10,7 +10,6 @@
     <dimen name="one_dp">1dp</dimen>
     <dimen name="divider_height">2px</dimen>
     <dimen name="normal_icon_size">48dp</dimen>
-    <dimen name="list_avatar_size">40dp</dimen>
     <dimen name="material_button_corner_radius">24dp</dimen>
     <dimen name="material_dialog_corner_radius">28dp</dimen>
 
@@ -23,7 +22,6 @@
     <dimen name="incoming_call_arrow_size">50dp</dimen>
     <dimen name="incoming_call_button_size">72dp</dimen>
     <dimen name="call_notification_button_size">40dp</dimen>
-    <dimen name="caller_avatar_max_size">172dp</dimen>
     <dimen name="end_call_button_margin">34dp</dimen>
     <dimen name="call_control_max_height">240dp</dimen>
     <dimen name="call_control_button_size">72dp</dimen>

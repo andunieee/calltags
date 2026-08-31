@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.CallLog.Calls
 import com.calltags.app.models.CallLabel
+import com.calltags.app.models.CallerHistory
 import com.calltags.app.models.LoggedCall
 
 /**
@@ -31,6 +32,7 @@ class CallHistoryDb private constructor(context: Context) :
         private const val DIALPAD_SCAN_LIMIT = 1000
         private const val SUFFIX_MATCH_MIN_LENGTH = 7
         private const val SUFFIX_MATCH_LENGTH = 8
+        private const val RECENT_MILLIS = 30L * 24 * 60 * 60 * 1000
 
         @Volatile
         private var instance: CallHistoryDb? = null
@@ -273,6 +275,57 @@ class CallHistoryDb private constructor(context: Context) :
         if (digits.isEmpty()) return emptyList()
         // long numbers are compared by their last digits so "0119..." and "+55119..." are the same
         return getNumberLabelIndex()[suffixOf(digits)].orEmpty()
+    }
+
+    /**
+     * Sums up the earlier calls with [number], matched by [suffixOf] like labels are.
+     * Returns null for an empty number, and a [CallerHistory] without [CallerHistory.lastCall] if there were none.
+     */
+    fun getCallerHistory(number: String, now: Long = System.currentTimeMillis()): CallerHistory? {
+        val digits = digitsOf(number)
+        if (digits.isEmpty()) return null
+
+        val sql = """
+            SELECT id, number, name, date, duration, type FROM calls
+            WHERE (CASE WHEN length(digits) >= $SUFFIX_MATCH_MIN_LENGTH THEN substr(digits, -$SUFFIX_MATCH_LENGTH)
+                ELSE digits END) = ?
+            ORDER BY date DESC
+        """.trimIndent()
+        val calls = readableDatabase.rawQuery(sql, arrayOf(suffixOf(digits))).use {
+            buildList {
+                while (it.moveToNext()) {
+                    add(
+                        LoggedCall(
+                            id = it.getLong(0),
+                            number = it.getString(1),
+                            name = it.getString(2),
+                            date = it.getLong(3),
+                            duration = it.getInt(4),
+                            type = it.getInt(5),
+                            labels = emptyList(),
+                        )
+                    )
+                }
+            }
+        }
+
+        val isMissed = { call: LoggedCall ->
+            call.type == Calls.MISSED_TYPE || call.type == Calls.REJECTED_TYPE || call.type == Calls.VOICEMAIL_TYPE
+        }
+        val isTalk = { call: LoggedCall ->
+            call.type == Calls.INCOMING_TYPE || call.type == Calls.ANSWERED_EXTERNALLY_TYPE ||
+                (call.type == Calls.OUTGOING_TYPE && call.duration > 0)
+        }
+        val recent = calls.filter { now - it.date < RECENT_MILLIS }
+        val recentOutgoing = recent.filter { it.type == Calls.OUTGOING_TYPE }
+        return CallerHistory(
+            lastCall = calls.firstOrNull(),
+            missedSinceTalk = calls.takeWhile { !isTalk(it) }.count(isMissed),
+            talkedEver = calls.any(isTalk),
+            recentOutgoing = recentOutgoing.size,
+            recentOutgoingUnanswered = recentOutgoing.count { it.duration == 0 },
+            recentIncoming = recent.count { isMissed(it) || isTalk(it) && it.type != Calls.OUTGOING_TYPE },
+        )
     }
 
     /** Every label ever used, most used first; handy for autocompletion. */

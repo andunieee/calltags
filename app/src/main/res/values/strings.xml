@@ -17,6 +17,32 @@
     <string name="call_label">Call label, only on this call</string>
     <string name="no_previous_calls">No previous calls have been found</string>
 
+    <!-- Caller history on the in-call screen -->
+    <string name="first_call_with_number">First call with this number</string>
+    <string name="last_call">Last call: %1$s · %2$s</string>
+    <string name="last_call_missed">missed</string>
+    <string name="last_call_no_answer">no answer</string>
+    <plurals name="missed_since_talk">
+        <item quantity="one">%d missed call since you last talked</item>
+        <item quantity="other">%d missed calls since you last talked</item>
+    </plurals>
+    <plurals name="missed_never_talked">
+        <item quantity="one">%d missed call, you never talked</item>
+        <item quantity="other">%d missed calls, you never talked</item>
+    </plurals>
+    <plurals name="you_called_recently">
+        <item quantity="one">You\'ve called them once in the past month</item>
+        <item quantity="other">You\'ve called them %d times in the past month</item>
+    </plurals>
+    <plurals name="with_unanswered">
+        <item quantity="one">%1$s (%2$d unanswered)</item>
+        <item quantity="other">%1$s (%2$d unanswered)</item>
+    </plurals>
+    <plurals name="they_called_recently">
+        <item quantity="one">They\'ve called once in the past month</item>
+        <item quantity="other">They\'ve called %d times in the past month</item>
+    </plurals>
+
     <!-- Dialpad -->
     <string name="dialpad">Dialpad</string>
     <string name="asterisk">Asterisk</string>

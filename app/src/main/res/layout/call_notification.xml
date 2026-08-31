@@ -25,13 +25,6 @@
         android:alpha="0.8"
         tools:text="123 456 789" />
 
-    <ImageView
-        android:id="@+id/notification_thumbnail"
-        android:layout_width="@dimen/list_avatar_size"
-        android:layout_height="@dimen/list_avatar_size"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
-
     <LinearLayout
         android:id="@+id/notification_actions_holder"
         android:layout_width="match_parent"

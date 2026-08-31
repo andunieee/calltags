@@ -24,12 +24,10 @@ class CallNotificationManager(private val context: Context) {
     }
 
     private val notificationManager = context.notificationManager
-    private val callContactAvatarHelper = CallContactAvatarHelper(context)
 
     @SuppressLint("NewApi")
     fun setupNotification(lowPriority: Boolean = false) {
         getCallContact(context.applicationContext, CallManager.getPrimaryCall()) { callContact ->
-            val callContactAvatar = callContactAvatarHelper.getCallContactAvatar(callContact)
             val callState = CallManager.getState()
             val isHighPriority = callState == Call.STATE_RINGING && !lowPriority
             val channelId =
@@ -81,13 +79,6 @@ class CallNotificationManager(private val context: Context) {
 
                 setOnClickPendingIntent(R.id.notification_decline_call, declinePendingIntent)
                 setOnClickPendingIntent(R.id.notification_accept_call, acceptPendingIntent)
-
-                if (callContactAvatar != null) {
-                    setImageViewBitmap(
-                        R.id.notification_thumbnail,
-                        callContactAvatarHelper.getCircularBitmap(callContactAvatar)
-                    )
-                }
             }
 
             val builder = Notification.Builder(context, channelId)

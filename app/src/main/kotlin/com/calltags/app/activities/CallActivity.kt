@@ -6,20 +6,19 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.RippleDrawable
-import android.graphics.Outline
 import android.media.AudioManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
+import android.provider.CallLog.Calls
 import android.telecom.Call
 import android.telecom.CallAudioState
+import android.text.format.DateUtils
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewOutlineProvider
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.OvershootInterpolator
@@ -29,15 +28,16 @@ import androidx.core.os.postDelayed
 import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import com.calltags.app.R
+import com.calltags.app.adapters.CallHistoryAdapter
 import com.calltags.app.databinding.ActivityCallBinding
 import com.calltags.app.dialogs.AudioRouteChooserDialog
 import com.calltags.app.extensions.*
 import com.calltags.app.helpers.*
 import com.calltags.app.models.AudioRoute
 import com.calltags.app.models.CallContact
+import com.calltags.app.models.CallerHistory
 import com.calltags.app.models.SimpleListItem
 import kotlin.math.max
 import kotlin.math.min
@@ -579,27 +579,79 @@ class CallActivity : SimpleActivity() {
     }
 
     // remind the user what earlier calls with this number were about
-    private fun showPreviousLabels(number: String) {
+    private fun showCallerHistory(number: String) {
         binding.callerPreviousLabels.isVisible = false
+        binding.callerHistory.isVisible = false
         if (number.isEmpty()) return
         ensureBackgroundThread {
-            val labels = CallHistoryDb.getInstance(this).getLabelsForNumber(number)
+            val db = CallHistoryDb.getInstance(this)
+            // the history is otherwise only refreshed when the main screen opens, calls made since then would be missing
+            db.importSystemCallLog(this)
+            val labels = db.getLabelsForNumber(number)
+            val history = db.getCallerHistory(number)
             runOnUiThread {
-                if (labels.isNotEmpty() && callContact?.number == number) {
+                if (callContact?.number != number) return@runOnUiThread
+                if (labels.isNotEmpty()) {
                     binding.callerPreviousLabels.text = labels.joinToString(", ")
                     binding.callerPreviousLabels.isVisible = true
+                }
+                if (history != null) {
+                    binding.callerHistory.text = describeCallerHistory(history)
+                    binding.callerHistory.isVisible = true
                 }
             }
         }
     }
 
-    private fun updateOtherPersonsInfo(avatarUri: String?) {
+    private fun describeCallerHistory(history: CallerHistory): String {
+        val last = history.lastCall ?: return getString(R.string.first_call_with_number)
+        val lastIsMissed = last.type == Calls.MISSED_TYPE || last.type == Calls.REJECTED_TYPE ||
+            last.type == Calls.VOICEMAIL_TYPE
+        val what = when {
+            last.type == Calls.BLOCKED_TYPE -> getString(R.string.blocked).lowercase()
+            lastIsMissed -> getString(R.string.last_call_missed)
+            last.type == Calls.OUTGOING_TYPE && last.duration == 0 -> getString(R.string.last_call_no_answer)
+            else -> CallHistoryAdapter.formatDuration(last.duration)
+        }
+        val ago = DateUtils.getRelativeTimeSpanString(
+            last.date, System.currentTimeMillis(), DateUtils.MINUTE_IN_MILLIS
+        ).toString().replaceFirstChar { it.lowercase() }
+        val lines = arrayListOf(getString(R.string.last_call, what, ago))
+
+        // a single missed or outgoing call is already told by the first line
+        val missed = history.missedSinceTalk
+        when {
+            missed >= 2 || missed == 1 && !lastIsMissed -> {
+                val res = if (history.talkedEver) R.plurals.missed_since_talk else R.plurals.missed_never_talked
+                lines += resources.getQuantityString(res, missed, missed)
+            }
+
+            history.recentOutgoing >= 2 -> {
+                val called = resources.getQuantityString(
+                    R.plurals.you_called_recently, history.recentOutgoing, history.recentOutgoing
+                )
+                val unanswered = history.recentOutgoingUnanswered
+                lines += if (unanswered == 0) called else {
+                    resources.getQuantityString(R.plurals.with_unanswered, unanswered, called, unanswered)
+                }
+            }
+
+            history.recentIncoming >= 2 -> {
+                lines += resources.getQuantityString(
+                    R.plurals.they_called_recently, history.recentIncoming, history.recentIncoming
+                )
+            }
+        }
+        return lines.joinToString("\n")
+    }
+
+    private fun updateOtherPersonsInfo() {
         if (callContact == null) {
             return
         }
 
         binding.apply {
-            val (name, _, number, numberLabel) = callContact!!
+            val (name, number, numberLabel) = callContact!!
             callBlock.isVisible = number.isNotEmpty()
             callerNameLabel.text = name.ifEmpty { getString(R.string.unknown_caller) }
             if (number.isNotEmpty() && number != name) {
@@ -611,25 +663,7 @@ class CallActivity : SimpleActivity() {
             } else {
                 callerNumber.isVisible = false
             }
-            showPreviousLabels(number)
-
-            callerAvatar.apply {
-                if (avatarUri.isNullOrEmpty()) {
-                    val bgColor = getProperPrimaryColor()
-                    setBackgroundResource(R.drawable.circle_background)
-                    setImageResource(R.drawable.ic_person_vector)
-                    setPadding(resources.getDimensionPixelSize(R.dimen.activity_margin))
-                    applyColorFilter(bgColor.getContrastColor())
-                    background.applyColorFilter(bgColor)
-                } else {
-                    background = null
-                    setPadding(0)
-                    clearColorFilter()
-                    clipToOutline = true
-                    outlineProvider = CircleOutlineProvider
-                    setImageURI(Uri.parse(avatarUri))
-                }
-            }
+            showCallerHistory(number)
         }
     }
 
@@ -741,9 +775,8 @@ class CallActivity : SimpleActivity() {
                 return@getCallContact
             }
             callContact = contact
-            val avatar = if (!call.isConference()) contact.photoUri else null
             runOnUiThread {
-                updateOtherPersonsInfo(avatar)
+                updateOtherPersonsInfo()
                 checkCalledSIMCard()
             }
         }
@@ -945,8 +978,4 @@ class CallActivity : SimpleActivity() {
         binding.dialpadInput.setText("");
         return true;
     }
-}
-
-private object CircleOutlineProvider : ViewOutlineProvider() {
-    override fun getOutline(view: View, outline: Outline) = outline.setOval(0, 0, view.width, view.height)
 }
