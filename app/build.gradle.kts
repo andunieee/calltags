@@ -23,7 +23,7 @@ fun hasSigningVars(): Boolean {
 
 base {
     val versionCode = project.property("VERSION_CODE").toString().toInt()
-    archivesName = "phone-$versionCode"
+    archivesName = "calltags-$versionCode"
 }
 
 android {
@@ -77,13 +77,6 @@ android {
                 signingConfig = signingConfigs.getByName("release")
             }
         }
-    }
-
-    flavorDimensions.add("variants")
-    productFlavors {
-        register("core")
-        register("foss")
-        register("gplay")
     }
 
     sourceSets {

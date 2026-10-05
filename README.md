@@ -1,34 +1,31 @@
 # CallTags
-<img alt="Logo" src="graphics/icon.webp" width="120" />
 
-<a href='https://play.google.com/store/apps/details?id=org.fossify.phone'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' height=80/></a> <a href="https://f-droid.org/packages/org.fossify.phone/"><img src="https://fdroid.gitlab.io/artwork/badge/get-it-on-en.svg" alt="Get it on F-Droid" height=80/></a> <a href="https://apt.izzysoft.de/fdroid/index/apk/org.fossify.phone"><img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png" alt="Get it on IzzyOnDroid" height=80/></a>
+<img alt="CallTags icon" src="graphics/icon.png" width="96" />
 
-Empower your calls, and safeguard your data. CallTags redefines the mobile app experience with unmatched privacy and efficiency. Free from ads and intrusive permissions, it's designed for seamless and secure everyday communication.
+A minimal Android phone app that lets you label calls with free text and search them later.
 
-📱 **YOUR PRIVACY, OUR PRIORITY:**  
-Welcome to the CallTags App, where your digital privacy is paramount. Switch to a mobile experience that respects your data, ensuring your personal information remains secure and private.
+- **Dialpad** and **History**, nothing else.
+- Tap a call in History to add labels like `insurance` or `topic 2`.
+- Search History by number (all calls with it and their labels) or by label (every call that got it).
+- While a labelled number is calling, the in-call screen shows what earlier calls were about.
+- History and labels live in the app's own database, so they survive clearing the system call log. Nothing leaves the device.
 
-🚀 **SEAMLESS PERFORMANCE:**  
-The CallTags App offers a fluid and responsive mobile interface, enhancing your phone's performance while safeguarding your privacy. Experience a lag-free, smooth user experience, optimized for efficiency and speed.
+CallTags works as the default phone app (Settings → Apps → Default apps → Phone).
 
-🌐 **OPEN-SOURCE ASSURANCE:**  
-With the CallTags App, transparency is at your fingertips. Built on an open-source foundation, our app allows you to review our code on GitHub, fostering trust and a community committed to privacy.
+## Install
 
-🖼️ **TAILOR-MADE CUSTOMIZATION:**  
-Customize your mobile experience with the CallTags App. Adjust your app settings for a personalized interface, from thematic designs to functional preferences. Enjoy a user interface that's intuitive and uniquely yours.
+- **[Zapstore](https://zapstore.dev):** search for CallTags.
+- **[Obtainium](https://obtainium.imranr.dev):** add `https://github.com/andunieee/calltags`, or tap [Get it on Obtainium](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/andunieee/calltags) on your phone.
+- **Manually:** download the APK from [Releases](https://github.com/andunieee/calltags/releases).
 
-🔋 **EFFICIENT RESOURCE MANAGEMENT:**  
-The CallTags App is designed for optimal resource usage, contributing to extended battery life. It's light on your phone's resources, ensuring your device runs efficiently with minimized battery drain.
+## Building
 
-Download the CallTags App now and step into a mobile world where privacy seamlessly blends with functionality. Your journey towards a safer, personalized mobile experience starts here.
+```sh
+./gradlew assembleDebug        # app/build/outputs/apk/debug/
+```
 
-➡️ Explore more Fossify apps: https://www.fossify.org<br>
-➡️ Open-Source Code: https://www.github.com/FossifyOrg<br>
-➡️ Join the community on Reddit: https://www.reddit.com/r/Fossify<br>
-➡️ Connect on Telegram: https://t.me/Fossify
+Release builds are made by GitHub Actions when you push a `v*` tag; see [PUBLISHING.md](PUBLISHING.md).
 
-<div align="center">
-<img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/1_en-US.png" width="30%">
-<img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/2_en-US.png" width="30%">
-<img alt="App image" src="fastlane/metadata/android/en-US/images/phoneScreenshots/3_en-US.png" width="30%">
-</div>
+## License
+
+GPL-3.0. CallTags is built on [Fossify Phone](https://github.com/FossifyOrg/Phone) and [Fossify Commons](https://github.com/FossifyOrg/Commons).

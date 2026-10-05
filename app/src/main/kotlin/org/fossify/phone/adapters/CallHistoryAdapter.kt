@@ -14,6 +14,7 @@ import com.google.android.material.chip.Chip
 import org.fossify.commons.extensions.adjustAlpha
 import org.fossify.commons.extensions.applyColorFilter
 import org.fossify.commons.extensions.formatPhoneNumber
+import org.fossify.commons.extensions.getContrastColor
 import org.fossify.commons.extensions.getProperPrimaryColor
 import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.phone.R
@@ -73,6 +74,7 @@ class CallHistoryAdapter(
                     }
                 )
                 itemCallType.applyColorFilter(if (isMissed) missedColor else textColor)
+                itemCallType.alpha = if (isMissed) 1f else MUTED_ALPHA
                 itemCallDial.applyColorFilter(primaryColor)
                 itemCallDial.isVisible = call.number.isNotEmpty()
 
@@ -84,9 +86,9 @@ class CallHistoryAdapter(
                     itemCallLabels.addView(Chip(context).apply {
                         text = label
                         setEnsureMinTouchTargetSize(false)
-                        setTextColor(textColor)
+                        setTextColor(if (matches) primaryColor.getContrastColor() else textColor)
                         chipBackgroundColor = ColorStateList.valueOf(
-                            if (matches) primaryColor.adjustAlpha(0.5f) else textColor.adjustAlpha(0.12f)
+                            if (matches) primaryColor else primaryColor.adjustAlpha(CHIP_ALPHA)
                         )
                         chipStrokeWidth = 0f
                         setOnClickListener { onLabelClick(label) }
@@ -100,6 +102,9 @@ class CallHistoryAdapter(
     }
 
     companion object {
+        private const val MUTED_ALPHA = 0.5f
+        private const val CHIP_ALPHA = 0.22f
+
         fun formatDuration(seconds: Int): String {
             val h = seconds / 3600
             val m = seconds % 3600 / 60

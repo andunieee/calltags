@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- brand -->
+    <color name="brand_amber">#FFF2A900</color>
+    <color name="brand_amber_deep">#FFB87A00</color>
+    <color name="brand_ink">#FF1C1B1A</color>
+    <color name="brand_paper">#FFFAF8F4</color>
+    <color name="brand_night">#FF141312</color>
+    <color name="brand_night_text">#FFEDEAE4</color>
+
+    <!-- commons theme defaults -->
+    <color name="color_primary">@color/brand_amber</color>
+    <color name="color_primary_dark">@color/brand_amber_deep</color>
+    <color name="color_accent">@color/brand_amber</color>
+
     <color name="ripple_foreground">#33FFFFFF</color>
     <color name="color_missed_call">@color/md_red_500_dark</color>
     <color name="color_outgoing_call">@color/md_green_600</color>
