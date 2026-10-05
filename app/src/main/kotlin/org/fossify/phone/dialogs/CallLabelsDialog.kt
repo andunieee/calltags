@@ -30,7 +30,6 @@ import org.fossify.phone.models.LoggedCall
 class CallLabelsDialog(
     private val activity: SimpleActivity,
     private val call: LoggedCall,
-    private val onShowNumberHistory: (String) -> Unit,
     private val onChanged: () -> Unit,
 ) {
     private val db = CallHistoryDb.getInstance(activity)
@@ -82,10 +81,6 @@ class CallLabelsDialog(
                 if (changed) onChanged()
             }
 
-        if (call.number.isNotEmpty()) {
-            builder.setNeutralButton(R.string.show_all_calls_from_number, null)
-        }
-
         activity.setupDialogStuff(binding.root, builder, titleText = call.name.ifEmpty { call.number }) { dialog ->
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 addTypedLabel()
@@ -97,11 +92,6 @@ class CallLabelsDialog(
                     changed = true
                     dialog.dismiss()
                 }
-            }
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL)?.setOnClickListener {
-                addTypedLabel()
-                dialog.dismiss()
-                onShowNumberHistory(call.number)
             }
             activity.showKeyboard(binding.callLabelsInput)
         }

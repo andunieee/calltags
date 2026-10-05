@@ -430,7 +430,6 @@ class MainActivity : SimpleActivity() {
                 CallLabelsDialog(
                     activity = this,
                     call = call,
-                    onShowNumberHistory = { number -> binding.historySearch.setText(number) },
                     onChanged = { refreshHistory() }
                 )
             },
