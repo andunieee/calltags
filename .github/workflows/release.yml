@@ -24,7 +24,7 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
 
       # v1.2.3 -> versionName 1.2.3, versionCode 10203 (always increasing, no manual bumps)
       - name: Derive version from tag
