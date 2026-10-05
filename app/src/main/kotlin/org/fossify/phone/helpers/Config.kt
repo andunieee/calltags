@@ -5,12 +5,9 @@ import android.net.Uri
 import android.telecom.PhoneAccountHandle
 import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import org.fossify.commons.helpers.BaseConfig
 import org.fossify.phone.extensions.getPhoneAccountHandleModel
 import org.fossify.phone.extensions.putPhoneAccountHandle
-import org.fossify.phone.models.SpeedDial
 import androidx.core.content.edit
 import java.util.Locale
 
@@ -29,20 +26,6 @@ class Config(context: Context) : BaseConfig(context) {
             .firstOrNull { !it.isNullOrBlank() }
             ?.uppercase(Locale.US)
             .orEmpty()
-    }
-
-    fun getSpeedDialValues(): ArrayList<SpeedDial> {
-        val speedDialType = object : TypeToken<List<SpeedDial>>() {}.type
-        val speedDialValues = Gson().fromJson<ArrayList<SpeedDial>>(speedDial, speedDialType) ?: ArrayList(1)
-
-        for (i in 1..9) {
-            val speedDial = SpeedDial(i, "", "")
-            if (speedDialValues.firstOrNull { it.id == i } == null) {
-                speedDialValues.add(speedDial)
-            }
-        }
-
-        return speedDialValues
     }
 
     fun saveCustomSIM(number: String, handle: PhoneAccountHandle) {
@@ -96,17 +79,9 @@ class Config(context: Context) : BaseConfig(context) {
         return formatted ?: PhoneNumberUtils.normalizeNumber(decoded)
     }
 
-    var showTabs: Int
-        get() = prefs.getInt(SHOW_TABS, ALL_TABS_MASK)
-        set(showTabs) = prefs.edit().putInt(SHOW_TABS, showTabs).apply()
-
-    var groupSubsequentCalls: Boolean
-        get() = prefs.getBoolean(GROUP_SUBSEQUENT_CALLS, true)
-        set(groupSubsequentCalls) = prefs.edit().putBoolean(GROUP_SUBSEQUENT_CALLS, groupSubsequentCalls).apply()
-
-    var openDialPadAtLaunch: Boolean
-        get() = prefs.getBoolean(OPEN_DIAL_PAD_AT_LAUNCH, false)
-        set(openDialPad) = prefs.edit().putBoolean(OPEN_DIAL_PAD_AT_LAUNCH, openDialPad).apply()
+    var lastTab: Int
+        get() = prefs.getInt(LAST_TAB, TAB_DIALPAD)
+        set(lastTab) = prefs.edit().putInt(LAST_TAB, lastTab).apply()
 
     var disableProximitySensor: Boolean
         get() = prefs.getBoolean(DISABLE_PROXIMITY_SENSOR, false)

@@ -5,7 +5,6 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android)
-    alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.detekt)
 }
 
@@ -139,11 +138,6 @@ detekt {
 
 dependencies {
     implementation(libs.fossify.commons)
-    implementation(libs.indicator.fast.scroll)
-    implementation(libs.autofit.text.view)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.eventbus)
-    implementation(libs.libphonenumber)
-    implementation(libs.geocoder)
     detektPlugins(libs.compose.detekt)
 }

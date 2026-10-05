@@ -7,6 +7,19 @@
     <!-- Contacts -->
     <string name="could_not_access_contacts">Could not access your contacts</string>
 
+    <!-- History & labels -->
+    <string name="history">History</string>
+    <string name="search_numbers_or_labels">Search numbers or labels</string>
+    <string name="clear_search">Clear search</string>
+    <string name="no_matching_calls">No calls match your search</string>
+    <string name="labels">Labels</string>
+    <string name="new_label">New label</string>
+    <string name="add_label">Add label</string>
+    <string name="no_labels_yet">No labels yet</string>
+    <string name="show_all_calls_from_number">All calls from this number</string>
+    <string name="delete_call_confirmation">Remove this call and its labels from the history?</string>
+    <string name="previously_labeled">Before: %s</string>
+
     <!-- Recents -->
     <string name="no_previous_calls">No previous calls have been found</string>
     <string name="could_not_access_the_call_history">Could not access the call history</string>
