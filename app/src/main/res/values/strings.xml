@@ -76,6 +76,12 @@
     <string name="audio_route_wired_or_earpiece">Wired or Earpiece</string>
     <string name="choose_audio_route">Choose audio route</string>
     <string name="calling_blocked_number">The number you are calling is blocked</string>
+    <string name="block_number">Block number</string>
+    <string name="unblock_number">Unblock number</string>
+    <string name="blocked">Blocked</string>
+    <string name="block_number_confirmation">Block %1$s? It won\'t ring anymore, but its calls will still show in history as blocked.</string>
+    <string name="number_blocked">Number blocked</string>
+    <string name="number_unblocked">Number unblocked</string>
     <string name="call_is_being_connected">Your call is being connected…</string>
     <string name="call_notification_channel">Call status</string>
     <string name="call_notification_channel_high_priority">Call status (high priority)</string>

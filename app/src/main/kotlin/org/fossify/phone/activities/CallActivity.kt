@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import org.fossify.commons.extensions.*
 import org.fossify.commons.helpers.*
+import org.fossify.commons.dialogs.ConfirmationDialog
 import org.fossify.commons.models.SimpleListItem
 import org.fossify.phone.R
 import org.fossify.phone.databinding.ActivityCallBinding
@@ -186,6 +187,10 @@ class CallActivity : SimpleActivity() {
             endCall()
         }
 
+        callBlock.setOnClickListener {
+            blockCurrentNumber()
+        }
+
         dialpadInclude.apply {
             dialpad0Holder.setOnClickListener { dialpadPressed('0') }
             dialpad1Holder.setOnClickListener { dialpadPressed('1') }
@@ -232,7 +237,7 @@ class CallActivity : SimpleActivity() {
             }
         )
 
-        arrayOf(dialpadClose, callSimImage, dialpadClearChar).forEach {
+        arrayOf(dialpadClose, callSimImage, dialpadClearChar, callBlock).forEach {
             it.applyColorFilter(getProperTextColor())
         }
 
@@ -593,6 +598,7 @@ class CallActivity : SimpleActivity() {
 
         binding.apply {
             val (name, _, number, numberLabel) = callContact!!
+            callBlock.beVisibleIf(number.isNotEmpty())
             callerNameLabel.text = name.ifEmpty { getString(R.string.unknown_caller) }
             if (number.isNotEmpty() && number != name) {
                 callerNumber.text = number
@@ -743,6 +749,24 @@ class CallActivity : SimpleActivity() {
 
     private fun acceptCall() {
         CallManager.accept()
+    }
+
+    private fun blockCurrentNumber() {
+        val number = callContact?.number.orEmpty()
+        if (number.isEmpty()) return
+        ConfirmationDialog(this, getString(R.string.block_number_confirmation, number)) {
+            ensureBackgroundThread {
+                val added = addBlockedNumber(number)
+                runOnUiThread {
+                    if (added) {
+                        toast(R.string.number_blocked)
+                        endCall()
+                    } else {
+                        toast(R.string.unknown_error_occurred)
+                    }
+                }
+            }
+        }
     }
 
     private fun initOutgoingCallUI() {
