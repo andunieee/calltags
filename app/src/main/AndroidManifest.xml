@@ -88,10 +88,10 @@
             android:configChanges="orientation"
             android:exported="false"
             android:label="@string/conference"
-            android:parentActivityName="org.fossify.phone.activities.CallActivity" />
+            android:parentActivityName="com.calltags.app.activities.CallActivity" />
 
         <activity
-            android:name="org.fossify.phone.activities.CallActivity"
+            android:name="com.calltags.app.activities.CallActivity"
             android:excludeFromRecents="true"
             android:exported="false"
             android:label="@string/ongoing_call"
