@@ -20,3 +20,9 @@ const val ACCEPT_CALL = PATH + "ACCEPT_CALL"
 const val DECLINE_CALL = PATH + "DECLINE_CALL"
 
 const val DIALPAD_TONE_LENGTH_MS = 150L // The length of DTMF tones in milliseconds
+
+const val REQUEST_CODE_SET_DEFAULT_DIALER = 1007
+
+// alpha for disabled buttons and the dialpad key backgrounds
+const val LOWER_ALPHA = 0.25f
+const val LOWER_ALPHA_INT = 30

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Добра</string>
+    <string name="delete">Выдаліць</string>
+    <string name="call">Выклік</string>
+    <string name="cancel">Скасаваць</string>
+    <string name="yes">Так</string>
+    <string name="no">Не</string>
+    <string name="back">Назад</string>
+    <string name="zero">Нуль</string>
+    <string name="one">Адзін</string>
+    <string name="two">Два</string>
+    <string name="three">Тры</string>
+    <string name="four">Чатыры</string>
+    <string name="five">Пяць</string>
+    <string name="six">Шесць</string>
+    <string name="seven">Сем</string>
+    <string name="eight">Восем</string>
+    <string name="nine">Дзевяць</string>
+    <string name="unknown_error_occurred">Адбылася невядомая памылка</string>
+    <string name="notifications_disabled">Апавяшчэння гэтага прыкладання адключаныя. Калі ласка, зайдзіце ў Налады вашага прылады, каб уключыць іх.</string>
+    <string name="allow_notifications_incoming_calls">Вы павінны дазволіць праграме паказваць апавяшчэнні, інакш яна не зможа паказваць ўваходныя выклікі.</string>
+    <string name="grant_permission">Даць дазвол</string>
+    <string name="permission_required">Патрабуецца дазвол</string>
+    <string name="no_app_found">Не знойдзена сапраўднае прыкладанне</string>
+</resources>

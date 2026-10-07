@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Одобри</string>
+    <string name="delete">Обриши</string>
+    <string name="call">Позив</string>
+    <string name="cancel">Поништи</string>
+    <string name="yes">Да</string>
+    <string name="no">Не</string>
+    <string name="back">Назад</string>
+    <string name="zero">Нула</string>
+    <string name="one">Једно</string>
+    <string name="two">Два</string>
+    <string name="three">Три</string>
+    <string name="four">Четири</string>
+    <string name="five">Пет</string>
+    <string name="six">Шест</string>
+    <string name="seven">Седам</string>
+    <string name="eight">Осам</string>
+    <string name="nine">Девет</string>
+    <string name="unknown_error_occurred">Дошло је до грешке</string>
+    <string name="notifications_disabled">Обавештења ове апликације су онемогућена. У подешавањима уређаја их можете укључити.</string>
+    <string name="no_app_found">Није пронађена одговарајућа апликација</string>
+</resources>

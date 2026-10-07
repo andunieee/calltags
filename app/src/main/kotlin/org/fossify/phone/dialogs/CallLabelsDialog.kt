@@ -7,25 +7,24 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import com.google.android.material.chip.Chip
-import org.fossify.commons.dialogs.ConfirmationDialog
-import org.fossify.commons.extensions.addBlockedNumber
-import org.fossify.commons.extensions.adjustAlpha
-import org.fossify.commons.extensions.applyColorFilter
-import org.fossify.commons.extensions.beGone
-import org.fossify.commons.extensions.deleteBlockedNumber
-import org.fossify.commons.extensions.getAlertDialogBuilder
-import org.fossify.commons.extensions.getProperPrimaryColor
-import org.fossify.commons.extensions.getProperTextColor
-import org.fossify.commons.extensions.isNumberBlocked
-import org.fossify.commons.extensions.setupDialogStuff
-import org.fossify.commons.extensions.showKeyboard
-import org.fossify.commons.extensions.toast
-import org.fossify.commons.helpers.ensureBackgroundThread
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.fossify.phone.R
 import org.fossify.phone.activities.SimpleActivity
 import org.fossify.phone.adapters.CallHistoryAdapter
 import org.fossify.phone.databinding.DialogCallLabelsBinding
+import org.fossify.phone.extensions.addBlockedNumber
+import org.fossify.phone.extensions.adjustAlpha
+import org.fossify.phone.extensions.applyColorFilter
+import org.fossify.phone.extensions.deleteBlockedNumber
+import org.fossify.phone.extensions.getProperPrimaryColor
+import org.fossify.phone.extensions.getProperTextColor
+import org.fossify.phone.extensions.isNumberBlocked
+import org.fossify.phone.extensions.showConfirmationDialog
+import org.fossify.phone.extensions.showCustomDialog
+import org.fossify.phone.extensions.showKeyboard
+import org.fossify.phone.extensions.toast
 import org.fossify.phone.helpers.CallHistoryDb
+import org.fossify.phone.helpers.ensureBackgroundThread
 import org.fossify.phone.models.LoggedCall
 
 /**
@@ -79,7 +78,7 @@ class CallLabelsDialog(
             }
         }
 
-        val builder = activity.getAlertDialogBuilder()
+        val builder = MaterialAlertDialogBuilder(activity)
             .setPositiveButton(R.string.ok, null)
             .setNegativeButton(R.string.delete, null)
             .setNeutralButton(R.string.block_number, null)
@@ -87,13 +86,13 @@ class CallLabelsDialog(
                 if (changed) onChanged()
             }
 
-        activity.setupDialogStuff(binding.root, builder, titleText = call.name.ifEmpty { call.number }) { dialog ->
+        activity.showCustomDialog(binding.root, builder, title = call.name.ifEmpty { call.number })?.let { dialog ->
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
                 addTypedLabel()
                 dialog.dismiss()
             }
             dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener {
-                ConfirmationDialog(activity, activity.getString(R.string.delete_call_confirmation)) {
+                activity.showConfirmationDialog(activity.getString(R.string.delete_call_confirmation)) {
                     db.deleteCall(call.id)
                     changed = true
                     dialog.dismiss()
@@ -125,7 +124,7 @@ class CallLabelsDialog(
     private fun setupBlockButton(dialog: AlertDialog) {
         val blockButton = dialog.getButton(AlertDialog.BUTTON_NEUTRAL)
         if (call.number.isEmpty()) {
-            blockButton.beGone()
+            blockButton.isVisible = false
             return
         }
 
@@ -151,7 +150,7 @@ class CallLabelsDialog(
                     }
                 }
             } else {
-                ConfirmationDialog(activity, activity.getString(R.string.block_number_confirmation, call.number)) {
+                activity.showConfirmationDialog(activity.getString(R.string.block_number_confirmation, call.number)) {
                     ensureBackgroundThread {
                         if (activity.addBlockedNumber(call.number)) {
                             activity.runOnUiThread {

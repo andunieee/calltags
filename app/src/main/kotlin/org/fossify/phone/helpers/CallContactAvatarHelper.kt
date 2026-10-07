@@ -6,7 +6,7 @@ import android.graphics.*
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Size
-import org.fossify.commons.helpers.isQPlus
+import android.os.Build
 import org.fossify.phone.R
 import org.fossify.phone.models.CallContact
 
@@ -18,7 +18,7 @@ class CallContactAvatarHelper(private val context: Context) {
             val photoUri = Uri.parse(callContact.photoUri)
             try {
                 val contentResolver = context.contentResolver
-                bitmap = if (isQPlus()) {
+                bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     val tmbSize = context.resources.getDimension(R.dimen.list_avatar_size).toInt()
                     contentResolver.loadThumbnail(photoUri, Size(tmbSize, tmbSize), null)
                 } else {

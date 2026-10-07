@@ -6,8 +6,13 @@ detekt = "1.23.8"
 detektCompose = "0.4.28"
 #Eventbus
 eventbus = "3.3.1"
-#Fossify
-commons = "6.1.6"
+#AndroidX
+androidx-appcompat = "1.7.1"
+androidx-constraintlayout = "2.2.1"
+androidx-core = "1.17.0"
+#Google
+gson = "2.13.2"
+material = "1.13.0"
 #Gradle
 gradlePlugins-agp = "9.2.0"
 #build
@@ -19,8 +24,13 @@ app-build-kotlinJVMTarget = "17"
 [libraries]
 #Compose
 compose-detekt = { module = "io.nlopez.compose.rules:detekt", version.ref = "detektCompose" }
-#Fossify
-fossify-commons = { module = "org.fossify:commons", version.ref = "commons" }
+#AndroidX
+androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "androidx-constraintlayout" }
+androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
+#Google
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+material = { module = "com.google.android.material:material", version.ref = "material" }
 #EventBus
 eventbus = { module = "org.greenrobot:eventbus", version.ref = "eventbus" }
 #Other

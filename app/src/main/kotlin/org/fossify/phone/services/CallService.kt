@@ -3,11 +3,12 @@ package org.fossify.phone.services
 import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.InCallService
-import org.fossify.commons.extensions.canUseFullScreenIntent
-import org.fossify.commons.extensions.hasPermission
-import org.fossify.commons.helpers.PERMISSION_POST_NOTIFICATIONS
+import android.Manifest
+import android.os.Build
 import org.fossify.phone.activities.CallActivity
+import org.fossify.phone.extensions.canUseFullScreenIntent
 import org.fossify.phone.extensions.config
+import org.fossify.phone.extensions.hasPermission
 import org.fossify.phone.extensions.isOutgoing
 import org.fossify.phone.extensions.keyguardManager
 import org.fossify.phone.extensions.powerManager
@@ -52,7 +53,7 @@ class CallService : InCallService() {
         callNotificationManager.setupNotification(lowPriority)
         if (
             lowPriority
-            || !hasPermission(PERMISSION_POST_NOTIFICATIONS)
+            || !canPostNotifications()
             || !canUseFullScreenIntent()
         ) {
             try {
@@ -64,6 +65,9 @@ class CallService : InCallService() {
             }
         }
     }
+
+    private fun canPostNotifications() =
+        Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || hasPermission(Manifest.permission.POST_NOTIFICATIONS)
 
     override fun onCallRemoved(call: Call) {
         super.onCallRemoved(call)

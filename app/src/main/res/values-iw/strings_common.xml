@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">בסדר</string>
+    <string name="delete">מחק</string>
+    <string name="call">התקשר</string>
+    <string name="cancel">ביטול</string>
+    <string name="yes">כן</string>
+    <string name="no">לא</string>
+    <string name="back">חזור</string>
+    <string name="zero">אפס</string>
+    <string name="one">אחת</string>
+    <string name="two">שתיים</string>
+    <string name="three">שלוש</string>
+    <string name="four">ארבע</string>
+    <string name="five">חמש</string>
+    <string name="six">שש</string>
+    <string name="seven">שבע</string>
+    <string name="eight">שמונה</string>
+    <string name="nine">תשע</string>
+    <string name="unknown_error_occurred">שגיאה לא ידועה אירעה</string>
+    <string name="notifications_disabled">ההתראות מיישום זה אינן מופעלות. אנא עבור להגדרות המכשיר שלך כדי להפעיל אותן.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">עליך לאפשר לאפליקציה לשלוח התראות במסך מלא, אחרת אתה עלול לפספס שיחות נכנסות.</string>
+    <string name="allow_notifications_incoming_calls">עליך לאפשר לאפליקציה להציג התראות, אחרת היא לא תוכל להציג שיחות נכנסות.</string>
+    <string name="grant_permission">הענקת הרשאה</string>
+    <string name="permission_required">נדרשת הרשאה</string>
+    <string name="no_app_found">לא נמצאה אפליקציה מתאימה</string>
+</resources>

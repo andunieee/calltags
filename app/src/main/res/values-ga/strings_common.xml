@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Ceart go leor</string>
+    <string name="delete">Scrios</string>
+    <string name="call">Glaoigh</string>
+    <string name="cancel">Cuir ar ceal</string>
+    <string name="yes">Tá</string>
+    <string name="no">Ní hea</string>
+    <string name="back">Ar ais</string>
+    <string name="zero">Náid</string>
+    <string name="one">Ceann amháin</string>
+    <string name="two">Dhá</string>
+    <string name="three">Triúr</string>
+    <string name="four">Ceathrar</string>
+    <string name="five">Cúig cinn</string>
+    <string name="six">Sé cinn</string>
+    <string name="seven">Seacht gcinn</string>
+    <string name="eight">Ochtar</string>
+    <string name="nine">Naonúr</string>
+    <string name="unknown_error_occurred">Tharla earráid anaithnid</string>
+    <string name="notifications_disabled">Tá fógraí an iarratais seo díchumasaithe. Téigh i socruithe do ghléis chun iad a chumasú.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Ní mór duit cead a thabhairt don aip a thaispeánann fógraí scáileáin iomlána, nó b\'fhéidir go gcaillfidh tú roinnt glaonna isteach.</string>
+    <string name="allow_notifications_incoming_calls">Ní mór duit cead a thabhairt don aip fógraí a thaispeáint, rud eile nach féidir leis glaonna isteach a thaispeáint.</string>
+    <string name="grant_permission">Cead Deontais</string>
+    <string name="permission_required">Cead ag teastáil</string>
+    <string name="no_app_found">Níor aimsíodh feidhmchlár bailí</string>
+</resources>

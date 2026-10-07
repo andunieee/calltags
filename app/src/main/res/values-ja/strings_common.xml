@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">削除</string>
+    <string name="call">通話</string>
+    <string name="cancel">キャンセル</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="back">戻る</string>
+    <string name="zero">0</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="five">5</string>
+    <string name="six">6</string>
+    <string name="seven">7</string>
+    <string name="eight">8</string>
+    <string name="nine">9</string>
+    <string name="unknown_error_occurred">不明なエラーが発生しました</string>
+    <string name="notifications_disabled">アプリの通知が無効となっています。設定から有効に変更してください。</string>
+    <string name="allow_full_screen_notifications_incoming_calls">着信中の通話を表示するには、アプリによる全画面の通知の表示を許可してください。</string>
+    <string name="allow_notifications_incoming_calls">着信中の通話を表示するには、アプリによる通知の表示を許可してください。</string>
+    <string name="grant_permission">権限を付与</string>
+    <string name="permission_required">権限が必要です</string>
+    <string name="no_app_found">有効なアプリが見つかりません</string>
+</resources>

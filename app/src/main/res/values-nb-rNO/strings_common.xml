@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Slett</string>
+    <string name="cancel">Avbryt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nei</string>
+    <string name="back">Tilbake</string>
+    <string name="unknown_error_occurred">En ukjent feil oppstod</string>
+    <string name="no_app_found">Ingen gyldig app funnet</string>
+</resources>

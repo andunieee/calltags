@@ -2,6 +2,12 @@ package org.fossify.phone.extensions
 
 import android.view.KeyEvent
 import android.widget.EditText
+import androidx.core.widget.doAfterTextChanged
+
+val EditText.value: String get() = text.toString().trim()
+
+fun EditText.onTextChangeListener(onTextChanged: (newText: String) -> Unit) =
+    doAfterTextChanged { onTextChanged(it.toString()) }
 
 fun EditText.addCharacter(char: Char) {
     dispatchKeyEvent(getKeyEvent(getCharKeyCode(char)))

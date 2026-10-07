@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">ٹھیک اے</string>
+    <string name="delete">مٹاؤ</string>
+    <string name="call">کال کرو</string>
+    <string name="cancel">رد کرو</string>
+    <string name="yes">ہاں</string>
+    <string name="no">نہیں</string>
+    <string name="back">پچھے</string>
+    <string name="zero">صفر</string>
+    <string name="one">اِکّ</string>
+    <string name="two">دو</string>
+    <string name="three">تِن</string>
+    <string name="four">چار</string>
+    <string name="five">پنج</string>
+    <string name="six">چھے</string>
+    <string name="seven">ست</string>
+    <string name="eight">اٹھ</string>
+    <string name="nine">نوں</string>
+    <string name="unknown_error_occurred">نمعلوم غلطی آئی اے</string>
+    <string name="no_app_found">کوئی ویدھ اَیپ نہیں لبھی</string>
+</resources>

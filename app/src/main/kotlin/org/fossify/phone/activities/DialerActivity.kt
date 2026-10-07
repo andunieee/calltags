@@ -7,10 +7,15 @@ import android.os.Bundle
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.widget.Toast
-import org.fossify.commons.extensions.*
-import org.fossify.commons.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
 import org.fossify.phone.R
 import org.fossify.phone.extensions.getHandleToUse
+import org.fossify.phone.extensions.hideKeyboard
+import org.fossify.phone.extensions.isDefaultDialer
+import org.fossify.phone.extensions.isNumberBlocked
+import org.fossify.phone.extensions.showErrorToast
+import org.fossify.phone.extensions.telecomManager
+import org.fossify.phone.extensions.toast
+import org.fossify.phone.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
 
 class DialerActivity : SimpleActivity() {
     private var callNumber: Uri? = null
@@ -36,7 +41,7 @@ class DialerActivity : SimpleActivity() {
     @SuppressLint("MissingPermission")
     private fun initOutgoingCall() {
         try {
-            if (isNumberBlocked(callNumber.toString().replace("tel:", ""), getBlockedNumbers())) {
+            if (isNumberBlocked(callNumber.toString().replace("tel:", ""))) {
                 toast(R.string.calling_blocked_number)
                 finish()
                 return

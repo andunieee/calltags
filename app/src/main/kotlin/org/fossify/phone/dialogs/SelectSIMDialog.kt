@@ -1,29 +1,28 @@
 package org.fossify.phone.dialogs
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.telecom.PhoneAccountHandle
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
-import org.fossify.commons.activities.BaseSimpleActivity
-import org.fossify.commons.extensions.getAlertDialogBuilder
-import org.fossify.commons.extensions.setupDialogStuff
-import org.fossify.commons.extensions.viewBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.fossify.phone.R
 import org.fossify.phone.databinding.DialogSelectSimBinding
 import org.fossify.phone.extensions.config
 import org.fossify.phone.extensions.getAvailableSIMCardLabels
+import org.fossify.phone.extensions.showCustomDialog
 
-@SuppressLint("MissingPermission")
+@SuppressLint("MissingPermission", "SetTextI18n")
 class SelectSIMDialog(
-    val activity: BaseSimpleActivity,
+    val activity: Activity,
     val phoneNumber: String,
     onDismiss: () -> Unit = {},
     val callback: (handle: PhoneAccountHandle?) -> Unit
 ) {
     private var dialog: AlertDialog? = null
-    private val binding by activity.viewBinding(DialogSelectSimBinding::inflate)
+    private val binding = DialogSelectSimBinding.inflate(activity.layoutInflater)
 
     init {
         binding.selectSimRememberHolder.setOnClickListener {
@@ -39,13 +38,7 @@ class SelectSIMDialog(
             binding.selectSimRadioGroup.addView(radioButton, RadioGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         }
 
-        activity.getAlertDialogBuilder()
-            .apply {
-                activity.setupDialogStuff(binding.root, this) { alertDialog ->
-                    dialog = alertDialog
-                }
-            }
-
+        dialog = activity.showCustomDialog(binding.root, MaterialAlertDialogBuilder(activity))
         dialog?.setOnDismissListener {
             onDismiss()
         }

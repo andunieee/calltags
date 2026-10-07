@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Rendben</string>
+    <string name="delete">Törlés</string>
+    <string name="call">Hívás</string>
+    <string name="cancel">Mégse</string>
+    <string name="yes">Igen</string>
+    <string name="no">Nem</string>
+    <string name="back">Vissza</string>
+    <string name="zero">Nulla</string>
+    <string name="one">Egy</string>
+    <string name="two">Kettő</string>
+    <string name="three">Három</string>
+    <string name="four">Négy</string>
+    <string name="five">Öt</string>
+    <string name="six">Hat</string>
+    <string name="seven">Hét</string>
+    <string name="eight">Nyolc</string>
+    <string name="nine">Kilenc</string>
+    <string name="unknown_error_occurred">Ismeretlen hiba történt</string>
+    <string name="notifications_disabled">Az alkalmazás értesítései le vannak tiltva. Lépjen be az eszköz beállításaiba, és engedélyezze ezeket.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Engedélyeznie kell, hogy az alkalmazás teljes képernyős értesítéseket jelenítsen meg, különben lemaradhat egyes bejövő hívásokról.</string>
+    <string name="allow_notifications_incoming_calls">Engedélyeznie kell, hogy az alkalmazás megjelenítse az értesítéseket, különben nem tudja megjeleníteni a bejövő hívásokat.</string>
+    <string name="grant_permission">Engedély megadása</string>
+    <string name="permission_required">Engedély szükséges</string>
+    <string name="no_app_found">Nem található érvényes alkalmazás</string>
+</resources>

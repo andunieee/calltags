@@ -1,20 +1,25 @@
 package org.fossify.phone.helpers
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.telecom.PhoneAccountHandle
 import android.telephony.PhoneNumberUtils
 import android.telephony.TelephonyManager
-import org.fossify.commons.helpers.BaseConfig
 import org.fossify.phone.extensions.getPhoneAccountHandleModel
 import org.fossify.phone.extensions.putPhoneAccountHandle
 import androidx.core.content.edit
 import java.util.Locale
 
-class Config(context: Context) : BaseConfig(context) {
+class Config(context: Context) {
     companion object {
+        // same file name Fossify Commons used, so existing settings carry over
+        private const val PREFS_NAME = "Prefs"
+
         fun newInstance(context: Context) = Config(context)
     }
+
+    val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     private val regionHint: String by lazy {
         val telephonyManager = context.getSystemService(TelephonyManager::class.java)

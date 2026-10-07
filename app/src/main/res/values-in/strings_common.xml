@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Oke</string>
+    <string name="delete">Hapus</string>
+    <string name="call">Panggil</string>
+    <string name="cancel">Batalkan</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="back">Kembali</string>
+    <string name="zero">Nol</string>
+    <string name="one">Satu</string>
+    <string name="two">Dua</string>
+    <string name="three">Tiga</string>
+    <string name="four">Empat</string>
+    <string name="five">Lima</string>
+    <string name="six">Enam</string>
+    <string name="seven">Tujuh</string>
+    <string name="eight">Delapan</string>
+    <string name="nine">Sembilan</string>
+    <string name="unknown_error_occurred">Telah terjadi kesalahan yang tidak diketahui</string>
+    <string name="notifications_disabled">Notifikasi aplikasi ini dinonaktifkan. Silakan buka pengaturan perangkat untuk mengaktifkannya.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Anda harus mengizinkan aplikasi menampilkan notifikasi layar penuh, jika tidak Anda akan melewatkan panggilan masuk.</string>
+    <string name="allow_notifications_incoming_calls">Anda harus memperbolehkan aplikasi untuk menampilkan notifikasi supaya dapat menampilkan panggilan masuk.</string>
+    <string name="grant_permission">Berikan Izin</string>
+    <string name="permission_required">Izin Dibutuhkan</string>
+    <string name="no_app_found">Tidak ada aplikasi yang sesuai</string>
+</resources>

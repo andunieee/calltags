@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Smazat</string>
+    <string name="call">Zavolat</string>
+    <string name="cancel">Zrušit</string>
+    <string name="yes">Ano</string>
+    <string name="no">Ne</string>
+    <string name="back">Zpět</string>
+    <string name="zero">Nula</string>
+    <string name="one">Jedna</string>
+    <string name="two">Dvě</string>
+    <string name="three">Tři</string>
+    <string name="four">Čtyři</string>
+    <string name="five">Pět</string>
+    <string name="six">Šest</string>
+    <string name="seven">Sedm</string>
+    <string name="eight">Osm</string>
+    <string name="nine">Devět</string>
+    <string name="unknown_error_occurred">Vyskytla se neznámá chyba</string>
+    <string name="notifications_disabled">Oznámení této aplikace jsou vypnuta. Pro jejich povolení prosím přejděte do nastavení svého zařízení.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Musíte aplikaci povolit zobrazování oznámení na celou obrazovku, jinak můžete zmeškat některé příchozí hovory.</string>
+    <string name="allow_notifications_incoming_calls">Musíte aplikaci povolit zobrazování upozornění, jinak nemůže zobrazovat příchozí hovory.</string>
+    <string name="grant_permission">Povolit oprávnění</string>
+    <string name="permission_required">Vyžadováno oprávnění</string>
+    <string name="no_app_found">Nenalezena žádná vhodná aplikace</string>
+</resources>

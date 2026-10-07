@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Sobib</string>
+    <string name="delete">Kustuta</string>
+    <string name="call">Helista</string>
+    <string name="cancel">Katkesta</string>
+    <string name="yes">Jah</string>
+    <string name="no">Ei</string>
+    <string name="back">Tagasi</string>
+    <string name="zero">Null</string>
+    <string name="one">Üks</string>
+    <string name="two">Kaks</string>
+    <string name="three">Kolm</string>
+    <string name="four">Neli</string>
+    <string name="five">Viis</string>
+    <string name="six">Kuus</string>
+    <string name="seven">Seitse</string>
+    <string name="eight">Kaheksa</string>
+    <string name="nine">Üheksa</string>
+    <string name="unknown_error_occurred">Tekkis tundmatu viga</string>
+    <string name="notifications_disabled">Selle rakenduse teavitused on välja lülitatud. Nende lubamiseks ava oma nutiseadme seadistused.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Selleks, et mitte ükski saabuv kõne ei jääks märkamata, palun luba rakendusel kuvada täisekraanivaates teavitusi.</string>
+    <string name="allow_notifications_incoming_calls">Selleks et rakendus saaks näidata kõnesid, pead lubama tal kuvada teavitusi.</string>
+    <string name="grant_permission">Anna vastavad õigused</string>
+    <string name="permission_required">Luba on nõutav</string>
+    <string name="no_app_found">Sobivat rakendust ei leidu</string>
+</resources>

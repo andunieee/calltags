@@ -4,8 +4,7 @@ import android.telecom.Call
 import android.telecom.Call.STATE_CONNECTING
 import android.telecom.Call.STATE_DIALING
 import android.telecom.Call.STATE_SELECT_PHONE_ACCOUNT
-import org.fossify.commons.helpers.isQPlus
-import org.fossify.commons.helpers.isSPlus
+import android.os.Build
 
 private val OUTGOING_CALL_STATES = arrayOf(STATE_CONNECTING, STATE_DIALING, STATE_SELECT_PHONE_ACCOUNT)
 
@@ -13,7 +12,7 @@ private val OUTGOING_CALL_STATES = arrayOf(STATE_CONNECTING, STATE_DIALING, STAT
 fun Call?.getStateCompat(): Int {
     return when {
         this == null -> Call.STATE_DISCONNECTED
-        isSPlus() -> details.state
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> details.state
         else -> state
     }
 }
@@ -31,7 +30,7 @@ fun Call?.getCallDuration(): Int {
 }
 
 fun Call.isOutgoing(): Boolean {
-    return if (isQPlus()) {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
         details.callDirection == Call.Details.DIRECTION_OUTGOING
     } else {
         OUTGOING_CALL_STATES.contains(getStateCompat())

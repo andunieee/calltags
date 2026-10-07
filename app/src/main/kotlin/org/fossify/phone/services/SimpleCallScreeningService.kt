@@ -2,7 +2,7 @@ package org.fossify.phone.services
 
 import android.telecom.Call
 import android.telecom.CallScreeningService
-import org.fossify.commons.extensions.isNumberBlocked
+import org.fossify.phone.extensions.isNumberBlocked
 
 /**
  * Silently rejects calls from numbers on the system block list.

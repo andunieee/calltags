@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">確定</string>
+    <string name="delete">刪除</string>
+    <string name="call">通話</string>
+    <string name="cancel">取消</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="back">返回</string>
+    <string name="zero">零</string>
+    <string name="one">一</string>
+    <string name="two">二</string>
+    <string name="three">三</string>
+    <string name="four">四</string>
+    <string name="five">五</string>
+    <string name="six">六</string>
+    <string name="seven">七</string>
+    <string name="eight">八</string>
+    <string name="nine">九</string>
+    <string name="unknown_error_occurred">發生未知的錯誤</string>
+    <string name="notifications_disabled">這應用程式的通知被停用了。請到你的裝置設定中去啟用。</string>
+    <string name="allow_full_screen_notifications_incoming_calls">您必須允許應用程式顯示全螢幕通知，否則可能會錯過一些來電。</string>
+    <string name="allow_notifications_incoming_calls">您必須允許應用程式顯示通知，否則無法顯示來電。</string>
+    <string name="grant_permission">授予權限</string>
+    <string name="permission_required">需要權限</string>
+    <string name="no_app_found">找不到應用程式</string>
+</resources>

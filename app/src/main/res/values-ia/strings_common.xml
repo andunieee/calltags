@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">De accordo</string>
+    <string name="cancel">Cancellar</string>
+    <string name="back">Retro</string>
+    <string name="zero">Zero</string>
+    <string name="one">Un</string>
+    <string name="two">Duo</string>
+    <string name="three">Tres</string>
+    <string name="four">Quatro</string>
+    <string name="five">Cinque</string>
+    <string name="six">Sex</string>
+    <string name="seven">Septe</string>
+    <string name="eight">Octo</string>
+    <string name="nine">Novem</string>
+    <string name="unknown_error_occurred">Ocurreva un error discognoscite</string>
+    <string name="grant_permission">Conceder permission</string>
+    <string name="permission_required">Permission requirite</string>
+    <string name="no_app_found">Necun application valide trovate</string>
+</resources>

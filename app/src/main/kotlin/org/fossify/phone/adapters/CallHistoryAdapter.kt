@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
-import org.fossify.commons.extensions.adjustAlpha
-import org.fossify.commons.extensions.applyColorFilter
-import org.fossify.commons.extensions.formatPhoneNumber
-import org.fossify.commons.extensions.getContrastColor
-import org.fossify.commons.extensions.getProperPrimaryColor
-import org.fossify.commons.extensions.getProperTextColor
 import org.fossify.phone.R
 import org.fossify.phone.databinding.ItemCallBinding
-import org.fossify.phone.extensions.config
+import org.fossify.phone.extensions.adjustAlpha
+import org.fossify.phone.extensions.applyColorFilter
+import org.fossify.phone.extensions.formatPhoneNumber
+import org.fossify.phone.extensions.getContrastColor
+import org.fossify.phone.extensions.getProperPrimaryColor
+import org.fossify.phone.extensions.getProperTextColor
 import org.fossify.phone.models.LoggedCall
 
 class CallHistoryAdapter(
@@ -46,8 +45,7 @@ class CallHistoryAdapter(
 
             val number = when {
                 call.number.isEmpty() -> context.getString(R.string.unknown_caller)
-                context.config.formatPhoneNumbers -> call.number.formatPhoneNumber()
-                else -> call.number
+                else -> call.number.formatPhoneNumber()
             }
 
             binding.apply {

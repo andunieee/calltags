@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Ta bort</string>
+    <string name="call">Ring</string>
+    <string name="cancel">Avbryt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nej</string>
+    <string name="back">Tillbaka</string>
+    <string name="zero">Noll</string>
+    <string name="one">Ett</string>
+    <string name="two">Två</string>
+    <string name="three">Tre</string>
+    <string name="four">Fyra</string>
+    <string name="five">Fem</string>
+    <string name="six">Sex</string>
+    <string name="seven">Sju</string>
+    <string name="eight">Åtta</string>
+    <string name="nine">Nio</string>
+    <string name="unknown_error_occurred">Ett okänt fel har uppstått</string>
+    <string name="notifications_disabled">Aviseringar är inaktiverade för den här appen. Du kan aktivera dem i enhetens inställningar.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Du måste tillåta att appen visar helskärmsaviseringar, annars kan du missa några inkommande samtal.</string>
+    <string name="allow_notifications_incoming_calls">Du måste tillåta att appen visar aviseringar, annars kan den inte visa inkommande samtal.</string>
+    <string name="grant_permission">Bevilja behörighet</string>
+    <string name="permission_required">Behörighet krävs</string>
+    <string name="no_app_found">Ingen giltig app hittades</string>
+</resources>

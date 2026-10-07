@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">Iawn</string>
+    <string name="delete">Dileu</string>
+    <string name="cancel">Diddymu</string>
+    <string name="yes">Ydw</string>
+    <string name="no">Nac ydw</string>
+    <string name="back">Nôl</string>
+    <string name="zero">Sero</string>
+    <string name="one">Un</string>
+    <string name="two">Dau</string>
+    <string name="three">Tri</string>
+    <string name="four">Pedwar</string>
+    <string name="five">Pump</string>
+    <string name="six">Chwech</string>
+    <string name="seven">Saith</string>
+    <string name="eight">Wyth</string>
+    <string name="nine">Naw</string>
+    <string name="unknown_error_occurred">Bu gwall anhysbys</string>
+    <string name="notifications_disabled">Mae hysbysiadau\'r ap hwn wedi\'u hanalluogi. Galluoga nhw yng ngosodiadau dy ddyfais.</string>
+    <string name="no_app_found">Ni chanfuwyd ap dilys</string>
+</resources>

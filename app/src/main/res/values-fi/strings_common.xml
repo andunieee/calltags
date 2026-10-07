@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">OK</string>
+    <string name="delete">Poista</string>
+    <string name="call">Soita</string>
+    <string name="cancel">Peruuta</string>
+    <string name="yes">Kyllä</string>
+    <string name="no">Peruuta</string>
+    <string name="back">Takaisin</string>
+    <string name="zero">Nolla</string>
+    <string name="one">Yksi</string>
+    <string name="two">Kaksi</string>
+    <string name="three">Kolme</string>
+    <string name="four">Neljä</string>
+    <string name="five">Viisi</string>
+    <string name="six">Kuusi</string>
+    <string name="seven">Seitsemän</string>
+    <string name="eight">Kahdeksan</string>
+    <string name="nine">Yhdeksän</string>
+    <string name="unknown_error_occurred">Tapahtui tuntematon virhe</string>
+    <string name="notifications_disabled">Tämän sovelluksen ilmoitukset ovat poissa käytöstä. Kytke ilmoitukset päälle laitteesi asetuksista.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">Salli sovelluksen koko näytön ilmoitusten näyttäminen; muuten osa tulevista puheluista saattaa jäädä näyttämättä.</string>
+    <string name="allow_notifications_incoming_calls">Salli sovelluksen ilmoitusten näyttäminen, jotta tulevat puhelut voidaan näyttää.</string>
+    <string name="grant_permission">Anna käyttöoikeus</string>
+    <string name="permission_required">Käyttöoikeus vaaditaan</string>
+    <string name="no_app_found">Sovelluksia ei löydetty</string>
+</resources>

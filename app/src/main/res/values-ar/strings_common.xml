@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ok">موافق</string>
+    <string name="delete">حذف</string>
+    <string name="call">اتصال</string>
+    <string name="cancel">إلغاء</string>
+    <string name="yes">نعم</string>
+    <string name="no">لا</string>
+    <string name="back">العودة</string>
+    <string name="zero">صفر</string>
+    <string name="one">واحد</string>
+    <string name="two">اثنان</string>
+    <string name="three">ثلاثة</string>
+    <string name="four">أربعة</string>
+    <string name="five">خمسة</string>
+    <string name="six">ستة</string>
+    <string name="seven">سبعة</string>
+    <string name="eight">ثمانية</string>
+    <string name="nine">تسعة</string>
+    <string name="unknown_error_occurred">حدث خطأ غير معروف</string>
+    <string name="notifications_disabled">تم تعطيل إشعارات هذا التطبيق. يرجى الإنتقال إلى إعدادات جهازك لتمكينها.</string>
+    <string name="allow_full_screen_notifications_incoming_calls">يجب أن تسمح للتطبيق بأن يظهر إخطارات الشاشة كاملة وإلا قد تفوتك بعض المكالمات الواردة.</string>
+    <string name="allow_notifications_incoming_calls">يجب أن تسمح للتطبيق بعرض الإشعارات ، وإلا فلن يتمكن من إظهار المكالمات الواردة.</string>
+    <string name="grant_permission">منح الإذن</string>
+    <string name="permission_required">الإذن مطلوب</string>
+    <string name="no_app_found">لم يتم العثور على تطبيق صالح</string>
+</resources>

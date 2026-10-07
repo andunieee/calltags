@@ -1,24 +1,13 @@
 package org.fossify.phone.extensions
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.telecom.PhoneAccount
 import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
-import org.fossify.commons.R
-import org.fossify.commons.activities.BaseSimpleActivity
-import org.fossify.commons.dialogs.CallConfirmationDialog
-import org.fossify.commons.dialogs.PermissionRequiredDialog
-import org.fossify.commons.extensions.canUseFullScreenIntent
-import org.fossify.commons.extensions.isDefaultDialer
-import org.fossify.commons.extensions.launchActivityIntent
-import org.fossify.commons.extensions.openFullScreenIntentSettings
-import org.fossify.commons.extensions.openNotificationSettings
-import org.fossify.commons.extensions.telecomManager
-import org.fossify.commons.helpers.PERMISSION_CALL_PHONE
-import org.fossify.commons.helpers.PERMISSION_READ_PHONE_STATE
-import org.fossify.phone.BuildConfig
+import org.fossify.phone.R
 import org.fossify.phone.activities.DialerActivity
 import org.fossify.phone.activities.SimpleActivity
 import org.fossify.phone.dialogs.SelectSIMDialog
@@ -40,23 +29,9 @@ fun SimpleActivity.startCallIntent(
     }
 }
 
-fun SimpleActivity.startCallWithConfirmationCheck(
-    recipient: String,
-    name: String,
-    forceSimSelector: Boolean = false
-) {
-    if (config.showCallConfirmation) {
-        CallConfirmationDialog(this, name) {
-            startCallIntent(recipient, forceSimSelector)
-        }
-    } else {
-        startCallIntent(recipient, forceSimSelector)
-    }
-}
-
-private fun BaseSimpleActivity.launchAppCallIntent(recipient: String, handle: PhoneAccountHandle? = null) {
+private fun SimpleActivity.launchAppCallIntent(recipient: String, handle: PhoneAccountHandle? = null) {
     if (isDefaultDialer()) {
-        handlePermission(PERMISSION_CALL_PHONE) { hasPermission ->
+        handlePermission(Manifest.permission.CALL_PHONE) { hasPermission ->
             val action = if (hasPermission) Intent.ACTION_CALL else Intent.ACTION_DIAL
             val intent = Intent(action).apply {
                 data = Uri.fromParts("tel", recipient, null)
@@ -90,7 +65,7 @@ fun SimpleActivity.getHandleToUse(
     forceSimSelector: Boolean = false,
     callback: (handle: PhoneAccountHandle?) -> Unit
 ) {
-    handlePermission(PERMISSION_READ_PHONE_STATE) {
+    handlePermission(Manifest.permission.READ_PHONE_STATE) {
         if (it) {
             val defaultHandle =
                 telecomManager.getDefaultOutgoingPhoneAccount(PhoneAccount.SCHEME_TEL)
@@ -132,28 +107,17 @@ fun SimpleActivity.handleFullScreenNotificationsPermission(callback: (granted: B
             if (canUseFullScreenIntent()) {
                 callback(true)
             } else {
-                PermissionRequiredDialog(
-                    activity = this,
+                showPermissionRequiredDialog(
                     textId = R.string.allow_full_screen_notifications_incoming_calls,
-                    positiveActionCallback = {
-                        @SuppressLint("NewApi")
-                        openFullScreenIntentSettings(BuildConfig.APPLICATION_ID)
-                    },
-                    negativeActionCallback = {
-                        callback(false)
-                    }
+                    onGrant = { openFullScreenIntentSettings() },
+                    onCancel = { callback(false) }
                 )
             }
         } else {
-            PermissionRequiredDialog(
-                activity = this,
+            showPermissionRequiredDialog(
                 textId = R.string.allow_notifications_incoming_calls,
-                positiveActionCallback = {
-                    openNotificationSettings()
-                },
-                negativeActionCallback = {
-                    callback(false)
-                }
+                onGrant = { openNotificationSettings() },
+                onCancel = { callback(false) }
             )
         }
     }
