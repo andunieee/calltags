@@ -54,6 +54,7 @@ import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.DIALPAD_TONE_LENGTH_MS
 import com.calltags.app.helpers.TAB_DIALPAD
 import com.calltags.app.helpers.TAB_HISTORY
+import com.calltags.app.helpers.T9
 import com.calltags.app.helpers.ToneGeneratorHelper
 import com.calltags.app.models.Events
 import com.calltags.app.models.LoggedCall
@@ -68,8 +69,10 @@ class MainActivity : SimpleActivity() {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private lateinit var historyAdapter: CallHistoryAdapter
+    private var historyQuery = ""
     private var historyQueryGeneration = 0
-    private var knownLabelsGeneration = 0
+    private lateinit var dialpadResultsAdapter: CallHistoryAdapter
+    private var dialpadSearchGeneration = 0
 
     private var toneGeneratorHelper: ToneGeneratorHelper? = null
     private val longPressTimeout = ViewConfiguration.getLongPressTimeout().toLong()
@@ -264,6 +267,19 @@ class MainActivity : SimpleActivity() {
             setupCharClick(dialpadHashtagHolder, '#', longClickable = false)
         }
 
+        dialpadResultsAdapter = CallHistoryAdapter(
+            onCallClick = { call ->
+                binding.dialpadInput.setText(call.number)
+                binding.dialpadInput.setSelection(call.number.length)
+            },
+            onDialClick = { call -> startCallIntent(call.number) },
+            onLabelClick = { label ->
+                selectTab(TAB_HISTORY)
+                binding.historySearch.setText(label)
+            }
+        )
+        binding.dialpadResults.adapter = dialpadResultsAdapter
+
         binding.apply {
             dialpadClearChar.setOnClickListener { clearChar(it) }
             dialpadClearChar.setOnLongClickListener { dialpadInput.setText(""); true }
@@ -286,25 +302,36 @@ class MainActivity : SimpleActivity() {
             return
         }
 
-        showKnownLabels(text)
+        searchDialpad(text)
     }
 
-    /** Shows the labels previously given to calls from the number being typed. */
-    private fun showKnownLabels(number: String) {
-        val generation = ++knownLabelsGeneration
-        if (CallHistoryDb.digitsOf(number).length < MIN_DIGITS_FOR_LABEL_LOOKUP) {
-            binding.dialpadKnownLabels.isVisible = false
+    /** Lists the known numbers whose digits, name or labels match what's being typed. */
+    private fun searchDialpad(text: String) {
+        val generation = ++dialpadSearchGeneration
+        val digits = CallHistoryDb.digitsOf(text)
+        if (digits.length < MIN_DIGITS_FOR_DIALPAD_SEARCH) {
+            showDialpadResults(digits, emptyList())
             return
         }
 
         ensureBackgroundThread {
-            val labels = db.getLabelsForNumber(number)
+            val calls = db.searchDialpad(text)
             runOnUiThread {
-                if (generation != knownLabelsGeneration) return@runOnUiThread
-                binding.dialpadKnownLabels.isVisible = labels.isNotEmpty()
-                binding.dialpadKnownLabels.text = getString(R.string.previously_labeled, labels.joinToString(", "))
+                if (generation == dialpadSearchGeneration && !isDestroyed) {
+                    showDialpadResults(digits, calls)
+                }
             }
         }
+    }
+
+    private fun showDialpadResults(digits: String, calls: List<LoggedCall>) {
+        dialpadResultsAdapter.highlight = { label -> T9.matches(label, digits) }
+        dialpadResultsAdapter.submitList(calls) {
+            // the highlighted labels change with every digit, even for rows that stay
+            dialpadResultsAdapter.notifyItemRangeChanged(0, dialpadResultsAdapter.itemCount)
+            binding.dialpadResults.scrollToPosition(0)
+        }
+        binding.dialpadResults.isVisible = calls.isNotEmpty()
     }
 
     private fun clearChar(view: View) {
@@ -452,7 +479,10 @@ class MainActivity : SimpleActivity() {
             }
             ensureBackgroundThread {
                 db.importSystemCallLog(this)
-                runOnUiThread { refreshHistory() }
+                runOnUiThread {
+                    refreshHistory()
+                    searchDialpad(binding.dialpadInput.value)
+                }
             }
         }
     }
@@ -471,8 +501,10 @@ class MainActivity : SimpleActivity() {
     }
 
     private fun showHistory(query: String, calls: List<LoggedCall>) {
-        val queryChanged = historyAdapter.highlight != query
-        historyAdapter.highlight = query
+        val queryChanged = historyQuery != query
+        historyQuery = query
+        val needle = query.trim()
+        historyAdapter.highlight = { label -> needle.isNotEmpty() && label.contains(needle, ignoreCase = true) }
         historyAdapter.submitList(calls) {
             if (queryChanged) {
                 historyAdapter.notifyItemRangeChanged(0, historyAdapter.itemCount)
@@ -527,7 +559,7 @@ class MainActivity : SimpleActivity() {
     companion object {
         private const val CALL_LOG_WRITE_DELAY_MS = 2000L
         private const val CLEAR_INPUT_DELAY_MS = 1000L
-        private const val MIN_DIGITS_FOR_LABEL_LOOKUP = 3
+        private const val MIN_DIGITS_FOR_DIALPAD_SEARCH = 2
         private const val DIALPAD_KEY_ALPHA = 20
     }
 }

@@ -19,20 +19,20 @@
             android:layout_height="match_parent"
             android:focusableInTouchMode="true">
 
-            <TextView
-                android:id="@+id/dialpad_known_labels"
+            <!-- best match at the bottom, right above the typed number -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dialpad_results"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:alpha="0.8"
-                android:gravity="center"
-                android:paddingStart="@dimen/activity_margin"
-                android:paddingEnd="@dimen/activity_margin"
-                android:paddingBottom="@dimen/medium_margin"
-                android:textSize="@dimen/normal_text_size"
+                android:layout_height="0dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
                 android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toTopOf="@+id/dialpad_input"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:reverseLayout="true" />
 
             <EditText
                 android:id="@+id/dialpad_input"

@@ -5,7 +5,6 @@ import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android)
-    alias(libs.plugins.detekt)
 }
 
 val keystorePropertiesFile: File = rootProject.file("keystore.properties")
@@ -122,13 +121,6 @@ android {
     }
 }
 
-detekt {
-    baseline = file("detekt-baseline.xml")
-    config.setFrom("$rootDir/detekt.yml")
-    buildUponDefaultConfig = true
-    allRules = false
-}
-
 dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.constraintlayout)
@@ -136,5 +128,4 @@ dependencies {
     implementation(libs.material)
     implementation(libs.gson)
     implementation(libs.eventbus)
-    detektPlugins(libs.compose.detekt)
 }

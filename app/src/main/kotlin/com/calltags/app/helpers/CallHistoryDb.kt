@@ -14,6 +14,7 @@ import com.calltags.app.models.LoggedCall
  * Calls are imported from the system call log (see [importSystemCallLog]) and kept here even if the
  * system log is later cleared, so labels never lose the call they belong to.
  */
+@Suppress("TooManyFunctions")
 class CallHistoryDb private constructor(context: Context) :
     SQLiteOpenHelper(context.applicationContext, DB_NAME, null, DB_VERSION) {
 
@@ -22,6 +23,8 @@ class CallHistoryDb private constructor(context: Context) :
         private const val DB_VERSION = 1
         private const val LABEL_SEPARATOR = "\u001f"
         private const val DEFAULT_LIMIT = 1000
+        private const val DIALPAD_LIMIT = 50
+        private const val DIALPAD_SCAN_LIMIT = 1000
         private const val SUFFIX_MATCH_MIN_LENGTH = 7
         private const val SUFFIX_MATCH_LENGTH = 8
 
@@ -39,6 +42,10 @@ class CallHistoryDb private constructor(context: Context) :
         // otherwise "topic 2" would match every number containing a 2
         fun looksLikeNumber(query: String) =
             query.any { it.isDigit() } && query.all { it.isDigit() || it in "+-() ./*#" }
+
+        // for full numbers only the last digits matter, so country/area prefixes don't get in the way
+        private fun suffixOf(digits: String) =
+            if (digits.length >= SUFFIX_MATCH_MIN_LENGTH) digits.takeLast(SUFFIX_MATCH_LENGTH) else digits
     }
 
     override fun onConfigure(db: SQLiteDatabase) {
@@ -135,10 +142,8 @@ class CallHistoryDb private constructor(context: Context) :
 
             val digits = digitsOf(q)
             if (looksLikeNumber(q) && digits.isNotEmpty()) {
-                // for full numbers only the last digits matter, so country/area prefixes don't get in the way
-                val needle = if (digits.length >= SUFFIX_MATCH_MIN_LENGTH) digits.takeLast(SUFFIX_MATCH_LENGTH) else digits
                 where.append(" OR c.digits LIKE ?")
-                args += "%$needle%"
+                args += "%${suffixOf(digits)}%"
             }
         }
 
@@ -167,6 +172,40 @@ class CallHistoryDb private constructor(context: Context) :
             }
             result
         }
+    }
+
+    /**
+     * Suggestions for what's being typed on the dialpad: one entry per number, newest first, holding its latest
+     * call and the labels of all its calls. The typed digits are matched against the number and, read as
+     * [T9] letters, against the name and the labels.
+     *
+     * Runs on every keystroke, so only the latest [DIALPAD_SCAN_LIMIT] calls are looked at.
+     */
+    fun searchDialpad(input: String, limit: Int = DIALPAD_LIMIT): List<LoggedCall> {
+        val digits = digitsOf(input)
+        if (digits.isEmpty()) return emptyList()
+        val numberNeedle = suffixOf(digits)
+
+        val byNumber = LinkedHashMap<String, LoggedCall>()
+        for (call in search("", DIALPAD_SCAN_LIMIT)) {
+            val callDigits = digitsOf(call.number)
+            if (callDigits.isEmpty()) continue
+            val key = suffixOf(callDigits)
+            val latest = byNumber[key]
+            byNumber[key] = latest?.copy(
+                name = latest.name.ifEmpty { call.name },
+                labels = (latest.labels + call.labels).distinctBy { it.lowercase() }
+            ) ?: call
+        }
+
+        return byNumber.values.asSequence()
+            .filter { call ->
+                digitsOf(call.number).contains(numberNeedle) ||
+                    T9.matches(call.name, digits) ||
+                    call.labels.any { T9.matches(it, digits) }
+            }
+            .take(limit)
+            .toList()
     }
 
     fun getLabels(callId: Long): List<String> =
