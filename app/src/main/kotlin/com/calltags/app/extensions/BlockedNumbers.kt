@@ -41,6 +41,13 @@ fun Context.addBlockedNumber(number: String): Boolean {
     }
 }
 
-fun Context.deleteBlockedNumber(number: String) {
-    BlockedNumberContract.unblock(this, number)
+/** Returns false (after telling the user) if the number could not be removed. */
+fun Context.deleteBlockedNumber(number: String): Boolean {
+    return try {
+        BlockedNumberContract.unblock(this, number)
+        true
+    } catch (e: SecurityException) {
+        showErrorToast(e)
+        false
+    }
 }

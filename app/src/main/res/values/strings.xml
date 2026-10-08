@@ -10,9 +10,8 @@
     <string name="clear_search">Clear search</string>
     <string name="no_matching_calls">No calls match your search</string>
     <string name="new_label">New label</string>
-    <string name="add_label">Add label</string>
+    <string name="remove_label">Remove label</string>
     <string name="no_labels_yet">No labels yet</string>
-    <string name="delete_call_confirmation">Remove this call and its labels from the history?</string>
     <string name="previously_labeled">Before: %s</string>
     <string name="no_previous_calls">No previous calls have been found</string>
 
@@ -60,7 +59,6 @@
     <string name="choose_audio_route">Choose audio route</string>
     <string name="calling_blocked_number">The number you are calling is blocked</string>
     <string name="block_number">Block number</string>
-    <string name="unblock_number">Unblock number</string>
     <string name="blocked">Blocked</string>
     <string name="block_number_confirmation">Block %1$s? It won\'t ring anymore, but its calls will still show in history as blocked.</string>
     <string name="number_blocked">Number blocked</string>
