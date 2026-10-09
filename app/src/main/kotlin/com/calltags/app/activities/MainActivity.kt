@@ -50,6 +50,7 @@ import com.calltags.app.extensions.disableKeyboard
 import com.calltags.app.extensions.getKeyEvent
 import com.calltags.app.extensions.handleFullScreenNotificationsPermission
 import com.calltags.app.extensions.startCallIntent
+import com.calltags.app.extensions.BlockedNumberChecker
 import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.DIALPAD_TONE_LENGTH_MS
 import com.calltags.app.helpers.TAB_DIALPAD
@@ -305,7 +306,7 @@ class MainActivity : SimpleActivity() {
         searchDialpad(text)
     }
 
-    /** Lists the known numbers whose digits, name or labels match what's being typed. */
+    /** Lists the known numbers whose digits, name or labels match what's being typed, except blocked ones. */
     private fun searchDialpad(text: String) {
         val generation = ++dialpadSearchGeneration
         val digits = CallHistoryDb.digitsOf(text)
@@ -315,7 +316,8 @@ class MainActivity : SimpleActivity() {
         }
 
         ensureBackgroundThread {
-            val calls = db.searchDialpad(text)
+            val blockedNumbers = BlockedNumberChecker(this)
+            val calls = db.searchDialpad(text, exclude = blockedNumbers::isBlocked)
             runOnUiThread {
                 if (generation == dialpadSearchGeneration && !isDestroyed) {
                     showDialpadResults(digits, calls)
@@ -446,7 +448,11 @@ class MainActivity : SimpleActivity() {
                 CallLabelsDialog(
                     activity = this,
                     call = call,
-                    onChanged = { refreshHistory() }
+                    onChanged = {
+                        refreshHistory()
+                        // a number may have been blocked or unblocked
+                        searchDialpad(binding.dialpadInput.value)
+                    }
                 )
             },
             onDialClick = { call -> startCallIntent(call.number) },
@@ -491,7 +497,8 @@ class MainActivity : SimpleActivity() {
         val query = binding.historySearch.value
         val generation = ++historyQueryGeneration
         ensureBackgroundThread {
-            val calls = db.search(query)
+            val blockedNumbers = BlockedNumberChecker(this)
+            val calls = db.search(query).map { it.copy(blocked = blockedNumbers.isBlocked(it.number)) }
             runOnUiThread {
                 if (generation == historyQueryGeneration && !isDestroyed) {
                     showHistory(query, calls)

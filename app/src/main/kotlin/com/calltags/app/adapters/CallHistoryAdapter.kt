@@ -78,7 +78,19 @@ class CallHistoryAdapter(
                 itemCallDial.isVisible = call.number.isNotEmpty()
 
                 itemCallLabels.removeAllViews()
-                itemCallLabels.isVisible = call.labels.isNotEmpty()
+                itemCallLabels.isVisible = call.blocked || call.labels.isNotEmpty()
+                if (call.blocked) {
+                    itemCallLabels.addView(Chip(context).apply {
+                        text = context.getString(R.string.blocked)
+                        setEnsureMinTouchTargetSize(false)
+                        setTextColor(missedColor)
+                        chipIcon = ContextCompat.getDrawable(context, R.drawable.ic_block_vector)
+                        chipIconTint = ColorStateList.valueOf(missedColor)
+                        chipBackgroundColor = ColorStateList.valueOf(missedColor.adjustAlpha(CHIP_ALPHA))
+                        chipStrokeWidth = 0f
+                        isClickable = false
+                    })
+                }
                 call.labels.forEach { label ->
                     val matches = highlight(label)
                     itemCallLabels.addView(Chip(context).apply {

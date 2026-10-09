@@ -180,8 +180,13 @@ class CallHistoryDb private constructor(context: Context) :
      * [T9] letters, against the name and the labels.
      *
      * Runs on every keystroke, so only the latest [DIALPAD_SCAN_LIMIT] calls are looked at.
+     * Numbers for which [exclude] returns true are left out.
      */
-    fun searchDialpad(input: String, limit: Int = DIALPAD_LIMIT): List<LoggedCall> {
+    fun searchDialpad(
+        input: String,
+        limit: Int = DIALPAD_LIMIT,
+        exclude: (String) -> Boolean = { false },
+    ): List<LoggedCall> {
         val digits = digitsOf(input)
         if (digits.isEmpty()) return emptyList()
         val numberNeedle = suffixOf(digits)
@@ -204,6 +209,7 @@ class CallHistoryDb private constructor(context: Context) :
                     T9.matches(call.name, digits) ||
                     call.labels.any { T9.matches(it, digits) }
             }
+            .filterNot { exclude(it.number) }
             .take(limit)
             .toList()
     }
