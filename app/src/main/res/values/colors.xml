@@ -3,6 +3,8 @@
     <!-- brand -->
     <color name="brand_amber">#FFF2A900</color>
     <color name="brand_amber_deep">#FFB87A00</color>
+    <color name="brand_orange">#FFF57140</color>
+    <color name="brand_orange_deep">#FFC2410C</color>
     <color name="brand_ink">#FF1C1B1A</color>
     <color name="brand_paper">#FFFAF8F4</color>
     <color name="brand_night">#FF141312</color>
@@ -13,6 +15,8 @@
     <color name="color_text">@color/brand_ink</color>
     <color name="color_primary">@color/brand_amber_deep</color>
     <color name="color_primary_dark">@color/brand_amber_deep</color>
+    <!-- call labels, a shade off the primary color that number labels use -->
+    <color name="color_call_label">@color/brand_orange_deep</color>
 
     <color name="activated_item_foreground">#44888888</color>
     <color name="divider_grey">#55808080</color>

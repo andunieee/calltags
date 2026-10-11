@@ -41,22 +41,31 @@
         android:text="@string/no_labels_yet"
         android:textStyle="italic" />
 
-    <AutoCompleteTextView
-        android:id="@+id/call_labels_input"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/medium_margin"
-        android:completionThreshold="1"
-        android:hint="@string/new_label"
-        android:imeOptions="actionDone"
-        android:importantForAutofill="no"
-        android:inputType="textCapSentences"
-        android:maxLines="1" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/call_labels_number_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/number_label" />
+        <AutoCompleteTextView
+            android:id="@+id/call_labels_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:completionThreshold="1"
+            android:hint="@string/new_label"
+            android:imeOptions="actionDone"
+            android:importantForAutofill="no"
+            android:inputType="textCapSentences"
+            android:maxLines="1" />
+
+        <ImageView
+            android:id="@+id/call_labels_scope"
+            android:layout_width="@dimen/normal_icon_size"
+            android:layout_height="@dimen/normal_icon_size"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/normal_margin"
+            android:src="@drawable/ic_label_number_vector" />
+    </LinearLayout>
 </LinearLayout>

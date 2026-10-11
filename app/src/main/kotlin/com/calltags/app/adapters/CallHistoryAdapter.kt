@@ -17,6 +17,7 @@ import com.calltags.app.extensions.adjustAlpha
 import com.calltags.app.extensions.applyColorFilter
 import com.calltags.app.extensions.formatPhoneNumber
 import com.calltags.app.extensions.getContrastColor
+import com.calltags.app.extensions.getLabelColor
 import com.calltags.app.extensions.getProperPrimaryColor
 import com.calltags.app.extensions.getProperTextColor
 import com.calltags.app.models.LoggedCall
@@ -92,15 +93,17 @@ class CallHistoryAdapter(
                     })
                 }
                 // this call's own labels, then faded the ones its number got on other calls
-                val chips = call.labels.map { it.text to false } + call.otherNumberLabels.map { it to true }
-                chips.forEach { (label, fromOtherCall) ->
+                val chips = call.labels.map { Triple(it.text, it.isNumberLabel, false) } +
+                    call.otherNumberLabels.map { Triple(it, true, true) }
+                chips.forEach { (label, isNumberLabel, fromOtherCall) ->
                     val matches = highlight(label)
+                    val color = context.getLabelColor(isNumberLabel)
                     itemCallLabels.addView(Chip(context).apply {
                         text = label
                         setEnsureMinTouchTargetSize(false)
-                        setTextColor(if (matches) primaryColor.getContrastColor() else textColor)
+                        setTextColor(if (matches) color.getContrastColor() else textColor)
                         chipBackgroundColor = ColorStateList.valueOf(
-                            if (matches) primaryColor else primaryColor.adjustAlpha(CHIP_ALPHA)
+                            if (matches) color else color.adjustAlpha(CHIP_ALPHA)
                         )
                         chipStrokeWidth = 0f
                         if (fromOtherCall) alpha = OTHER_CALL_LABEL_ALPHA

@@ -4,6 +4,7 @@ import android.text.format.DateUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -15,6 +16,7 @@ import com.calltags.app.databinding.ItemCallLabelBinding
 import com.calltags.app.extensions.addBlockedNumber
 import com.calltags.app.extensions.applyColorFilter
 import com.calltags.app.extensions.deleteBlockedNumber
+import com.calltags.app.extensions.getLabelColor
 import com.calltags.app.extensions.getProperTextColor
 import com.calltags.app.extensions.isNumberBlocked
 import com.calltags.app.extensions.showCustomDialog
@@ -26,8 +28,8 @@ import com.calltags.app.models.CallLabel
 import com.calltags.app.models.LoggedCall
 
 /**
- * Shows a single call with its labels. Labels can be removed, one new label typed (as a number label unless
- * unchecked, see [CallLabel]), and the number blocked, which shows up as a special "Blocked" label.
+ * Shows a single call with its labels. Labels can be removed, one new label typed (as a number or call label,
+ * toggled by the icon next to the input, see [CallLabel]), and the number blocked, which shows up as a special "Blocked" label.
  * Nothing is saved until OK is pressed; [onChanged] fires afterwards if anything was modified.
  */
 class CallLabelsDialog(
@@ -42,6 +44,7 @@ class CallLabelsDialog(
     // whether the number is on the system block list, null until loaded
     private var wasBlocked: Boolean? = null
     private var blocked = false
+    private var isNumberLabel = true
 
     init {
         binding.apply {
@@ -58,7 +61,11 @@ class CallLabelsDialog(
             callLabelsDetails.text = details.joinToString(" • ")
 
             callLabelsInput.setTextColor(activity.getProperTextColor())
-            callLabelsNumberLabel.setTextColor(activity.getProperTextColor())
+            callLabelsScope.setOnClickListener {
+                isNumberLabel = !isNumberLabel
+                renderScope()
+            }
+            renderScope()
             callLabelsBlock.isVisible = false
             callLabelsBlock.setOnClickListener {
                 blocked = true
@@ -125,14 +132,13 @@ class CallLabelsDialog(
         binding.callLabelsList.removeAllViews()
 
         if (blocked) {
-            addRow(activity.getString(R.string.blocked), null, blockedColor, isBlockedLabel = true) {
+            addRow(activity.getString(R.string.blocked), R.drawable.ic_block_vector, blockedColor, blockedColor) {
                 blocked = false
                 render()
             }
         }
         labels.forEach { label ->
-            val scope = if (label.isNumberLabel) null else activity.getString(R.string.this_call_only)
-            addRow(label.text, scope, textColor, isBlockedLabel = false) {
+            addRow(label.text, scopeIcon(label.isNumberLabel), activity.getLabelColor(label.isNumberLabel), textColor) {
                 labels.remove(label)
                 render()
             }
@@ -142,16 +148,25 @@ class CallLabelsDialog(
         binding.callLabelsBlock.isVisible = wasBlocked != null && !blocked
     }
 
-    private fun addRow(text: String, scope: String?, color: Int, isBlockedLabel: Boolean, onRemove: () -> Unit) {
+    private fun renderScope() {
+        binding.callLabelsScope.apply {
+            setImageResource(scopeIcon(isNumberLabel))
+            applyColorFilter(activity.getLabelColor(isNumberLabel))
+            contentDescription = activity.getString(if (isNumberLabel) R.string.number_label else R.string.call_label)
+            TooltipCompat.setTooltipText(this, contentDescription)
+        }
+    }
+
+    private fun scopeIcon(isNumberLabel: Boolean) =
+        if (isNumberLabel) R.drawable.ic_label_number_vector else R.drawable.ic_label_call_vector
+
+    private fun addRow(text: String, icon: Int, iconColor: Int, textColor: Int, onRemove: () -> Unit) {
         val row = ItemCallLabelBinding.inflate(activity.layoutInflater, binding.callLabelsList, false)
         row.callLabelText.text = text
-        row.callLabelText.setTextColor(color)
-        row.callLabelScope.text = scope
-        row.callLabelScope.setTextColor(color)
-        row.callLabelScope.isVisible = scope != null
-        row.callLabelIcon.isVisible = isBlockedLabel
-        row.callLabelIcon.applyColorFilter(color)
-        row.callLabelRemove.applyColorFilter(color)
+        row.callLabelText.setTextColor(textColor)
+        row.callLabelIcon.setImageResource(icon)
+        row.callLabelIcon.applyColorFilter(iconColor)
+        row.callLabelRemove.applyColorFilter(textColor)
         row.callLabelRemove.setOnClickListener { onRemove() }
         binding.callLabelsList.addView(row.root)
     }
@@ -162,7 +177,6 @@ class CallLabelsDialog(
         val added = newLabel.takeIf { label ->
             label.isNotEmpty() && labels.none { it.text.equals(label, ignoreCase = true) }
         }
-        val isNumberLabel = binding.callLabelsNumberLabel.isChecked
         val blockChange = wasBlocked?.let { if (it != blocked) blocked else null }
         if (removed.isEmpty() && added == null && blockChange == null) return
 
