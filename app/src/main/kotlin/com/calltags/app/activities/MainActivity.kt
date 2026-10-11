@@ -204,8 +204,8 @@ class MainActivity : SimpleActivity() {
 
     private fun setupTabs() {
         binding.mainTabs.apply {
-            addTab(newTab().setIcon(R.drawable.ic_dialpad_vector).setText(R.string.dialpad).setTag(TAB_DIALPAD))
-            addTab(newTab().setIcon(R.drawable.ic_clock_vector).setText(R.string.history).setTag(TAB_HISTORY))
+            addTab(newTab().setIcon(R.drawable.ic_dialpad_vector).setContentDescription(R.string.dialpad).setTag(TAB_DIALPAD))
+            addTab(newTab().setIcon(R.drawable.ic_clock_vector).setContentDescription(R.string.history).setTag(TAB_HISTORY))
             addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab) = showTab(tab.tag as Int)
                 override fun onTabUnselected(tab: TabLayout.Tab) {}
