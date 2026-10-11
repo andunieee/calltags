@@ -9,6 +9,8 @@
     <string name="search_numbers_or_labels">Search numbers or labels</string>
     <string name="clear_search">Clear search</string>
     <string name="no_matching_calls">No calls match your search</string>
+    <string name="only_labeled_calls">Only show calls with labels</string>
+    <string name="no_labeled_calls">No calls have labels yet</string>
     <string name="new_label">New label</string>
     <string name="remove_label">Remove label</string>
     <string name="no_labels_yet">No labels yet</string>
