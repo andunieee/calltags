@@ -78,7 +78,7 @@ class CallHistoryAdapter(
                 itemCallDial.isVisible = call.number.isNotEmpty()
 
                 itemCallLabels.removeAllViews()
-                itemCallLabels.isVisible = call.blocked || call.labels.isNotEmpty()
+                itemCallLabels.isVisible = call.blocked || call.labels.isNotEmpty() || call.otherNumberLabels.isNotEmpty()
                 if (call.blocked) {
                     itemCallLabels.addView(Chip(context).apply {
                         text = context.getString(R.string.blocked)
@@ -91,7 +91,9 @@ class CallHistoryAdapter(
                         isClickable = false
                     })
                 }
-                call.labels.forEach { label ->
+                // this call's own labels, then faded the ones its number got on other calls
+                val chips = call.labels.map { it.text to false } + call.otherNumberLabels.map { it to true }
+                chips.forEach { (label, fromOtherCall) ->
                     val matches = highlight(label)
                     itemCallLabels.addView(Chip(context).apply {
                         text = label
@@ -101,6 +103,7 @@ class CallHistoryAdapter(
                             if (matches) primaryColor else primaryColor.adjustAlpha(CHIP_ALPHA)
                         )
                         chipStrokeWidth = 0f
+                        if (fromOtherCall) alpha = OTHER_CALL_LABEL_ALPHA
                         setOnClickListener { onLabelClick(label) }
                     })
                 }
@@ -114,6 +117,7 @@ class CallHistoryAdapter(
     companion object {
         private const val MUTED_ALPHA = 0.5f
         private const val CHIP_ALPHA = 0.22f
+        private const val OTHER_CALL_LABEL_ALPHA = 0.45f
 
         fun formatDuration(seconds: Int): String {
             val h = seconds / 3600

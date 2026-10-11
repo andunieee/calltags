@@ -14,6 +14,8 @@
     <string name="new_label">New label</string>
     <string name="remove_label">Remove label</string>
     <string name="no_labels_yet">No labels yet</string>
+    <string name="number_label">Number label (also show on other calls from this number)</string>
+    <string name="this_call_only">this call only</string>
     <string name="previously_labeled">Before: %s</string>
     <string name="no_previous_calls">No previous calls have been found</string>
 

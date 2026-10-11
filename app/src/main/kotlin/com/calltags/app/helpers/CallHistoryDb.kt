@@ -6,6 +6,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.CallLog.Calls
+import com.calltags.app.models.CallLabel
 import com.calltags.app.models.LoggedCall
 
 /**
@@ -13,6 +14,9 @@ import com.calltags.app.models.LoggedCall
  *
  * Calls are imported from the system call log (see [importSystemCallLog]) and kept here even if the
  * system log is later cleared, so labels never lose the call they belong to.
+ *
+ * Every label belongs to one call. Number labels (`number_label = 1`) also describe the number itself, see
+ * [getNumberLabelIndex]; call labels only belong to their call.
  */
 @Suppress("TooManyFunctions")
 class CallHistoryDb private constructor(context: Context) :
@@ -20,7 +24,7 @@ class CallHistoryDb private constructor(context: Context) :
 
     companion object {
         private const val DB_NAME = "call_history.db"
-        private const val DB_VERSION = 1
+        private const val DB_VERSION = 2
         private const val LABEL_SEPARATOR = "\u001f"
         private const val DEFAULT_LIMIT = 1000
         private const val DIALPAD_LIMIT = 50
@@ -73,6 +77,7 @@ class CallHistoryDb private constructor(context: Context) :
             CREATE TABLE labels (
                 call_id INTEGER NOT NULL REFERENCES calls (id) ON DELETE CASCADE,
                 label TEXT NOT NULL COLLATE NOCASE,
+                number_label INTEGER NOT NULL DEFAULT 1,
                 PRIMARY KEY (call_id, label)
             )
             """.trimIndent()
@@ -80,7 +85,12 @@ class CallHistoryDb private constructor(context: Context) :
         db.execSQL("CREATE INDEX labels_label ON labels (label)")
     }
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) {
+            // labels from before the distinction existed become number labels, the default for new ones too
+            db.execSQL("ALTER TABLE labels ADD COLUMN number_label INTEGER NOT NULL DEFAULT 1")
+        }
+    }
 
     /** Copies any calls from the system call log we don't have yet. Returns how many were added. */
     @SuppressLint("MissingPermission")
@@ -156,18 +166,28 @@ class CallHistoryDb private constructor(context: Context) :
         val where = if (conditions.isEmpty()) "" else conditions.joinToString(" AND ", prefix = "WHERE ")
 
         val sql = """
-            SELECT c.id, c.number, c.name, c.date, c.duration, c.type,
-                (SELECT group_concat(label, '$LABEL_SEPARATOR')
-                    FROM (SELECT label FROM labels WHERE call_id = c.id ORDER BY rowid))
+            SELECT c.id, c.number, c.name, c.date, c.duration, c.type, c.digits,
+                (SELECT group_concat(number_label || label, '$LABEL_SEPARATOR')
+                    FROM (SELECT number_label, label FROM labels WHERE call_id = c.id ORDER BY rowid))
             FROM calls c
             $where
             ORDER BY c.date DESC
             LIMIT $limit
         """.trimIndent()
 
+        val index = getNumberLabelIndex()
         return readableDatabase.rawQuery(sql, args.toTypedArray()).use {
             val result = ArrayList<LoggedCall>(it.count)
             while (it.moveToNext()) {
+                // each label comes prefixed with its number_label flag, '1' or '0'
+                val labels = it.getString(7)?.split(LABEL_SEPARATOR).orEmpty()
+                    .map { encoded -> CallLabel(encoded.substring(1), isNumberLabel = encoded[0] == '1') }
+                val digits = it.getString(6)
+                val otherNumberLabels = if (digits.isEmpty()) emptyList() else {
+                    index[suffixOf(digits)].orEmpty().filter { label ->
+                        labels.none { own -> own.text.equals(label, ignoreCase = true) }
+                    }
+                }
                 result += LoggedCall(
                     id = it.getLong(0),
                     number = it.getString(1),
@@ -175,7 +195,8 @@ class CallHistoryDb private constructor(context: Context) :
                     date = it.getLong(3),
                     duration = it.getInt(4),
                     type = it.getInt(5),
-                    labels = it.getString(6)?.split(LABEL_SEPARATOR).orEmpty()
+                    labels = labels,
+                    otherNumberLabels = otherNumberLabels,
                 )
             }
             result
@@ -183,8 +204,34 @@ class CallHistoryDb private constructor(context: Context) :
     }
 
     /**
+     * Maps each number, by its [suffixOf] digits, to the distinct number labels any of its calls got, most recent
+     * first. Call labels are never part of it.
+     *
+     * It is derived from the labels table on every call rather than stored, so it can't go stale when labels
+     * change. Labels are typed by hand, so there are few enough of them to read them all.
+     */
+    fun getNumberLabelIndex(): Map<String, List<String>> {
+        val sql = """
+            SELECT c.digits, l.label FROM labels l JOIN calls c ON c.id = l.call_id
+            WHERE l.number_label = 1 AND c.digits != ''
+            GROUP BY c.digits, l.label
+            ORDER BY MAX(c.date) DESC
+        """.trimIndent()
+        val index = HashMap<String, MutableList<String>>()
+        readableDatabase.rawQuery(sql, null).use {
+            while (it.moveToNext()) {
+                val labels = index.getOrPut(suffixOf(it.getString(0))) { ArrayList() }
+                val label = it.getString(1)
+                // the same number can be stored with different prefixes, so the same label may come twice
+                if (labels.none { known -> known.equals(label, ignoreCase = true) }) labels += label
+            }
+        }
+        return index
+    }
+
+    /**
      * Suggestions for what's being typed on the dialpad: one entry per number, newest first, holding its latest
-     * call and the labels of all its calls. The typed digits are matched against the number and, read as
+     * call, with its own labels and the number labels of the other calls. The typed digits are matched against the number and, read as
      * [T9] letters, against the name and the labels.
      *
      * Runs on every keystroke, so only the latest [DIALPAD_SCAN_LIMIT] calls are looked at.
@@ -205,48 +252,27 @@ class CallHistoryDb private constructor(context: Context) :
             if (callDigits.isEmpty()) continue
             val key = suffixOf(callDigits)
             val latest = byNumber[key]
-            byNumber[key] = latest?.copy(
-                name = latest.name.ifEmpty { call.name },
-                labels = (latest.labels + call.labels).distinctBy { it.lowercase() }
-            ) ?: call
+            byNumber[key] = latest?.copy(name = latest.name.ifEmpty { call.name }) ?: call
         }
 
         return byNumber.values.asSequence()
             .filter { call ->
                 digitsOf(call.number).contains(numberNeedle) ||
                     T9.matches(call.name, digits) ||
-                    call.labels.any { T9.matches(it, digits) }
+                    call.labels.any { T9.matches(it.text, digits) } ||
+                    call.otherNumberLabels.any { T9.matches(it, digits) }
             }
             .filterNot { exclude(it.number) }
             .take(limit)
             .toList()
     }
 
-    fun getLabels(callId: Long): List<String> =
-        readableDatabase.rawQuery("SELECT label FROM labels WHERE call_id = ? ORDER BY rowid", arrayOf(callId.toString())).use {
-            buildList { while (it.moveToNext()) add(it.getString(0)) }
-        }
-
-    /** Distinct labels previously given to any call from [number], most recent first. */
+    /** Distinct number labels previously given to any call from [number], most recent first. */
     fun getLabelsForNumber(number: String): List<String> {
         val digits = digitsOf(number)
         if (digits.isEmpty()) return emptyList()
-
         // long numbers are compared by their last digits so "0119..." and "+55119..." are the same
-        val (condition, arg) = if (digits.length >= SUFFIX_MATCH_MIN_LENGTH) {
-            "c.digits LIKE ?" to "%" + digits.takeLast(SUFFIX_MATCH_LENGTH)
-        } else {
-            "c.digits = ?" to digits
-        }
-        val sql = """
-            SELECT l.label FROM labels l JOIN calls c ON c.id = l.call_id
-            WHERE $condition
-            GROUP BY l.label
-            ORDER BY MAX(c.date) DESC
-        """.trimIndent()
-        return readableDatabase.rawQuery(sql, arrayOf(arg)).use {
-            buildList { while (it.moveToNext()) add(it.getString(0)) }
-        }
+        return getNumberLabelIndex()[suffixOf(digits)].orEmpty()
     }
 
     /** Every label ever used, most used first; handy for autocompletion. */
@@ -255,12 +281,13 @@ class CallHistoryDb private constructor(context: Context) :
             buildList { while (it.moveToNext()) add(it.getString(0)) }
         }
 
-    fun addLabel(callId: Long, label: String) {
+    fun addLabel(callId: Long, label: String, isNumberLabel: Boolean = true) {
         val clean = label.trim()
         if (clean.isEmpty()) return
         val values = ContentValues().apply {
             put("call_id", callId)
             put("label", clean)
+            put("number_label", if (isNumberLabel) 1 else 0)
         }
         writableDatabase.insertWithOnConflict("labels", null, values, SQLiteDatabase.CONFLICT_IGNORE)
     }
