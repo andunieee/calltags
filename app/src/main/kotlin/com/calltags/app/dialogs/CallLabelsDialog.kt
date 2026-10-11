@@ -144,7 +144,6 @@ class CallLabelsDialog(
             }
         }
 
-        binding.callLabelsEmpty.isVisible = labels.isEmpty() && !blocked
         binding.callLabelsBlock.isVisible = wasBlocked != null && !blocked
     }
 
