@@ -46,6 +46,9 @@ class CallLabelsDialog(
     private var blocked = false
     private var isNumberLabel = true
 
+    // existing labels offered while typing, only for call labels; null until loaded
+    private var suggestions: ArrayAdapter<String>? = null
+
     init {
         binding.apply {
             val details = arrayListOf(
@@ -100,11 +103,10 @@ class CallLabelsDialog(
 
     private fun loadSuggestions() {
         ensureBackgroundThread {
-            val suggestions = db.getAllLabels()
+            val labels = db.getAllLabels()
             activity.runOnUiThread {
-                binding.callLabelsInput.setAdapter(
-                    ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, suggestions)
-                )
+                suggestions = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, labels)
+                renderScope()
             }
         }
     }
@@ -153,6 +155,10 @@ class CallLabelsDialog(
             applyColorFilter(activity.getLabelColor(isNumberLabel))
             contentDescription = activity.getString(if (isNumberLabel) R.string.number_label else R.string.call_label)
             TooltipCompat.setTooltipText(this, contentDescription)
+        }
+        binding.callLabelsInput.apply {
+            if (isNumberLabel) dismissDropDown()
+            setAdapter(if (isNumberLabel) null else suggestions)
         }
     }
 
