@@ -31,6 +31,7 @@ Other people may find it useful for labeling other things, like the topic of eac
 ## Install
 
 - **[Obtainium](https://obtainium.imranr.dev):** add `https://github.com/andunieee/calltags`, or tap [Get it on Obtainium](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/andunieee/calltags) on your phone.
+- **Zapstore:** install [Zapstore](https://zapstore.dev) and search for CallTags.
 - **Manually:** download the APK from [Releases](https://github.com/andunieee/calltags/releases).
 
 ## Building
@@ -38,6 +39,13 @@ Other people may find it useful for labeling other things, like the topic of eac
 ```sh
 ./gradlew assembleDebug
 ```
+
+## Releasing
+
+Pushing a `v1.2.3` tag runs `.github/workflows/release.yml`, which builds and signs the APK, creates the GitHub release and publishes it to Zapstore (`zapstore.yaml`). It needs these repository secrets:
+
+- `SIGNING_KEYSTORE_BASE64`, `SIGNING_STORE_PASSWORD`, `SIGNING_KEY_ALIAS`, `SIGNING_KEY_PASSWORD`: the release keystore, base64-encoded, and its passwords.
+- `ZAPSTORE_OWNER_NSEC`: the `nsec` (or a `bunker://` URL) of the Nostr key that owns the Zapstore listing. The publish step (`packaging/zapstore`) signs the NIP-C1 certificate proof with the release keystore, so it has to be the same key that signed the APK.
 
 ## License
 

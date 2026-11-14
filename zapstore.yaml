@@ -1,5 +1,9 @@
+# Zapstore listing for the Android build. Published by the "Publish to Zapstore"
+# step in .github/workflows/release.yml after the APK is attached to the release.
+# The listing is owned by the key in the ZAPSTORE_OWNER_NSEC secret.
 repository: https://github.com/andunieee/calltags
-pubkey: npub1ewsn5m4p2qfvpx2qjfvnghe5ca4phx6d3ccpqad9sr4ccg9utewsfmk8su
+release_filter: '^v[0-9]+\.[0-9]+\.[0-9]+$'
+match: '^calltags-.*\.apk$'
 name: CallTags
 summary: A phone app that lets you label calls and search them later.
 description: |

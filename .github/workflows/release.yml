@@ -75,3 +75,36 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" dist/*.apk
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: packaging/zapstore/go.mod
+          cache-dependency-path: packaging/zapstore/go.sum
+
+      # Publishes the APK from the release just created. Needs ZAPSTORE_OWNER_NSEC:
+      # the nsec (or bunker:// URL) of the Nostr key that owns the listing.
+      # packaging/zapstore makes the NIP-C1 certificate proof from the release
+      # keystore, so the SIGNING_* secrets are needed too.
+      - name: Publish to Zapstore
+        env:
+          SIGN_WITH: ${{ secrets.ZAPSTORE_OWNER_NSEC }}
+          GITHUB_TOKEN: ${{ github.token }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SIGN_WITH" ]; then
+            echo "::warning::ZAPSTORE_OWNER_NSEC is not set, skipping the Zapstore publish"
+            exit 0
+          fi
+          # packaging/zapstore reads PKCS#12; convert the release JKS keystore.
+          keytool -importkeystore -noprompt \
+            -srckeystore "$SIGNING_STORE_FILE" -srcstorepass "$SIGNING_STORE_PASSWORD" \
+            -srcalias "$SIGNING_KEY_ALIAS" -srckeypass "$SIGNING_KEY_PASSWORD" \
+            -destkeystore "$RUNNER_TEMP/release.p12" -deststoretype PKCS12 \
+            -deststorepass "$SIGNING_STORE_PASSWORD" -destkeypass "$SIGNING_STORE_PASSWORD"
+          export ANDROID_KEYSTORE="$RUNNER_TEMP/release.p12"
+          export ANDROID_KEYSTORE_PASSWORD="$SIGNING_STORE_PASSWORD"
+          (cd packaging/zapstore && go build -o "$RUNNER_TEMP/zapstore" .)
+          "$RUNNER_TEMP/zapstore"
