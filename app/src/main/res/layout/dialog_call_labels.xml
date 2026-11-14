@@ -16,14 +16,14 @@
         android:alpha="0.8"
         android:textSize="@dimen/normal_text_size" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/call_labels_block"
-        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-        android:layout_width="wrap_content"
+    <!-- labels set to be suggested, one tap adds them -->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/call_labels_suggestions"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/medium_margin"
-        android:text="@string/block_number"
-        app:icon="@drawable/ic_block_vector" />
+        android:visibility="gone"
+        app:chipSpacingVertical="0dp" />
 
     <LinearLayout
         android:id="@+id/call_labels_list"

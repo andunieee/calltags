@@ -25,6 +25,8 @@ import android.view.animation.OvershootInterpolator
 import android.widget.ImageView
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.postDelayed
+import androidx.core.text.buildSpannedString
+import androidx.core.text.color
 import androidx.core.view.children
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
@@ -580,6 +582,7 @@ class CallActivity : SimpleActivity() {
 
     // remind the user what earlier calls with this number were about
     private fun showCallerHistory(number: String) {
+        binding.callerHighlightedLabels.isVisible = false
         binding.callerPreviousLabels.isVisible = false
         binding.callerHistory.isVisible = false
         if (number.isEmpty()) return
@@ -587,10 +590,22 @@ class CallActivity : SimpleActivity() {
             val db = CallHistoryDb.getInstance(this)
             // the history is otherwise only refreshed when the main screen opens, calls made since then would be missing
             db.importSystemCallLog(this)
-            val labels = db.getLabelsForNumber(number)
+            val properties = db.getLabelProperties()
+            val (highlighted, labels) = db.getLabelsForNumber(number).partition {
+                properties[it.lowercase()]?.highlight == true
+            }
             val history = db.getCallerHistory(number)
             runOnUiThread {
                 if (callContact?.number != number) return@runOnUiThread
+                if (highlighted.isNotEmpty()) {
+                    binding.callerHighlightedLabels.text = buildSpannedString {
+                        highlighted.forEachIndexed { index, label ->
+                            if (index > 0) append(" · ")
+                            color(getNumberLabelColor(properties[label.lowercase()])) { append(label) }
+                        }
+                    }
+                    binding.callerHighlightedLabels.isVisible = true
+                }
                 if (labels.isNotEmpty()) {
                     binding.callerPreviousLabels.text = labels.joinToString(", ")
                     binding.callerPreviousLabels.isVisible = true
@@ -791,7 +806,7 @@ class CallActivity : SimpleActivity() {
         if (number.isEmpty()) return
         showConfirmationDialog(getString(R.string.block_number_confirmation, number)) {
             ensureBackgroundThread {
-                val added = addBlockedNumber(number)
+                val added = CallHistoryDb.getInstance(this).addNumberLabel(number, getBlockingLabel())
                 runOnUiThread {
                     if (added) {
                         toast(R.string.number_blocked)

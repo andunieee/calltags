@@ -28,6 +28,19 @@
     <color name="md_red_500_dark">#FFF21F0F</color>
     <color name="md_red_700">#FFD32F2F</color>
 
+    <!-- colors a label can be given, readable on both the light and the dark background -->
+    <array name="label_colors">
+        <item>#FFE53935</item>
+        <item>#FFF57C00</item>
+        <item>#FF43A047</item>
+        <item>#FF00897B</item>
+        <item>#FF1E88E5</item>
+        <item>#FF5E35B1</item>
+        <item>#FFD81B60</item>
+        <item>#FF8D6E63</item>
+        <item>#FF78909C</item>
+    </array>
+
     <color name="ripple_foreground">#33FFFFFF</color>
     <color name="color_missed_call">@color/md_red_500_dark</color>
 </resources>

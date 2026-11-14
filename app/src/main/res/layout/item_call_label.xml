@@ -21,7 +21,7 @@
         android:layout_height="20dp"
         android:layout_marginEnd="@dimen/medium_margin"
         android:importantForAccessibility="no"
-        android:src="@drawable/ic_block_vector" />
+        android:src="@drawable/ic_label_number_vector" />
 
     <TextView
         android:id="@+id/call_label_text"

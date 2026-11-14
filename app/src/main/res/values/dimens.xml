@@ -28,6 +28,9 @@
 
     <dimen name="caller_name_text_size">34sp</dimen>
     <dimen name="call_status_text_size">20sp</dimen>
+    <dimen name="highlighted_label_text_size">28sp</dimen>
+    <dimen name="label_card_title_text_size">18sp</dimen>
+    <dimen name="color_swatch_size">32dp</dimen>
 
     <!-- keep these 2 values in dp to avoid scaling -->
     <dimen name="dialpad_text_size">28dp</dimen>

@@ -50,7 +50,7 @@ import com.calltags.app.extensions.disableKeyboard
 import com.calltags.app.extensions.getKeyEvent
 import com.calltags.app.extensions.handleFullScreenNotificationsPermission
 import com.calltags.app.extensions.startCallIntent
-import com.calltags.app.extensions.BlockedNumberChecker
+import com.calltags.app.extensions.migrateSystemBlockList
 import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.DIALPAD_TONE_LENGTH_MS
 import com.calltags.app.helpers.TAB_DIALPAD
@@ -58,6 +58,7 @@ import com.calltags.app.helpers.TAB_HISTORY
 import com.calltags.app.helpers.T9
 import com.calltags.app.helpers.ToneGeneratorHelper
 import com.calltags.app.models.Events
+import com.calltags.app.models.LabelProperties
 import com.calltags.app.models.LoggedCall
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -307,7 +308,7 @@ class MainActivity : SimpleActivity() {
         searchDialpad(text)
     }
 
-    /** Lists the known numbers whose digits, name or labels match what's being typed, except blocked ones. */
+    /** Lists the known numbers whose digits, name or labels match what's being typed, except blocked or hidden ones. */
     private fun searchDialpad(text: String) {
         val generation = ++dialpadSearchGeneration
         val digits = CallHistoryDb.digitsOf(text)
@@ -317,10 +318,13 @@ class MainActivity : SimpleActivity() {
         }
 
         ensureBackgroundThread {
-            val blockedNumbers = BlockedNumberChecker(this)
-            val calls = db.searchDialpad(text, exclude = blockedNumbers::isBlocked)
+            val properties = db.getLabelProperties()
+            val calls = db.searchDialpad(text, exclude = { call ->
+                call.numberLabels.any { properties[it.lowercase()].let { p -> p != null && (p.block || p.hide) } }
+            })
             runOnUiThread {
                 if (generation == dialpadSearchGeneration && !isDestroyed) {
+                    dialpadResultsAdapter.properties = properties
                     showDialpadResults(digits, calls)
                 }
             }
@@ -451,7 +455,7 @@ class MainActivity : SimpleActivity() {
                     call = call,
                     onChanged = {
                         refreshHistory()
-                        // a number may have been blocked or unblocked
+                        // a number may have been blocked, unblocked or hidden
                         searchDialpad(binding.dialpadInput.value)
                     }
                 )
@@ -477,6 +481,10 @@ class MainActivity : SimpleActivity() {
         }
         binding.historySearchClear.setOnClickListener { binding.historySearch.setText("") }
 
+        binding.historyLabelProperties.setOnClickListener {
+            startActivity(Intent(this, LabelPropertiesActivity::class.java))
+        }
+
         binding.historyLabeledOnly.setOnClickListener {
             config.historyLabeledOnly = !config.historyLabeledOnly
             updateLabeledOnlyButton()
@@ -497,6 +505,8 @@ class MainActivity : SimpleActivity() {
             }
             ensureBackgroundThread {
                 db.importSystemCallLog(this)
+                // after the import, so blocked numbers that called before get the label on their real calls
+                if (isDefaultDialer()) migrateSystemBlockList()
                 runOnUiThread {
                     refreshHistory()
                     searchDialpad(binding.dialpadInput.value)
@@ -510,27 +520,38 @@ class MainActivity : SimpleActivity() {
         val labeledOnly = config.historyLabeledOnly
         val generation = ++historyQueryGeneration
         ensureBackgroundThread {
-            val blockedNumbers = BlockedNumberChecker(this)
-            val calls = db.search(query, labeledOnly = labeledOnly).map { it.copy(blocked = blockedNumbers.isBlocked(it.number)) }
+            val properties = db.getLabelProperties()
+            // hidden calls only show up when searched for
+            val calls = db.search(query, labeledOnly = labeledOnly).filter { call ->
+                query.isNotBlank() || call.numberLabels.none { properties[it.lowercase()]?.hide == true }
+            }
             runOnUiThread {
                 if (generation == historyQueryGeneration && !isDestroyed) {
-                    showHistory(query, labeledOnly, calls)
+                    showHistory(query, labeledOnly, calls, properties)
                 }
             }
         }
     }
 
-    private fun showHistory(query: String, labeledOnly: Boolean, calls: List<LoggedCall>) {
+    private fun showHistory(
+        query: String,
+        labeledOnly: Boolean,
+        calls: List<LoggedCall>,
+        properties: Map<String, LabelProperties>,
+    ) {
         val queryChanged = historyQuery != query || historyLabeledOnly != labeledOnly
+        // label colors aren't part of the calls, so a change has to redraw every row
+        val propertiesChanged = historyAdapter.properties != properties
+        historyAdapter.properties = properties
         historyQuery = query
         historyLabeledOnly = labeledOnly
         val needle = query.trim()
         historyAdapter.highlight = { label -> needle.isNotEmpty() && label.contains(needle, ignoreCase = true) }
         historyAdapter.submitList(calls) {
-            if (queryChanged) {
+            if (queryChanged || propertiesChanged) {
                 historyAdapter.notifyItemRangeChanged(0, historyAdapter.itemCount)
-                binding.historyList.scrollToPosition(0)
             }
+            if (queryChanged) binding.historyList.scrollToPosition(0)
         }
         binding.historyPlaceholder.isVisible = calls.isEmpty()
         binding.historyPlaceholder.setText(
@@ -570,6 +591,7 @@ class MainActivity : SimpleActivity() {
         binding.historySearchHolder.background?.applyColorFilter(textColor.adjustAlpha(0.08f))
         binding.historySearchIcon.applyColorFilter(textColor)
         binding.historySearchClear.applyColorFilter(textColor)
+        binding.historyLabelProperties.applyColorFilter(textColor.adjustAlpha(0.5f))
         updateLabeledOnlyButton()
         binding.historySearch.setHintTextColor(textColor.adjustAlpha(0.5f))
 

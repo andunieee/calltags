@@ -84,6 +84,13 @@
         </activity>
 
         <activity
+            android:name=".activities.LabelPropertiesActivity"
+            android:configChanges="orientation"
+            android:exported="false"
+            android:label="@string/label_properties"
+            android:parentActivityName=".activities.MainActivity" />
+
+        <activity
             android:name=".activities.ConferenceActivity"
             android:configChanges="orientation"
             android:exported="false"

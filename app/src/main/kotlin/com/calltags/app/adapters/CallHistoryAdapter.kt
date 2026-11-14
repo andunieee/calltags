@@ -18,8 +18,10 @@ import com.calltags.app.extensions.applyColorFilter
 import com.calltags.app.extensions.formatPhoneNumber
 import com.calltags.app.extensions.getContrastColor
 import com.calltags.app.extensions.getLabelColor
+import com.calltags.app.extensions.getNumberLabelColor
 import com.calltags.app.extensions.getProperPrimaryColor
 import com.calltags.app.extensions.getProperTextColor
+import com.calltags.app.models.LabelProperties
 import com.calltags.app.models.LoggedCall
 
 class CallHistoryAdapter(
@@ -30,6 +32,9 @@ class CallHistoryAdapter(
 
     /** Labels for which this returns true get highlighted. */
     var highlight: (String) -> Boolean = { false }
+
+    /** Label properties by lowercase label, for the number label colors. */
+    var properties: Map<String, LabelProperties> = emptyMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(ItemCallBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -43,6 +48,7 @@ class CallHistoryAdapter(
             val primaryColor = context.getProperPrimaryColor()
             val missedColor = ContextCompat.getColor(context, R.color.color_missed_call)
             val isMissed = call.type == Calls.MISSED_TYPE || call.type == Calls.REJECTED_TYPE || call.type == Calls.BLOCKED_TYPE
+            val isPlaceholder = call.type == LoggedCall.PLACEHOLDER_TYPE
 
             val number = when {
                 call.number.isEmpty() -> context.getString(R.string.unknown_caller)
@@ -61,6 +67,7 @@ class CallHistoryAdapter(
                     )
                 )
                 if (call.type == Calls.BLOCKED_TYPE) details += context.getString(R.string.blocked)
+                if (isPlaceholder) details[0] = context.getString(R.string.no_calls_yet)
                 if (call.duration > 0) details += formatDuration(call.duration)
                 if (call.name.isNotEmpty()) details += number
                 itemCallDetails.text = details.joinToString(" • ")
@@ -70,6 +77,7 @@ class CallHistoryAdapter(
                     when (call.type) {
                         Calls.OUTGOING_TYPE -> R.drawable.ic_call_made_vector
                         Calls.INCOMING_TYPE, Calls.ANSWERED_EXTERNALLY_TYPE -> R.drawable.ic_call_received_vector
+                        LoggedCall.PLACEHOLDER_TYPE -> R.drawable.ic_label_number_vector
                         else -> R.drawable.ic_call_missed_vector
                     }
                 )
@@ -79,25 +87,17 @@ class CallHistoryAdapter(
                 itemCallDial.isVisible = call.number.isNotEmpty()
 
                 itemCallLabels.removeAllViews()
-                itemCallLabels.isVisible = call.blocked || call.labels.isNotEmpty() || call.otherNumberLabels.isNotEmpty()
-                if (call.blocked) {
-                    itemCallLabels.addView(Chip(context).apply {
-                        text = context.getString(R.string.blocked)
-                        setEnsureMinTouchTargetSize(false)
-                        setTextColor(missedColor)
-                        chipIcon = ContextCompat.getDrawable(context, R.drawable.ic_block_vector)
-                        chipIconTint = ColorStateList.valueOf(missedColor)
-                        chipBackgroundColor = ColorStateList.valueOf(missedColor.adjustAlpha(CHIP_ALPHA))
-                        chipStrokeWidth = 0f
-                        isClickable = false
-                    })
-                }
+                itemCallLabels.isVisible = call.labels.isNotEmpty() || call.otherNumberLabels.isNotEmpty()
                 // this call's own labels, then faded the ones its number got on other calls
                 val chips = call.labels.map { Triple(it.text, it.isNumberLabel, false) } +
                     call.otherNumberLabels.map { Triple(it, true, true) }
                 chips.forEach { (label, isNumberLabel, fromOtherCall) ->
                     val matches = highlight(label)
-                    val color = context.getLabelColor(isNumberLabel)
+                    val color = if (isNumberLabel) {
+                        context.getNumberLabelColor(properties[label.lowercase()])
+                    } else {
+                        context.getLabelColor(false)
+                    }
                     itemCallLabels.addView(Chip(context).apply {
                         text = label
                         setEnsureMinTouchTargetSize(false)

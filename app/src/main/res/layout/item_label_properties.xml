@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/label_card"
+    style="@style/Widget.Material3.CardView.Outlined"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/activity_margin"
+    android:layout_marginTop="@dimen/medium_margin"
+    android:layout_marginEnd="@dimen/activity_margin"
+    android:layout_marginBottom="@dimen/small_margin">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/label_icon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginEnd="@dimen/normal_margin"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_label_number_vector" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/label_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textSize="@dimen/label_card_title_text_size"
+                    android:textStyle="bold"
+                    tools:text="Spam" />
+
+                <TextView
+                    android:id="@+id/label_usage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.7"
+                    android:textSize="@dimen/normal_text_size"
+                    tools:text="12 numbers · 3 days ago" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:id="@+id/label_colors"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/label_suggest"
+            style="@style/LabelPropertySwitch"
+            android:text="@string/label_suggest" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/label_block"
+            style="@style/LabelPropertySwitch"
+            android:text="@string/label_block" />
+
+        <include
+            android:id="@+id/label_block_hours"
+            layout="@layout/item_label_hours" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/label_ring_only"
+            style="@style/LabelPropertySwitch"
+            android:text="@string/label_ring_only" />
+
+        <TextView
+            style="@style/LabelPropertyNote"
+            android:text="@string/label_ring_only_note" />
+
+        <include
+            android:id="@+id/label_ring_only_hours"
+            layout="@layout/item_label_hours" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/label_highlight"
+            style="@style/LabelPropertySwitch"
+            android:text="@string/label_highlight" />
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/label_hide"
+            style="@style/LabelPropertySwitch"
+            android:text="@string/label_hide" />
+
+        <TextView
+            style="@style/LabelPropertyNote"
+            android:text="@string/label_hide_note" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

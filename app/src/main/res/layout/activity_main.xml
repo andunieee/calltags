@@ -147,6 +147,15 @@
                     android:contentDescription="@string/only_labeled_calls"
                     android:padding="@dimen/small_margin"
                     android:src="@drawable/ic_label_vector" />
+
+                <ImageView
+                    android:id="@+id/history_label_properties"
+                    android:layout_width="@dimen/normal_icon_size"
+                    android:layout_height="@dimen/normal_icon_size"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/label_properties"
+                    android:padding="@dimen/small_margin"
+                    android:src="@drawable/ic_tune_vector" />
             </LinearLayout>
 
             <FrameLayout

@@ -40,6 +40,33 @@
         <item name="android:textSize">@dimen/actionbar_text_size</item>
     </style>
 
+    <style name="LabelPropertySwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/normal_icon_size</item>
+        <item name="android:textSize">@dimen/bigger_text_size</item>
+    </style>
+
+    <style name="LabelPropertyNote">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">-8dp</item>
+        <item name="android:alpha">0.7</item>
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
+    <!-- a time on the label properties screen, tapped to change it -->
+    <style name="LabelHoursButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/normal_icon_size</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingStart">@dimen/medium_margin</item>
+        <item name="android:paddingEnd">@dimen/medium_margin</item>
+        <item name="android:textSize">@dimen/bigger_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="DialpadButtonStyle">
         <item name="android:background">@drawable/pill_background</item>
         <item name="android:layout_marginStart">@dimen/small_margin</item>

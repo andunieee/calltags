@@ -1,5 +1,6 @@
 package com.calltags.app.dialogs
 
+import android.content.res.ColorStateList
 import android.text.format.DateUtils
 import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
@@ -7,29 +8,30 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.calltags.app.R
 import com.calltags.app.activities.SimpleActivity
 import com.calltags.app.adapters.CallHistoryAdapter
 import com.calltags.app.databinding.DialogCallLabelsBinding
 import com.calltags.app.databinding.ItemCallLabelBinding
-import com.calltags.app.extensions.addBlockedNumber
+import com.calltags.app.extensions.adjustAlpha
 import com.calltags.app.extensions.applyColorFilter
-import com.calltags.app.extensions.deleteBlockedNumber
 import com.calltags.app.extensions.getLabelColor
+import com.calltags.app.extensions.getNumberLabelColor
 import com.calltags.app.extensions.getProperTextColor
-import com.calltags.app.extensions.isNumberBlocked
 import com.calltags.app.extensions.showCustomDialog
 import com.calltags.app.extensions.showKeyboard
-import com.calltags.app.extensions.toast
 import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.ensureBackgroundThread
 import com.calltags.app.models.CallLabel
+import com.calltags.app.models.LabelProperties
 import com.calltags.app.models.LoggedCall
 
 /**
  * Shows a single call with its labels. Labels can be removed, one new label typed (as a number or call label,
- * toggled by the icon next to the input, see [CallLabel]), and the number blocked, which shows up as a special "Blocked" label.
+ * toggled by the icon next to the input, see [CallLabel]), and the labels set to be suggested added with one tap.
+ * The number labels other calls from this number got are listed faded; removing one takes it off the number.
  * Nothing is saved until OK is pressed; [onChanged] fires afterwards if anything was modified.
  */
 class CallLabelsDialog(
@@ -40,11 +42,11 @@ class CallLabelsDialog(
     private val db = CallHistoryDb.getInstance(activity)
     private val binding = DialogCallLabelsBinding.inflate(activity.layoutInflater)
     private val labels = call.labels.toMutableList()
-
-    // whether the number is on the system block list, null until loaded
-    private var wasBlocked: Boolean? = null
-    private var blocked = false
+    private val otherNumberLabels = call.otherNumberLabels.toMutableList()
     private var isNumberLabel = true
+
+    // empty until loaded
+    private var properties = emptyMap<String, LabelProperties>()
 
     // existing labels offered while typing, only for call labels; null until loaded
     private var suggestions: ArrayAdapter<String>? = null
@@ -69,15 +71,9 @@ class CallLabelsDialog(
                 renderScope()
             }
             renderScope()
-            callLabelsBlock.isVisible = false
-            callLabelsBlock.setOnClickListener {
-                blocked = true
-                render()
-            }
         }
         render()
         loadSuggestions()
-        loadBlockedState()
 
         val builder = MaterialAlertDialogBuilder(activity)
             .setPositiveButton(R.string.ok, null)
@@ -104,50 +100,64 @@ class CallLabelsDialog(
     private fun loadSuggestions() {
         ensureBackgroundThread {
             val labels = db.getAllLabels()
+            val properties = db.getLabelProperties()
             activity.runOnUiThread {
                 suggestions = ArrayAdapter(activity, android.R.layout.simple_dropdown_item_1line, labels)
+                this.properties = properties
                 renderScope()
-            }
-        }
-    }
-
-    private fun loadBlockedState() {
-        if (call.number.isEmpty()) return
-        ensureBackgroundThread {
-            val isBlocked = try {
-                activity.isNumberBlocked(call.number)
-            } catch (_: SecurityException) {
-                // only the default phone app can read the block list
-                false
-            }
-            activity.runOnUiThread {
-                wasBlocked = isBlocked
-                blocked = isBlocked
                 render()
             }
         }
     }
+
+    private fun hasLabel(label: String) =
+        labels.any { it.text.equals(label, ignoreCase = true) } || otherNumberLabels.any { it.equals(label, ignoreCase = true) }
 
     private fun render() {
         val textColor = activity.getProperTextColor()
-        val blockedColor = ContextCompat.getColor(activity, R.color.color_missed_call)
         binding.callLabelsList.removeAllViews()
 
-        if (blocked) {
-            addRow(activity.getString(R.string.blocked), R.drawable.ic_block_vector, blockedColor, blockedColor) {
-                blocked = false
-                render()
-            }
-        }
         labels.forEach { label ->
-            addRow(label.text, scopeIcon(label.isNumberLabel), activity.getLabelColor(label.isNumberLabel), textColor) {
+            val color = if (label.isNumberLabel) numberLabelColor(label.text) else activity.getLabelColor(false)
+            addRow(label.text, scopeIcon(label.isNumberLabel), color, textColor) {
                 labels.remove(label)
                 render()
             }
         }
+        otherNumberLabels.forEach { label ->
+            addRow(label, scopeIcon(true), numberLabelColor(label), textColor, faded = true) {
+                otherNumberLabels.remove(label)
+                render()
+            }
+        }
 
-        binding.callLabelsBlock.isVisible = wasBlocked != null && !blocked
+        binding.callLabelsSuggestions.apply {
+            removeAllViews()
+            val suggested = if (call.number.isEmpty()) emptyList() else {
+                properties.values.filter { it.suggest && !hasLabel(it.label) }.sortedBy { it.label.lowercase() }
+            }
+            suggested.forEach { suggestion ->
+                val color = activity.getNumberLabelColor(suggestion)
+                addView(Chip(activity).apply {
+                    text = suggestion.label
+                    setEnsureMinTouchTargetSize(false)
+                    setTextColor(textColor)
+                    chipIcon = ContextCompat.getDrawable(activity, R.drawable.ic_label_number_vector)
+                    chipIconTint = ColorStateList.valueOf(color)
+                    chipBackgroundColor = ColorStateList.valueOf(color.adjustAlpha(CHIP_ALPHA))
+                    chipStrokeWidth = 0f
+                    contentDescription = activity.getString(R.string.add_label, suggestion.label)
+                    setOnClickListener {
+                        labels += CallLabel(suggestion.label, isNumberLabel = true)
+                        render()
+                    }
+                })
+            }
+            isVisible = suggested.isNotEmpty()
+        }
     }
+
+    private fun numberLabelColor(label: String) = activity.getNumberLabelColor(properties[label.lowercase()])
 
     private fun renderScope() {
         binding.callLabelsScope.apply {
@@ -165,7 +175,14 @@ class CallLabelsDialog(
     private fun scopeIcon(isNumberLabel: Boolean) =
         if (isNumberLabel) R.drawable.ic_label_number_vector else R.drawable.ic_label_call_vector
 
-    private fun addRow(text: String, icon: Int, iconColor: Int, textColor: Int, onRemove: () -> Unit) {
+    private fun addRow(
+        text: String,
+        icon: Int,
+        iconColor: Int,
+        textColor: Int,
+        faded: Boolean = false,
+        onRemove: () -> Unit,
+    ) {
         val row = ItemCallLabelBinding.inflate(activity.layoutInflater, binding.callLabelsList, false)
         row.callLabelText.text = text
         row.callLabelText.setTextColor(textColor)
@@ -173,27 +190,31 @@ class CallLabelsDialog(
         row.callLabelIcon.applyColorFilter(iconColor)
         row.callLabelRemove.applyColorFilter(textColor)
         row.callLabelRemove.setOnClickListener { onRemove() }
+        if (faded) {
+            row.callLabelText.alpha = OTHER_CALL_LABEL_ALPHA
+            row.callLabelIcon.alpha = OTHER_CALL_LABEL_ALPHA
+        }
         binding.callLabelsList.addView(row.root)
     }
 
     private fun save() {
         val newLabel = binding.callLabelsInput.text.toString().trim()
         val removed = call.labels.filter { it !in labels }
-        val added = newLabel.takeIf { label ->
-            label.isNotEmpty() && labels.none { it.text.equals(label, ignoreCase = true) }
-        }
-        val blockChange = wasBlocked?.let { if (it != blocked) blocked else null }
-        if (removed.isEmpty() && added == null && blockChange == null) return
+        val removedFromNumber = call.otherNumberLabels.filter { it !in otherNumberLabels }
+        val added = labels.filter { it !in call.labels }.toMutableList()
+        if (newLabel.isNotEmpty() && !hasLabel(newLabel)) added += CallLabel(newLabel, isNumberLabel)
+        if (removed.isEmpty() && removedFromNumber.isEmpty() && added.isEmpty()) return
 
         ensureBackgroundThread {
             removed.forEach { db.removeLabel(call.id, it.text) }
-            added?.let { db.addLabel(call.id, it, isNumberLabel) }
-            when (blockChange) {
-                true -> if (activity.addBlockedNumber(call.number)) activity.toast(R.string.number_blocked)
-                false -> if (activity.deleteBlockedNumber(call.number)) activity.toast(R.string.number_unblocked)
-                null -> {}
-            }
+            removedFromNumber.forEach { db.removeNumberLabel(call.number, it) }
+            added.forEach { db.addLabel(call.id, it.text, it.isNumberLabel) }
             activity.runOnUiThread { onChanged() }
         }
+    }
+
+    companion object {
+        private const val CHIP_ALPHA = 0.22f
+        private const val OTHER_CALL_LABEL_ALPHA = 0.55f
     }
 }

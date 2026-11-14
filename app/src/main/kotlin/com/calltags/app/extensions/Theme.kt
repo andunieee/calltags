@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import com.calltags.app.R
+import com.calltags.app.models.LabelProperties
 
 // The CallTags palette lives in values/colors.xml and values-night/colors.xml,
 // so these follow the system light/dark setting automatically.
@@ -22,6 +23,9 @@ fun Context.getProperPrimaryColor() = ContextCompat.getColor(this, R.color.color
 // number labels use the primary color, call labels a shade off it
 fun Context.getLabelColor(isNumberLabel: Boolean) =
     if (isNumberLabel) getProperPrimaryColor() else ContextCompat.getColor(this, R.color.color_call_label)
+
+/** The color of a number label with [properties]: its own color if it was given one. */
+fun Context.getNumberLabelColor(properties: LabelProperties?) = properties?.color ?: getLabelColor(isNumberLabel = true)
 
 fun Context.isSystemInDarkMode() =
     resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES

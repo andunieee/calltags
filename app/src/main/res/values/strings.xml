@@ -16,6 +16,30 @@
     <string name="number_label">Number label, also shown on other calls from this number</string>
     <string name="call_label">Call label, only on this call</string>
     <string name="no_previous_calls">No previous calls have been found</string>
+    <string name="no_calls_yet">No calls yet</string>
+    <string name="add_label">Add label %1$s</string>
+
+    <!-- Label properties -->
+    <string name="label_properties">Label properties</string>
+    <string name="no_number_labels">No number labels yet. Give a call a number label and it shows up here.</string>
+    <plurals name="label_numbers">
+        <item quantity="one">%d number</item>
+        <item quantity="other">%d numbers</item>
+    </plurals>
+    <string name="label_not_used">Not on any number</string>
+    <string name="label_suggest">Suggest when labeling calls</string>
+    <string name="label_block">Block calls</string>
+    <string name="label_ring_only">Ring only for this label</string>
+    <string name="label_ring_only_note">Calls without it still come in, but silently</string>
+    <string name="label_highlight">Highlight on incoming calls</string>
+    <string name="label_hide">Hide from history and dialpad</string>
+    <string name="label_hide_note">Hidden calls still show up when searched for</string>
+    <string name="only_from">Only from</string>
+    <string name="hours_until">to</string>
+    <string name="start_time">Start time</string>
+    <string name="end_time">End time</string>
+    <string name="default_color">Default color</string>
+    <string name="label_color">Color %1$d</string>
 
     <!-- Caller history on the in-call screen -->
     <string name="first_call_with_number">First call with this number</string>
@@ -90,7 +114,6 @@
     <string name="blocked">Blocked</string>
     <string name="block_number_confirmation">Block %1$s? It won\'t ring anymore, but its calls will still show in history as blocked.</string>
     <string name="number_blocked">Number blocked</string>
-    <string name="number_unblocked">Number unblocked</string>
     <string name="call_is_being_connected">Your call is being connected…</string>
     <string name="call_notification_channel">Call status</string>
     <string name="call_notification_channel_high_priority">Call status (high priority)</string>

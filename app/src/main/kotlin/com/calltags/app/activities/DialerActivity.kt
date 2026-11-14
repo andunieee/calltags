@@ -11,10 +11,10 @@ import com.calltags.app.R
 import com.calltags.app.extensions.getHandleToUse
 import com.calltags.app.extensions.hideKeyboard
 import com.calltags.app.extensions.isDefaultDialer
-import com.calltags.app.extensions.isNumberBlocked
 import com.calltags.app.extensions.showErrorToast
 import com.calltags.app.extensions.telecomManager
 import com.calltags.app.extensions.toast
+import com.calltags.app.helpers.CallHistoryDb
 import com.calltags.app.helpers.REQUEST_CODE_SET_DEFAULT_DIALER
 
 class DialerActivity : SimpleActivity() {
@@ -41,7 +41,8 @@ class DialerActivity : SimpleActivity() {
     @SuppressLint("MissingPermission")
     private fun initOutgoingCall() {
         try {
-            if (isNumberBlocked(callNumber.toString().replace("tel:", ""))) {
+            val number = Uri.decode(callNumber.toString()).removePrefix("tel:")
+            if (CallHistoryDb.getInstance(this).isNumberBlocked(number)) {
                 toast(R.string.calling_blocked_number)
                 finish()
                 return

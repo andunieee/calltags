@@ -4,6 +4,7 @@ import android.telecom.Call
 import android.telecom.CallAudioState
 import android.telecom.InCallService
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Build
 import com.calltags.app.activities.CallActivity
 import com.calltags.app.extensions.canUseFullScreenIntent
@@ -12,10 +13,13 @@ import com.calltags.app.extensions.hasPermission
 import com.calltags.app.extensions.isOutgoing
 import com.calltags.app.extensions.keyguardManager
 import com.calltags.app.extensions.powerManager
+import com.calltags.app.extensions.telecomManager
 import com.calltags.app.helpers.CallManager
 import com.calltags.app.helpers.CallNotificationManager
 import com.calltags.app.helpers.NoCall
+import com.calltags.app.helpers.ensureBackgroundThread
 import com.calltags.app.models.Events
+import com.calltags.app.models.Screening
 import org.greenrobot.eventbus.EventBus
 
 class CallService : InCallService() {
@@ -50,6 +54,8 @@ class CallService : InCallService() {
             else -> true
         }
 
+        if (isIncoming && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) silenceIfScreened(call)
+
         callNotificationManager.setupNotification(lowPriority)
         if (
             lowPriority
@@ -62,6 +68,21 @@ class CallService : InCallService() {
                 // seems like startActivity can throw AndroidRuntimeException and
                 // ActivityNotFoundException, not yet sure when and why, lets show a notification
                 callNotificationManager.setupNotification()
+            }
+        }
+    }
+
+    // from Android 10 on, SimpleCallScreeningService silences the call itself
+    @SuppressLint("MissingPermission")
+    private fun silenceIfScreened(call: Call) {
+        val number = call.details?.handle?.schemeSpecificPart
+        ensureBackgroundThread {
+            if (SimpleCallScreeningService.screenNumber(this, number) == Screening.SILENCE) {
+                try {
+                    telecomManager.silenceRinger()
+                } catch (_: SecurityException) {
+                    // only the default phone app may silence the ringer
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ Because maintaining an updated list of contacts was always an awful idea.
 - Tap a call in History to add labels like `insurance` or `bob's second phone`.
 - Search History by number (all calls with it and their labels) or by label (every call that got it).
 - While a labelled number is calling, the in-call screen shows what earlier calls were about.
+- Give labels properties on the label properties screen (the sliders icon in History): block calls from numbers with a label, ring only for some labels, limit either to certain hours, highlight a label on the incoming call screen, hide labelled numbers from History, suggest a label on every call, or give it its own color. Blocking is just a `Blocked` label that blocks calls.
 - Nothing leaves the device.
 
 CallTags works as the default phone app (Settings → Apps → Default apps → Phone).

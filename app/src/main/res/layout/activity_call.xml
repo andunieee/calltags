@@ -97,12 +97,33 @@
         android:layout_marginTop="@dimen/normal_margin"
         android:gravity="center_horizontal"
         android:textSize="@dimen/call_status_text_size"
-        app:layout_constraintBottom_toTopOf="@id/caller_previous_labels"
+        app:layout_constraintBottom_toTopOf="@id/caller_highlighted_labels"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/caller_name_label"
         android:textDirection="firstStrongLtr"
         tools:text="+1 (123) 456-7890" />
+
+    <!-- labels set to be highlighted on the label properties screen, each in its own color -->
+    <TextView
+        android:id="@+id/caller_highlighted_labels"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingStart="@dimen/activity_margin"
+        android:paddingEnd="@dimen/activity_margin"
+        android:textSize="@dimen/highlighted_label_text_size"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/caller_previous_labels"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/caller_number"
+        tools:text="Client"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/caller_previous_labels"
@@ -120,7 +141,7 @@
         app:layout_constraintBottom_toTopOf="@id/caller_history"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/caller_number"
+        app:layout_constraintTop_toBottomOf="@+id/caller_highlighted_labels"
         tools:text="topic 1, topic 2" />
 
     <TextView

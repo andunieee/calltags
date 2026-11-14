@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- limits a label property to part of the day, under the switch it belongs to -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/normal_margin"
+    android:paddingEnd="@dimen/normal_margin">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/label_hours_enabled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/only_from" />
+
+    <TextView
+        android:id="@+id/label_hours_from"
+        style="@style/LabelHoursButton"
+        android:contentDescription="@string/start_time" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hours_until" />
+
+    <TextView
+        android:id="@+id/label_hours_to"
+        style="@style/LabelHoursButton"
+        android:contentDescription="@string/end_time" />
+</LinearLayout>

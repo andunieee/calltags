@@ -119,4 +119,8 @@ class Config(context: Context) {
     var alwaysShowFullscreen: Boolean
         get() = prefs.getBoolean(ALWAYS_SHOW_FULLSCREEN, false)
         set(alwaysShowFullscreen) = prefs.edit().putBoolean(ALWAYS_SHOW_FULLSCREEN, alwaysShowFullscreen).apply()
+
+    var blockListMigrated: Boolean
+        get() = prefs.getBoolean(BLOCK_LIST_MIGRATED, false)
+        set(blockListMigrated) = prefs.edit().putBoolean(BLOCK_LIST_MIGRATED, blockListMigrated).apply()
 }
