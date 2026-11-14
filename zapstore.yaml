@@ -1,23 +1,16 @@
-# Zapstore listing for the Android build. Published by the "Publish to Zapstore"
-# step in .github/workflows/release.yml after the APK is attached to the release.
-# The listing is owned by the key in the ZAPSTORE_OWNER_NSEC secret.
 repository: https://github.com/andunieee/calltags
 release_filter: '^v[0-9]+\.[0-9]+\.[0-9]+$'
 match: '^calltags-.*\.apk$'
 name: CallTags
-summary: A phone app that lets you label calls and search them later.
+summary: A minimal phone app that lets you label calls and search them later.
 description: |
-  CallTags is a simple phone app with one extra trick: you can label your calls with anything you like, and find them again later.
+  A minimal Android phone app that lets you label calls with free text and search them later, replacing the traditional contact list.
 
-  Got a call about the car insurance? Tag it "insurance". A week later, search "insurance" and the number is right there. Search the number instead, and you see every call with it along with what each one was about.
-
-  - Dialpad and call history, nothing else, but replaces your contact list
-  - Add any number of free-text labels to each call
+  - Dialpad and call history are all you need
+  - Tap any call to label the number or the call itself (like "insurance" or "bob's second phone")
   - Search history by number or by label
-  - See what earlier calls with a number were about while it's ringing
-  - Everything stays on your phone: no account, no internet, no ads
-
-  CallTags works as your default phone app, so it handles incoming and outgoing calls itself.
+  - See a number's labels and notes from past calls while the phone is ringing
+  - Attach rules to labels: block calls, only ring for certain labels or hours, hide numbers from history, or set colors
 tags:
   - phone
   - dialer

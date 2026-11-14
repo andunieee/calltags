@@ -9,13 +9,10 @@ A minimal Android phone app that lets you label calls with free text and search 
 Because maintaining an updated list of contacts was always an awful idea.
 
 - Dialpad and History are all you need.
-- Tap a call in History to add labels like `insurance` or `bob's second phone`.
-- Search History by number (all calls with it and their labels) or by label (every call that got it).
-- While a labelled number is calling, the in-call screen shows what earlier calls were about.
-- Give labels properties on the label properties screen (the sliders icon in History): block calls from numbers with a label, ring only for some labels, limit either to certain hours, highlight a label on the incoming call screen, hide labelled numbers from History, suggest a label on every call, or give it its own color. Blocking is just a `Blocked` label that blocks calls.
-- Nothing leaves the device.
-
-CallTags works as the default phone app (Settings → Apps → Default apps → Phone).
+- Tap any call to add labels to that number or to the call itself, like `insurance` or `bob's second phone`.
+- Search by number or by label.
+- When a known number calls, the screen shows your labels and what earlier calls were about.
+- Labels can also have rules attached to them: block calls, only ring for certain labels (or during certain hours), hide numbers from history, or set custom colors.
 
 <p align="center">
 <img alt="Edit a call's labels" src="https://github.com/user-attachments/assets/6f9eaedd-6868-453e-a454-5386a5a3a8a2" width="24%" />
@@ -31,7 +28,7 @@ Other people may find it useful for labeling other things, like the topic of eac
 ## Install
 
 - **[Obtainium](https://obtainium.imranr.dev):** add `https://github.com/andunieee/calltags`, or tap [Get it on Obtainium](https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/andunieee/calltags) on your phone.
-- **Zapstore:** install [Zapstore](https://zapstore.dev) and search for CallTags.
+- **[Zapstore](https://zapstore.dev):** search for CallTags.
 - **Manually:** download the APK from [Releases](https://github.com/andunieee/calltags/releases).
 
 ## Building
@@ -39,13 +36,6 @@ Other people may find it useful for labeling other things, like the topic of eac
 ```sh
 ./gradlew assembleDebug
 ```
-
-## Releasing
-
-Pushing a `v1.2.3` tag runs `.github/workflows/release.yml`, which builds and signs the APK, creates the GitHub release and publishes it to Zapstore (`zapstore.yaml`). It needs these repository secrets:
-
-- `SIGNING_KEYSTORE_BASE64`, `SIGNING_STORE_PASSWORD`, `SIGNING_KEY_ALIAS`, `SIGNING_KEY_PASSWORD`: the release keystore, base64-encoded, and its passwords.
-- `ZAPSTORE_OWNER_NSEC`: the `nsec` (or a `bunker://` URL) of the Nostr key that owns the Zapstore listing. The publish step (`packaging/zapstore`) signs the NIP-C1 certificate proof with the release keystore, so it has to be the same key that signed the APK.
 
 ## License
 
