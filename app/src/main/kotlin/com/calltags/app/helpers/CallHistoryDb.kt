@@ -390,6 +390,31 @@ class CallHistoryDb private constructor(context: Context) :
     }
 
     /**
+     * Deletes [call] from the history, and from the system call log so [importSystemCallLog] doesn't bring it back.
+     * Its call labels go with it, but its number labels are moved to the number's latest remaining call (or a
+     * placeholder) so the number keeps them.
+     */
+    fun deleteCall(context: Context, call: LoggedCall) {
+        val db = writableDatabase
+        db.beginTransaction()
+        try {
+            db.delete("calls", "id = ?", arrayOf(call.id.toString()))
+            call.labels.filter { it.isNumberLabel }.forEach { addNumberLabel(call.number, it.text) }
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+        if (call.type == PLACEHOLDER_TYPE) return
+        try {
+            context.contentResolver.delete(
+                Calls.CONTENT_URI, "${Calls.DATE} = ? AND ${Calls.NUMBER} = ?", arrayOf(call.date.toString(), call.number)
+            )
+        } catch (_: SecurityException) {
+            // not allowed to write the call log, the call may be imported again if it is the latest one
+        }
+    }
+
+    /**
      * Gives [number] the number label [label], on its latest call. A number we never had a call with gets a
      * placeholder call to hold the label. Returns false for an empty number.
      */

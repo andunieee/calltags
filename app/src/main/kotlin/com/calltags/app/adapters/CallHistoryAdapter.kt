@@ -28,6 +28,7 @@ class CallHistoryAdapter(
     private val onCallClick: (LoggedCall) -> Unit,
     private val onDialClick: (LoggedCall) -> Unit,
     private val onLabelClick: (String) -> Unit,
+    private val onCallLongClick: ((LoggedCall) -> Unit)? = null,
 ) : ListAdapter<LoggedCall, CallHistoryAdapter.ViewHolder>(DIFF) {
 
     /** Labels for which this returns true get highlighted. */
@@ -112,6 +113,7 @@ class CallHistoryAdapter(
                 }
 
                 root.setOnClickListener { onCallClick(call) }
+                root.setOnLongClickListener(onCallLongClick?.let { { _ -> it(call); true } })
                 itemCallDial.setOnClickListener { onDialClick(call) }
             }
         }

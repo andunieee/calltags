@@ -35,6 +35,7 @@ import com.calltags.app.extensions.hideKeyboard
 import com.calltags.app.extensions.isDefaultDialer
 import com.calltags.app.extensions.onTextChangeListener
 import com.calltags.app.extensions.performHapticFeedback
+import com.calltags.app.extensions.showConfirmationDialog
 import com.calltags.app.extensions.toast
 import com.calltags.app.extensions.value
 import com.calltags.app.extensions.viewBinding
@@ -446,6 +447,18 @@ class MainActivity : SimpleActivity() {
 
     // region history
 
+    private fun confirmDeleteCall(call: LoggedCall) {
+        showConfirmationDialog(getString(R.string.delete_call_confirmation)) {
+            ensureBackgroundThread {
+                db.deleteCall(this, call)
+                runOnUiThread {
+                    refreshHistory()
+                    searchDialpad(binding.dialpadInput.value)
+                }
+            }
+        }
+    }
+
     private fun setupHistory() {
         historyAdapter = CallHistoryAdapter(
             onCallClick = { call ->
@@ -461,7 +474,8 @@ class MainActivity : SimpleActivity() {
                 )
             },
             onDialClick = { call -> startCallIntent(call.number) },
-            onLabelClick = { label -> binding.historySearch.setText(label) }
+            onLabelClick = { label -> binding.historySearch.setText(label) },
+            onCallLongClick = ::confirmDeleteCall
         )
         binding.historyList.adapter = historyAdapter
 

@@ -12,6 +12,7 @@
     <string name="only_labeled_calls">Only show calls with labels</string>
     <string name="no_labeled_calls">No calls have labels yet</string>
     <string name="new_label">New label</string>
+    <string name="delete_call_confirmation">Delete this call from the history? Its labels for just this call go with it, the number keeps its number labels.</string>
     <string name="remove_label">Remove label</string>
     <string name="number_label">Number label, also shown on other calls from this number</string>
     <string name="call_label">Call label, only on this call</string>
