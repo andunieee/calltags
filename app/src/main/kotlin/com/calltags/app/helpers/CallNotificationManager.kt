@@ -21,6 +21,7 @@ class CallNotificationManager(private val context: Context) {
         private const val CALL_NOTIFICATION_ID = 42
         private const val ACCEPT_CALL_CODE = 0
         private const val DECLINE_CALL_CODE = 1
+        private const val MAX_LABELS = 3
     }
 
     private val notificationManager = context.notificationManager
@@ -63,6 +64,10 @@ class CallNotificationManager(private val context: Context) {
                 callerName += " - ${callContact.numberLabel}"
             }
 
+            // the number is the name for unsaved callers, so labels are what tells the user who this is
+            val labels = if (callContact.number.isEmpty()) emptyList() else
+                CallHistoryDb.getInstance(context).getLabelsForNumber(callContact.number).take(MAX_LABELS)
+
             val contentTextId = when (callState) {
                 Call.STATE_RINGING -> R.string.is_calling
                 Call.STATE_DIALING -> R.string.dialing
@@ -74,6 +79,10 @@ class CallNotificationManager(private val context: Context) {
             val collapsedView = RemoteViews(context.packageName, R.layout.call_notification).apply {
                 setTextViewText(R.id.notification_caller_name, callerName)
                 setTextViewText(R.id.notification_call_status, context.getString(contentTextId))
+                if (labels.isNotEmpty()) {
+                    setTextViewText(R.id.notification_labels, labels.joinToString(", "))
+                    setViewVisibility(R.id.notification_labels, View.VISIBLE)
+                }
                 val acceptVisibility = if (callState == Call.STATE_RINGING) View.VISIBLE else View.GONE
                 setViewVisibility(R.id.notification_accept_call, acceptVisibility)
 

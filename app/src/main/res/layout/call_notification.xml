@@ -25,11 +25,22 @@
         android:alpha="0.8"
         tools:text="123 456 789" />
 
+    <TextView
+        android:id="@+id/notification_labels"
+        style="@style/TextAppearance.Compat.Notification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/notification_call_status"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:visibility="gone"
+        tools:text="Family, Plumber" />
+
     <LinearLayout
         android:id="@+id/notification_actions_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/notification_call_status"
+        android:layout_below="@+id/notification_labels"
         android:layout_marginTop="@dimen/activity_margin"
         android:orientation="horizontal">
 
